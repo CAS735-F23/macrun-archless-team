@@ -11,6 +11,7 @@
 
 - Load Balancer
 - API Gateway
+- Circuit Breaker
 
 ## How to Build
 
