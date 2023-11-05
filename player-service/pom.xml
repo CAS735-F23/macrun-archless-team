@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.cas</groupId>
-	<artifactId>PlayerService</artifactId>
+	<artifactId>player-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>PlayerService</name>
-	<description>PlayerService</description>
+	<name>player-service</name>
+	<description>player-service</description>
 	<properties>
 		<java.version>21</java.version>
 	</properties>
