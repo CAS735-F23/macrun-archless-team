@@ -25,7 +25,7 @@ func main() {
 	}
 
 	if cfg.Server.IP == "" {
-		cfg.Server.IP = utils.GetPrimaryIP(cfg.Discovery.IP, cfg.Discovery.Port)
+		cfg.Server.IP = utils.GetPrimaryIP(cfg.Discovery.Host, cfg.Discovery.Port)
 	}
 
 	// Service Discovery

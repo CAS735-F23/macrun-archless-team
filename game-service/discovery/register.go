@@ -50,7 +50,7 @@ func initClient(host string, port int) error {
 
 func Register(cfg *config.Config) (err error) {
 	_initOnce.Do(func() {
-		err = initClient(cfg.Discovery.IP, cfg.Discovery.Port)
+		err = initClient(cfg.Discovery.Host, cfg.Discovery.Port)
 	})
 	if err != nil {
 		return err

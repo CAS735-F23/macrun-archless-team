@@ -12,7 +12,7 @@ type Config struct {
 		Port int
 	}
 	Discovery struct {
-		IP      string
+		Host    string
 		Port    int
 		Service string
 	}
