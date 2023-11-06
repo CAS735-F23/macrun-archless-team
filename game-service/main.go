@@ -19,7 +19,7 @@ func init() {
 func main() {
 
 	// Load Config
-	cfg, err := config.NewConfigFromFile("application.yml")
+	cfg, err := config.LoadConfigFromFile("application.yml")
 	if err != nil {
 		log.Fatalln(err)
 	}

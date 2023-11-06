@@ -18,7 +18,7 @@ type Config struct {
 	}
 }
 
-func NewConfigFromFile(filename string) (*Config, error) {
+func LoadConfigFromFile(filename string) (*Config, error) {
 	data, err := os.ReadFile(filename)
 	if err != nil {
 		return nil, err
