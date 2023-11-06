@@ -7,6 +7,8 @@ import (
 	"github.com/nacos-group/nacos-sdk-go/v2/clients/naming_client"
 	"github.com/nacos-group/nacos-sdk-go/v2/common/constant"
 	"github.com/nacos-group/nacos-sdk-go/v2/vo"
+
+	"game-service/config"
 )
 
 const (
@@ -15,11 +17,11 @@ const (
 )
 
 var (
-	_once   sync.Once
-	_client naming_client.INamingClient
+	_initOnce sync.Once
+	_client   naming_client.INamingClient
 )
 
-func InitClient(host string, port int) error {
+func initClient(host string, port int) error {
 	sc := []constant.ServerConfig{
 		*constant.NewServerConfig(host, uint64(port), constant.WithContextPath("/nacos")),
 	}
@@ -42,17 +44,22 @@ func InitClient(host string, port int) error {
 		return err
 	}
 
-	_once.Do(func() {
-		_client = client
-	})
+	_client = client
 	return nil
 }
 
-func Register(ip string, port int) error {
-	_, err := _client.RegisterInstance(vo.RegisterInstanceParam{
-		Ip:          ip,
-		Port:        uint64(port),
-		ServiceName: ServiceName,
+func Register(cfg *config.Config) (err error) {
+	_initOnce.Do(func() {
+		err = initClient(cfg.Discovery.IP, cfg.Discovery.Port)
+	})
+	if err != nil {
+		return err
+	}
+
+	_, err = _client.RegisterInstance(vo.RegisterInstanceParam{
+		Ip:          cfg.Server.IP,
+		Port:        uint64(cfg.Server.Port),
+		ServiceName: cfg.Discovery.Service,
 		Weight:      10,
 		Enable:      true,
 		Healthy:     true,
@@ -64,11 +71,11 @@ func Register(ip string, port int) error {
 	return err
 }
 
-func Deregister(ip string, port int) error {
+func Deregister(cfg *config.Config) error {
 	_, err := _client.DeregisterInstance(vo.DeregisterInstanceParam{
-		Ip:          ip,
-		Port:        uint64(port),
-		ServiceName: ServiceName,
+		Ip:          cfg.Server.IP,
+		Port:        uint64(cfg.Server.Port),
+		ServiceName: cfg.Discovery.Service,
 		Ephemeral:   true, //it must be true
 		//GroupName:   GroupName,
 		//Cluster:     "",

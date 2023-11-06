@@ -7,27 +7,35 @@ import (
 	"syscall"
 	"time"
 
+	"game-service/config"
 	"game-service/discovery"
+	"game-service/utils"
 )
 
 func init() {
-
+	// nop
 }
 
 func main() {
 
-	// Service Discovery
-	err := discovery.InitClient("127.0.0.1", 8848)
+	// Load Config
+	cfg, err := config.NewConfigFromFile("application.yml")
 	if err != nil {
 		log.Fatalln(err)
 	}
-	err = discovery.Register("192.168.2.11", 8849)
-	if err != nil {
-		log.Fatalln(err)
-	}
-	//defer discovery.Deregister("10.0.0.1", 9090)
 
-	time.Sleep(1000 * time.Second)
+	if cfg.Server.IP == "" {
+		cfg.Server.IP = utils.GetPrimaryIP(cfg.Discovery.IP, cfg.Discovery.Port)
+	}
+
+	// Service Discovery
+	if err := discovery.Register(cfg); err != nil {
+		log.Fatalln(err)
+	}
+	defer discovery.Deregister(cfg)
+
+	// Main Entry
+	time.Sleep(1000 * time.Hour)
 
 	sigCh := make(chan os.Signal, 1)
 	signal.Notify(sigCh, syscall.SIGINT, syscall.SIGTERM)

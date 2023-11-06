@@ -1,0 +1,8 @@
+server:
+  ip:
+  port: 9090
+
+discovery:
+  ip: 127.0.0.1
+  port: 8848
+  service: game.service

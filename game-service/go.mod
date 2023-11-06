@@ -2,7 +2,10 @@ module game-service
 
 go 1.21
 
-require github.com/nacos-group/nacos-sdk-go/v2 v2.2.3
+require (
+	github.com/nacos-group/nacos-sdk-go/v2 v2.2.3
+	gopkg.in/yaml.v2 v2.4.0
+)
 
 require (
 	github.com/aliyun/alibaba-cloud-sdk-go v1.61.1704 // indirect
