@@ -5,10 +5,10 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
 
 	"game-service/config"
 	"game-service/discovery"
+	"game-service/rabbitmq"
 	"game-service/utils"
 )
 
@@ -35,7 +35,8 @@ func main() {
 	defer discovery.Deregister(cfg)
 
 	// Main Entry
-	time.Sleep(1000 * time.Hour)
+	go rabbitmq.Send(cfg.RabbitMQ.URL, "testing")
+	rabbitmq.Receive(cfg.RabbitMQ.URL, "testing")
 
 	sigCh := make(chan os.Signal, 1)
 	signal.Notify(sigCh, syscall.SIGINT, syscall.SIGTERM)

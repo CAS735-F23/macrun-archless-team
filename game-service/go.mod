@@ -4,6 +4,7 @@ go 1.21
 
 require (
 	github.com/nacos-group/nacos-sdk-go/v2 v2.2.3
+	github.com/rabbitmq/amqp091-go v1.9.0
 	gopkg.in/yaml.v2 v2.4.0
 )
 
@@ -25,7 +26,6 @@ require (
 	github.com/prometheus/common v0.32.1 // indirect
 	github.com/prometheus/procfs v0.7.3 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
-	go.uber.org/goleak v1.2.1 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
 	go.uber.org/zap v1.21.0 // indirect
 	golang.org/x/net v0.7.0 // indirect

@@ -16,6 +16,9 @@ type Config struct {
 		Port    int
 		Service string
 	}
+	RabbitMQ struct {
+		URL string
+	}
 }
 
 func LoadConfigFromFile(filename string) (*Config, error) {
