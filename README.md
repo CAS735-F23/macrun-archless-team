@@ -6,6 +6,7 @@
 ## Architecture Report
 
 - [Google Docs](https://docs.google.com/document/d/1autqAB21GcHH2TUhu9ez9Kf1AKQdTmIThb3qxiyk7p8/edit?usp=sharing)
+- [Draw.io Diagrams](https://drive.google.com/file/d/1AnPuMwdSt3I8YnaW6hJ_1sEzjOeWUa1R/view?usp=sharing)
 
 ## Features
 
