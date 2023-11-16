@@ -3,8 +3,35 @@ spring:
     name: player-service
   cloud:
     nacos:
-      config:
-        server-addr: 127.0.0.1
+      discovery:
+        server-addr: 34.130.59.222
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://34.130.59.222:3306/player-service?createDatabaseIfNotExist=true
+    username: root
+    password: admin
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+  sql:
+    init:
+      mode: always
+  rabbitmq:
+    host: 34.130.59.222
+    port: 5672
+    username: guest
+    password: guest
+    exchange: player-service
+    queue: player
+  data:
+    redis:
+      host: 34.130.59.222
+      port: 6379
 
 server:
   port: 9000
