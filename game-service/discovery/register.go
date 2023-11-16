@@ -1,8 +1,6 @@
 package discovery
 
 import (
-	"sync"
-
 	"github.com/nacos-group/nacos-sdk-go/v2/clients"
 	"github.com/nacos-group/nacos-sdk-go/v2/clients/naming_client"
 	"github.com/nacos-group/nacos-sdk-go/v2/common/constant"
@@ -11,19 +9,15 @@ import (
 	"game-service/config"
 )
 
-const (
-	ServiceName = "game.service"
-	//GroupName   = "game.group"
-)
+type Registry struct {
+	cfg *config.Config
+	cli naming_client.INamingClient
+}
 
-var (
-	_initOnce sync.Once
-	_client   naming_client.INamingClient
-)
-
-func initClient(host string, port int) error {
+func New(cfg *config.Config) (*Registry, error) {
 	sc := []constant.ServerConfig{
-		*constant.NewServerConfig(host, uint64(port), constant.WithContextPath("/nacos")),
+		*constant.NewServerConfig(cfg.Discovery.Host, uint64(cfg.Discovery.Port),
+			constant.WithContextPath("/nacos")),
 	}
 
 	cc := *constant.NewClientConfig(
@@ -40,26 +34,17 @@ func initClient(host string, port int) error {
 		},
 	)
 
-	if err != nil {
-		return err
-	}
-
-	_client = client
-	return nil
+	return &Registry{
+		cfg: cfg,
+		cli: client,
+	}, err
 }
 
-func Register(cfg *config.Config) (err error) {
-	_initOnce.Do(func() {
-		err = initClient(cfg.Discovery.Host, cfg.Discovery.Port)
-	})
-	if err != nil {
-		return err
-	}
-
-	_, err = _client.RegisterInstance(vo.RegisterInstanceParam{
-		Ip:          cfg.Server.IP,
-		Port:        uint64(cfg.Server.Port),
-		ServiceName: cfg.Discovery.Service,
+func (r *Registry) Register() error {
+	_, err := r.cli.RegisterInstance(vo.RegisterInstanceParam{
+		Ip:          r.cfg.Server.IP,
+		Port:        uint64(r.cfg.Server.Port),
+		ServiceName: r.cfg.Discovery.Service,
 		Weight:      10,
 		Enable:      true,
 		Healthy:     true,
@@ -71,12 +56,12 @@ func Register(cfg *config.Config) (err error) {
 	return err
 }
 
-func Deregister(cfg *config.Config) error {
-	_, err := _client.DeregisterInstance(vo.DeregisterInstanceParam{
-		Ip:          cfg.Server.IP,
-		Port:        uint64(cfg.Server.Port),
-		ServiceName: cfg.Discovery.Service,
-		Ephemeral:   true, //it must be true
+func (r *Registry) Deregister() error {
+	_, err := r.cli.DeregisterInstance(vo.DeregisterInstanceParam{
+		Ip:          r.cfg.Server.IP,
+		Port:        uint64(r.cfg.Server.Port),
+		ServiceName: r.cfg.Discovery.Service,
+		Ephemeral:   true,
 		//GroupName:   GroupName,
 		//Cluster:     "",
 	})
