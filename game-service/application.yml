@@ -3,9 +3,9 @@ server:
   port: 9090
 
 discovery:
-  host: 127.0.0.1
+  host: 34.130.59.222 #127.0.0.1
   port: 8848
   service: game-service
 
 rabbitmq:
-  url: amqp://guest:guest@127.0.0.1:5672/
+  url: amqp://guest:guest@34.130.59.222:5672/
