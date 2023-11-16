@@ -33,3 +33,10 @@ services:
     ports:
       - "3306:3306"
     restart: unless-stopped
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
