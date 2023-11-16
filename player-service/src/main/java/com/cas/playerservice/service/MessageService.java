@@ -1,3 +1,4 @@
+/* (C)2023 */
 package com.cas.playerservice.service;
 
 public interface MessageService {

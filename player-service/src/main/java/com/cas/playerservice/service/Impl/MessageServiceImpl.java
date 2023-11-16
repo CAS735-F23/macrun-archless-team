@@ -1,7 +1,7 @@
+/* (C)2023 */
 package com.cas.playerservice.service.Impl;
 
 import com.cas.playerservice.service.MessageService;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,9 +24,8 @@ public class MessageServiceImpl implements MessageService {
         rabbitTemplate.convertAndSend(exchangeName, route, message);
     }
 
-//    @RabbitListener(queues = "player")
-//    public void receiveMessage(String message) {
-//        System.out.println("Received message: " + message);
-//    }
+    //    @RabbitListener(queues = "player")
+    //    public void receiveMessage(String message) {
+    //        System.out.println("Received message: " + message);
+    //    }
 }
-

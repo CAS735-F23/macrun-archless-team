@@ -1,3 +1,4 @@
+/* (C)2023 */
 package com.cas.playerservice.entity;
 
 import com.cas.playerservice.dto.PlayerDto;
@@ -15,6 +16,7 @@ public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String username;
     private String password;
     private String email;
@@ -22,11 +24,6 @@ public class Player {
     private Integer age;
 
     public PlayerDto toDto() {
-        return PlayerDto.builder()
-                .username(username)
-                .email(email)
-                .weight(weight)
-                .age(age)
-                .build();
+        return PlayerDto.builder().username(username).email(email).weight(weight).age(age).build();
     }
 }

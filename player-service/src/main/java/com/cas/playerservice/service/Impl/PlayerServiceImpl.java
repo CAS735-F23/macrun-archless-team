@@ -1,4 +1,7 @@
+/* (C)2023 */
 package com.cas.playerservice.service.Impl;
+
+import static com.cas.playerservice.constant.Constants.*;
 
 import com.cas.playerservice.dto.*;
 import com.cas.playerservice.entity.Player;
@@ -8,14 +11,12 @@ import com.cas.playerservice.service.PlayerService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpSession;
+import java.util.Objects;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import java.util.Objects;
-
-import static com.cas.playerservice.constant.Constants.*;
 
 @Component
 @Log4j2
@@ -32,7 +33,10 @@ public class PlayerServiceImpl implements PlayerService {
     private final ObjectMapper objectMapper;
 
     @Autowired
-    public PlayerServiceImpl(PlayerRepository playerRepository, MessageService messageService, HttpSession httpSession) {
+    public PlayerServiceImpl(
+            PlayerRepository playerRepository,
+            MessageService messageService,
+            HttpSession httpSession) {
         this.messageService = messageService;
         this.playerRepository = playerRepository;
         this.httpSession = httpSession;
@@ -41,20 +45,22 @@ public class PlayerServiceImpl implements PlayerService {
 
     /**
      * player register
+     *
      * @param request register request payload
      * @return 200 if register successful, else return 500
      */
     @Override
     public GenericMessage<PlayerDto> register(PlayerRegisterRequest request) {
-        Player player = Player.builder()
-                .username(request.getUsername())
-                .password(request.getPassword())
-                .email(request.getEmail())
-                .weight(request.getWeight())
-                .age(request.getAge())
-                .build();
+        Player player =
+                Player.builder()
+                        .username(request.getUsername())
+                        .password(request.getPassword())
+                        .email(request.getEmail())
+                        .weight(request.getWeight())
+                        .age(request.getAge())
+                        .build();
 
-        if(Objects.nonNull(playerRepository.findByUsername(request.getUsername()).orElse(null))) {
+        if (Objects.nonNull(playerRepository.findByUsername(request.getUsername()).orElse(null))) {
             log.info("Player already exists for : [{}]", player.getUsername());
             return GenericMessage.<PlayerDto>builder()
                     .status(HttpStatus.FORBIDDEN)
@@ -74,7 +80,10 @@ public class PlayerServiceImpl implements PlayerService {
                     .build();
 
         } catch (RuntimeException e) {
-            log.info("Player Registration failed for : [{}], reason : [{}]", player.getUsername(), e);
+            log.info(
+                    "Player Registration failed for : [{}], reason : [{}]",
+                    player.getUsername(),
+                    e);
             return GenericMessage.<PlayerDto>builder()
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .message("Player Registration failed...")
@@ -85,6 +94,7 @@ public class PlayerServiceImpl implements PlayerService {
 
     /**
      * player login
+     *
      * @param request login request playload
      * @return 200 if login successful, 401 if password is wrong, 500 if player not found
      */
@@ -93,13 +103,14 @@ public class PlayerServiceImpl implements PlayerService {
         Player player = playerRepository.findByUsername(request.getUsername()).orElse(null);
         GenericMessage<PlayerDto> response;
 
-        if(Objects.isNull(player)) {
-            response = GenericMessage.<PlayerDto>builder()
-                    .status(HttpStatus.NOT_ACCEPTABLE)
-                    .message("No player associated with this username, please check...")
-                    .build();
+        if (Objects.isNull(player)) {
+            response =
+                    GenericMessage.<PlayerDto>builder()
+                            .status(HttpStatus.NOT_ACCEPTABLE)
+                            .message("No player associated with this username, please check...")
+                            .build();
         } else {
-            if(Objects.equals(player.getPassword(), request.getPassword())) {
+            if (Objects.equals(player.getPassword(), request.getPassword())) {
                 String playerJson;
                 try {
                     playerJson = objectMapper.writeValueAsString(player.toDto());
@@ -108,21 +119,22 @@ public class PlayerServiceImpl implements PlayerService {
                 }
 
                 httpSession.setAttribute(CACHE_PLAYER_SESSION, playerJson);
-                response = GenericMessage.<PlayerDto>builder()
-                        .status(HttpStatus.OK)
-                        .message("Login successful...")
-                        .data(player.toDto())
-                        .build();
+                response =
+                        GenericMessage.<PlayerDto>builder()
+                                .status(HttpStatus.OK)
+                                .message("Login successful...")
+                                .data(player.toDto())
+                                .build();
             } else {
-                response = GenericMessage.<PlayerDto>builder()
-                        .status(HttpStatus.UNAUTHORIZED)
-                        .message("Login failed, password is wrong...")
-                        .build();
+                response =
+                        GenericMessage.<PlayerDto>builder()
+                                .status(HttpStatus.UNAUTHORIZED)
+                                .message("Login failed, password is wrong...")
+                                .build();
             }
         }
 
         return response;
-
     }
 
     @Override
@@ -133,18 +145,19 @@ public class PlayerServiceImpl implements PlayerService {
         PlayerDto playerDto;
         try {
             playerDto = objectMapper.readValue(playerObj, PlayerDto.class);
-            MessageDto messageDto = MessageDto.builder()
-                    .gameType(GAME_TYPE_CARDIO)
-                    .action(PLAYER_ACTION_START_GAME)
-                    .playerDto(playerDto)
-                    .build();
+            MessageDto messageDto =
+                    MessageDto.builder()
+                            .gameType(GAME_TYPE_CARDIO)
+                            .action(PLAYER_ACTION_START_GAME)
+                            .playerDto(playerDto)
+                            .build();
 
-            messageService.sendMessage(MQ_GAME_SERVICE_EXCHANGE, queueName, objectMapper.writeValueAsString(messageDto));
+            messageService.sendMessage(
+                    MQ_GAME_SERVICE_EXCHANGE,
+                    queueName,
+                    objectMapper.writeValueAsString(messageDto));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-
     }
-
-
 }

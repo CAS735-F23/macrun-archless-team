@@ -1,3 +1,4 @@
+/* (C)2023 */
 package com.cas.playerservice.dto;
 
 import lombok.*;

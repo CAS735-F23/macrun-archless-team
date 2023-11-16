@@ -1,3 +1,4 @@
+/* (C)2023 */
 package com.cas.playerservice.controller;
 
 import com.cas.playerservice.dto.GenericMessage;
@@ -23,13 +24,15 @@ public class PlayerController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<GenericMessage<PlayerDto>> register(@RequestBody PlayerRegisterRequest request) {
+    public ResponseEntity<GenericMessage<PlayerDto>> register(
+            @RequestBody PlayerRegisterRequest request) {
         GenericMessage<PlayerDto> response = playerService.register(request);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<GenericMessage<PlayerDto>> login(@RequestBody PlayerLoginRequest request) {
+    public ResponseEntity<GenericMessage<PlayerDto>> login(
+            @RequestBody PlayerLoginRequest request) {
         GenericMessage<PlayerDto> response = playerService.login(request);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
