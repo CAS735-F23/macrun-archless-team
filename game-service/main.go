@@ -7,8 +7,7 @@ import (
 	"syscall"
 
 	"game-service/config"
-	"game-service/discovery"
-	"game-service/rabbitmq"
+	"game-service/game"
 	"game-service/utils"
 )
 
@@ -28,15 +27,12 @@ func main() {
 		cfg.Server.IP = utils.GetPrimaryIP(cfg.Discovery.Host, cfg.Discovery.Port)
 	}
 
-	// Service Discovery
-	if err := discovery.Register(cfg); err != nil {
+	// Run Service
+	app, err := game.New(cfg)
+	if err != nil {
 		log.Fatalln(err)
 	}
-	defer discovery.Deregister(cfg)
-
-	// Main Entry
-	go rabbitmq.Send(cfg.RabbitMQ.URL, "testing")
-	rabbitmq.Receive(cfg.RabbitMQ.URL, "testing")
+	go app.Start()
 
 	sigCh := make(chan os.Signal, 1)
 	signal.Notify(sigCh, syscall.SIGINT, syscall.SIGTERM)
