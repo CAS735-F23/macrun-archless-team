@@ -22,3 +22,14 @@ services:
       - "5672:5672"
       - "15672:15672"
     restart: unless-stopped
+
+  mariadb:
+    image: linuxserver/mariadb:latest
+    container_name: mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
+    volumes:
+      - ./db:/config
+    ports:
+      - "3306:3306"
+    restart: unless-stopped
