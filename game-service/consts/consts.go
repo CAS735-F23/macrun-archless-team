@@ -1,13 +1,21 @@
 package consts
 
 const (
-	GameServiceExchange = "game.service"
+	GameServiceName      = "game.service"
+	ChallengeServiceName = "challenge.service"
+	PlayerServiceName    = "player.service"
+	GEOServiceName       = "geo.service"
+	HRMServiceName       = "hrm.service"
+)
+
+const (
+	GameServiceExchange = GameServiceName
 	GameStartKey        = "game_start"
 	PlayerToGameQueue   = "player->game"
 	HRMStartKey         = "hrm_start"
 	HRMToGameQueue      = "hrm->game"
 
-	PlayerServiceExchange = "player.service"
+	PlayerServiceExchange = PlayerServiceName
 	GameStatusKey         = "game_status_response"
 	GameToPlayerQueue     = "game->player"
 )
@@ -19,4 +27,5 @@ const (
 
 const (
 	GameStartAction = "START_GAME"
+	GameStopAction  = "STOP_GAME"
 )
