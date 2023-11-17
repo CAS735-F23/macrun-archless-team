@@ -1,6 +1,8 @@
 package discovery
 
 import (
+	"errors"
+
 	"github.com/nacos-group/nacos-sdk-go/v2/clients"
 	"github.com/nacos-group/nacos-sdk-go/v2/clients/naming_client"
 	"github.com/nacos-group/nacos-sdk-go/v2/common/constant"
@@ -66,4 +68,19 @@ func (r *Registry) Deregister() error {
 		//Cluster:     "",
 	})
 	return err
+}
+
+func (r *Registry) Lookup(name string) (string, int, error) {
+	md, err := r.cli.GetService(vo.GetServiceParam{
+		ServiceName: name,
+	})
+	if err != nil {
+		return "", 0, err
+	}
+
+	if len(md.Hosts) == 0 {
+		return "", 0, errors.New("empty hosts/instances")
+	}
+
+	return md.Hosts[0].Ip, int(md.Hosts[0].Port), nil
 }

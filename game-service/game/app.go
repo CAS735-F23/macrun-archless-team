@@ -15,6 +15,8 @@ type App struct {
 	cfg *config.Config
 	reg *discovery.Registry
 
+	sessions map[string]*Session
+
 	gameMQ   *message.MQ
 	hrmMQ    *message.MQ
 	playerMQ *message.MQ
@@ -22,7 +24,8 @@ type App struct {
 
 func New(cfg *config.Config) (*App, error) {
 	return &App{
-		cfg: cfg,
+		cfg:      cfg,
+		sessions: make(map[string]*Session),
 	}, nil
 }
 
@@ -87,7 +90,7 @@ func (app *App) Start() {
 			}
 
 			statusAction := consts.GameStatusActionOK
-			statusMsg := ""
+			statusMsg := "success!"
 			if err := app.handleGameStartEvent(msg); err != nil {
 				statusAction = consts.GameStatusActionFailed
 				statusMsg = err.Error()

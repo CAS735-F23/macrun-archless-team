@@ -16,3 +16,7 @@ const (
 	GameStatusActionOK     = "game_status_action_ok"
 	GameStatusActionFailed = "game_status_action_failed"
 )
+
+const (
+	GameStartAction = "START_GAME"
+)
