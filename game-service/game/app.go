@@ -39,12 +39,13 @@ func (app *App) Start() {
 		log.Fatalln(err)
 	}
 
-	log.Println("registering to discovery service!")
-
 	if err := app.reg.Register(); err != nil {
 		log.Fatalln(err)
 	}
 	defer app.reg.Deregister()
+
+	log.Printf("registered to discovery service: %s with %s:%d",
+		app.cfg.Discovery.Service, app.cfg.Server.IP, app.cfg.Server.Port)
 
 	// Player Message Queue
 	app.playerMQ, err = message.New(
