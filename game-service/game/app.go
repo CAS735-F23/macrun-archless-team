@@ -1,12 +1,13 @@
 package game
 
 import (
-	"fmt"
+	"encoding/json"
 	"log"
 
 	"game-service/config"
-	"game-service/constant"
+	"game-service/consts"
 	"game-service/discovery"
+	"game-service/dto"
 	"game-service/message"
 )
 
@@ -14,6 +15,8 @@ type App struct {
 	cfg *config.Config
 	reg *discovery.Registry
 
+	gameMQ   *message.MQ
+	hrmMQ    *message.MQ
 	playerMQ *message.MQ
 }
 
@@ -25,36 +28,88 @@ func New(cfg *config.Config) (*App, error) {
 
 func (app *App) Start() {
 
+	var err error
+
 	// Service Discovery
-	reg, err := discovery.New(app.cfg)
+	app.reg, err = discovery.New(app.cfg)
 	if err != nil {
 		log.Fatalln(err)
 	}
-	app.reg = reg
 
 	log.Println("registering to discovery service!")
 
-	if err := reg.Register(); err != nil {
+	if err := app.reg.Register(); err != nil {
 		log.Fatalln(err)
 	}
-	defer reg.Deregister()
+	defer app.reg.Deregister()
 
-	// Message Queue
-	playerMQ, err := message.New(
+	// Player Message Queue
+	app.playerMQ, err = message.New(
 		app.cfg.RabbitMQ.URL,
-		constant.PlayerServerExchange,
-		constant.PlayerServerQueue,
-	)
+		consts.PlayerServiceExchange,
+		consts.GameStatusKey,
+		consts.GameToPlayerQueue,
+		true)
 	if err != nil {
 		log.Fatalln(err)
 	}
-	app.playerMQ = playerMQ
 
-	log.Println("player service queue connected!")
-
-	for msg := range playerMQ.MessageQueue() {
-		fmt.Println(string(msg.Body))
+	// Game Message Queue
+	app.gameMQ, err = message.New(
+		app.cfg.RabbitMQ.URL,
+		consts.GameServiceExchange,
+		consts.GameStartKey,
+		consts.PlayerToGameQueue,
+		true)
+	if err != nil {
+		log.Fatalln(err)
 	}
+
+	// HRM Message Queue
+	app.hrmMQ, err = message.New(
+		app.cfg.RabbitMQ.URL,
+		consts.GameServiceExchange,
+		consts.HRMStartKey,
+		consts.HRMToGameQueue,
+		true)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	go func() {
+		log.Printf("listen to %s queue.", consts.PlayerToGameQueue)
+
+		for delivery := range app.gameMQ.MessageQueue() {
+			msg := &dto.Message{}
+			if err := json.Unmarshal(delivery.Body, msg); err != nil {
+				log.Printf("decode json failed: %s", delivery.Body)
+				continue
+			}
+
+			statusMsg := consts.GameStatusActionOK
+			if err := app.handleGameStartEvent(msg); err != nil {
+				statusMsg = consts.GameStatusActionFailed
+			}
+			resp, _ := json.Marshal(&dto.Message{
+				PlayerDTO: msg.PlayerDTO,
+				GameType:  msg.GameType,
+				Action:    consts.GameStatusAction,
+				Message:   statusMsg,
+			})
+			log.Printf("send message to %s queue: %s", app.playerMQ.QueueName(), resp)
+			if err := app.playerMQ.SendMessage(string(resp)); err != nil {
+				log.Printf("send message to %s queue failed: %v", app.playerMQ.QueueName(), err)
+			}
+		}
+	}()
+
+	go func() {
+		log.Printf("listen to %s queue.", consts.HRMToGameQueue)
+
+		for delivery := range app.hrmMQ.MessageQueue() {
+			_ = delivery
+		}
+	}()
 
 	log.Println("game service started!")
 }

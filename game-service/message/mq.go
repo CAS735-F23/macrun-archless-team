@@ -14,7 +14,7 @@ type MQ struct {
 	msgs <-chan amqp.Delivery
 }
 
-func New(url, exchange, queue string) (*MQ, error) {
+func New(url, exchange, key, queue string, declare bool) (*MQ, error) {
 	conn, err := amqp.Dial(url)
 	if err != nil {
 		return nil, err
@@ -27,7 +27,7 @@ func New(url, exchange, queue string) (*MQ, error) {
 
 	err = ch.ExchangeDeclare(
 		exchange,
-		"direct",
+		"topic",
 		true,
 		false,
 		false,
@@ -38,12 +38,25 @@ func New(url, exchange, queue string) (*MQ, error) {
 		return nil, err
 	}
 
+	if declare {
+		ch.QueueDeclare(
+			queue,
+			true,
+			false,
+			false,
+			false,
+			nil)
+	}
+
 	err = ch.QueueBind(
 		queue,
-		"",
+		key,
 		exchange,
 		false,
 		nil)
+	if err != nil {
+		return nil, err
+	}
 
 	msgs, err := ch.Consume(
 		queue,
@@ -61,7 +74,11 @@ func New(url, exchange, queue string) (*MQ, error) {
 		conn:     conn,
 		ch:       ch,
 		msgs:     msgs,
-	}, nil
+	}, err
+}
+
+func (mq *MQ) QueueName() string {
+	return mq.queue
 }
 
 func (mq *MQ) MessageQueue() <-chan amqp.Delivery {
