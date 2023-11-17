@@ -13,7 +13,6 @@ const (
 )
 
 const (
-	GameStatusAction       = "game_status_update"
-	GameStatusActionOK     = "OK"
-	GameStatusActionFailed = "failed"
+	GameStatusActionOK     = "game_status_action_ok"
+	GameStatusActionFailed = "game_status_action_failed"
 )

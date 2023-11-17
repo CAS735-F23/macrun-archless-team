@@ -86,19 +86,21 @@ func (app *App) Start() {
 				continue
 			}
 
-			statusMsg := consts.GameStatusActionOK
+			statusAction := consts.GameStatusActionOK
+			statusMsg := ""
 			if err := app.handleGameStartEvent(msg); err != nil {
-				statusMsg = consts.GameStatusActionFailed
+				statusAction = consts.GameStatusActionFailed
+				statusMsg = err.Error()
 			}
 			resp, _ := json.Marshal(&dto.Message{
 				PlayerDTO: msg.PlayerDTO,
 				GameType:  msg.GameType,
-				Action:    consts.GameStatusAction,
+				Action:    statusAction,
 				Message:   statusMsg,
 			})
-			log.Printf("send message to %s queue: %s", app.playerMQ.QueueName(), resp)
+			log.Printf("send game status message to %s queue: %s", app.playerMQ.QueueName(), resp)
 			if err := app.playerMQ.SendMessage(string(resp)); err != nil {
-				log.Printf("send message to %s queue failed: %v", app.playerMQ.QueueName(), err)
+				log.Printf("send game status message to %s queue failed: %v", app.playerMQ.QueueName(), err)
 			}
 		}
 	}()
