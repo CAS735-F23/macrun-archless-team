@@ -2,10 +2,11 @@ package main
 
 import (
 	"log"
-	"os"
-	"os/signal"
-	"syscall"
+	"net"
+	"net/http"
+	"strconv"
 
+	"game-service/api"
 	"game-service/config"
 	"game-service/game"
 	"game-service/utils"
@@ -34,7 +35,12 @@ func main() {
 	}
 	go app.Start()
 
-	sigCh := make(chan os.Signal, 1)
-	signal.Notify(sigCh, syscall.SIGINT, syscall.SIGTERM)
-	<-sigCh
+	var (
+		addr   = net.JoinHostPort("", strconv.Itoa(cfg.Server.Port))
+		router = api.New(app)
+	)
+	log.Printf("API server is running at %s", addr)
+	if err = http.ListenAndServe(addr, router); err != nil {
+		log.Fatal(err)
+	}
 }
