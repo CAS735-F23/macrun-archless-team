@@ -1,19 +1,20 @@
 package com.cas.geoservice.entity;
 
 import jakarta.persistence.*;
-import java.util.List;
+import lombok.*;
 
 @Entity
-public class Map {
+public class Place {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToMany
-    private List<Place> places;
+    private String name;
+    private int x;
+    private int y;
 
-    public Map() {
+    public Place() {
     }
 
     // getter 和 setter 方法...
