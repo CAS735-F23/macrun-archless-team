@@ -7,7 +7,7 @@ type PlayerDTO struct {
 	Age      int
 }
 
-type Message struct {
+type MessageDTO struct {
 	PlayerDTO PlayerDTO
 	Action    string
 	GameType  string

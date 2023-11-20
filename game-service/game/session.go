@@ -8,7 +8,7 @@ import (
 	"game-service/dto"
 )
 
-func (app *App) handleGameStartEvent(msg *dto.Message) error {
+func (app *App) handleGameStartEvent(msg *dto.MessageDTO) error {
 
 	if msg.Action != consts.GameStartAction && msg.Action != consts.GameStopAction {
 		return fmt.Errorf("unknown game action: %s", msg.Action)

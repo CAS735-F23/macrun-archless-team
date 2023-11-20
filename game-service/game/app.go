@@ -72,7 +72,7 @@ func (app *App) Start() {
 		log.Printf("listen to %s queue.", consts.PlayerToGameQueue)
 
 		for delivery := range app.gameMQ.MessageQueue() {
-			msg := &dto.Message{}
+			msg := &dto.MessageDTO{}
 			if err := json.Unmarshal(delivery.Body, msg); err != nil {
 				log.Printf("decode json failed: %s", delivery.Body)
 				continue
@@ -84,7 +84,7 @@ func (app *App) Start() {
 				statusAction = consts.GameStatusActionFailed
 				statusMsg = err.Error()
 			}
-			resp, _ := json.Marshal(&dto.Message{
+			resp, _ := json.Marshal(&dto.MessageDTO{
 				PlayerDTO: msg.PlayerDTO,
 				GameType:  msg.GameType,
 				Action:    statusAction,
