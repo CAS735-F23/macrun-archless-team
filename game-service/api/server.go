@@ -25,7 +25,7 @@ func New(app *game.App) *gin.Engine {
 
 	gm := r.Group("/game")
 	{
-		gm.GET("/move", getGame(app))
+		gm.POST("/action", handleAction(app))
 	}
 
 	return r
