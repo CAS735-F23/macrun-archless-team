@@ -1,13 +1,11 @@
 package message
 
 import (
-	"context"
-
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
 type MQ struct {
-	exchange, queue string
+	exchange, key, queue string
 
 	conn *amqp.Connection
 	ch   *amqp.Channel
@@ -70,6 +68,7 @@ func New(url, exchange, key, queue string, declare bool) (*MQ, error) {
 
 	return &MQ{
 		exchange: exchange,
+		key:      key,
 		queue:    queue,
 		conn:     conn,
 		ch:       ch,
@@ -87,18 +86,6 @@ func (mq *MQ) MessageQueue() <-chan amqp.Delivery {
 
 func (mq *MQ) ReceiveMessage() string {
 	return string((<-mq.msgs).Body)
-}
-
-func (mq *MQ) SendMessage(msg string) error {
-	return mq.ch.PublishWithContext(context.Background(),
-		mq.exchange,
-		"",
-		false,
-		false,
-		amqp.Publishing{
-			ContentType: "text/plain",
-			Body:        []byte(msg),
-		})
 }
 
 func (mq *MQ) Close() {

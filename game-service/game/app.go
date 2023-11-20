@@ -17,9 +17,8 @@ type App struct {
 
 	sessions map[string]*Session
 
-	gameMQ   *message.MQ
-	hrmMQ    *message.MQ
-	playerMQ *message.MQ
+	gameMQ *message.MQ
+	hrmMQ  *message.MQ
 }
 
 func New(cfg *config.Config) (*App, error) {
@@ -46,17 +45,6 @@ func (app *App) Start() {
 
 	log.Printf("registered to discovery service: %s with %s:%d",
 		app.cfg.Discovery.Service, app.cfg.Server.IP, app.cfg.Server.Port)
-
-	// Player Message Queue
-	app.playerMQ, err = message.New(
-		app.cfg.RabbitMQ.URL,
-		consts.PlayerServiceExchange,
-		consts.GameStatusKey,
-		consts.GameToPlayerQueue,
-		true)
-	if err != nil {
-		log.Fatalln(err)
-	}
 
 	// Game Message Queue
 	app.gameMQ, err = message.New(
@@ -102,9 +90,13 @@ func (app *App) Start() {
 				Action:    statusAction,
 				Message:   statusMsg,
 			})
-			log.Printf("send game status message to %s queue: %s", app.playerMQ.QueueName(), resp)
-			if err := app.playerMQ.SendMessage(string(resp)); err != nil {
-				log.Printf("send game status message to %s queue failed: %v", app.playerMQ.QueueName(), err)
+			log.Printf("send game status message to %s exchange: %s", consts.PlayerServiceExchange, resp)
+			if err := message.SendMessage(
+				app.cfg.RabbitMQ.URL,
+				consts.PlayerServiceExchange,
+				consts.GameStatusKey,
+				string(resp)); err != nil {
+				log.Printf("send game status message to %s exchange: %s", consts.PlayerServiceExchange, err)
 			}
 		}
 	}()
