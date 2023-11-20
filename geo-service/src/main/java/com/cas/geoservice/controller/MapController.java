@@ -16,7 +16,7 @@ public class MapController {
 
     @GetMapping("/map")
     public Map getMap() {
-        // 假设我们只有一张地图，并且它的id是1
+        // 只有一张地图，并且它的id是1
         return mapRepository.findById(1L).orElse(null);
     }
 }

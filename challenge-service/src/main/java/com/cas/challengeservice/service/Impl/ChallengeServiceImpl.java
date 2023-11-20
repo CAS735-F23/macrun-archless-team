@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -15,7 +16,7 @@ import java.util.Random;
 @Service
 public class ChallengeServiceImpl implements ChallengeService {
     private final ChallengeRepository challengeRepository;
-    private final Map<Integer, String> trainingPlanMap;
+    private final Map<Integer, TrainingPlan> trainingPlanMap;
 
     @Autowired
     public ChallengeServiceImpl(ChallengeRepository challengeRepository) {
@@ -25,8 +26,10 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
     private void initializeTrainingPlanMap() {
-        trainingPlanMap.put(160, "做30个俯卧撑");
-        // add more training plans as needed
+        trainingPlanMap.put(160, new TrainingPlan("push-up", 30));
+        trainingPlanMap.put(150, new TrainingPlan("pull-up", 15));
+        trainingPlanMap.put(120, new TrainingPlan("jogging", 15));
+        trainingPlanMap.put(130, new TrainingPlan("squat", 20));
     }
 
     @Override
