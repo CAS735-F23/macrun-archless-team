@@ -1,4 +1,4 @@
 package com.cas.geoservice.entity;
 
-public class map {
+public class Map {
 }

@@ -1,3 +1,0 @@
-# Geographic Service
-
-GEO service.
