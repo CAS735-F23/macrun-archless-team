@@ -42,4 +42,4 @@ jobs:
           push: true
           platforms: linux/amd64
           tags: |
-            ghcr.io/CAS735-F23/macrun-archless-game-service:latest
+            ghcr.io/cas735-f23/macrun-archless-game-service:latest
