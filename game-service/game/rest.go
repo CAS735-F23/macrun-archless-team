@@ -14,12 +14,12 @@ func (app *App) GetService(service, path string, v any) error {
 		return err
 	}
 
-	log.Printf("Make GET Request to service: %s(%s)", service, host)
-
 	uri, err := url.JoinPath("http://"+host, path)
 	if err != nil {
 		return err
 	}
+
+	log.Printf("Make GET Request to service %s: %s", service, uri)
 
 	res, err := http.Get(uri)
 	if err != nil {
