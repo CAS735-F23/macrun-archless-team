@@ -1,4 +1,4 @@
-version: "2"
+version: "2.4"
 
 services:
   nacos:
@@ -39,4 +39,13 @@ services:
     container_name: redis
     ports:
       - "6379:6379"
+    restart: unless-stopped
+
+  caddy:
+    image: caddy:2.7
+    container_name: caddy
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./api-gateway/Caddyfile:/etc/caddy/Caddyfile
     restart: unless-stopped
