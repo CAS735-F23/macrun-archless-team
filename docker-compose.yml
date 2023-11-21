@@ -44,3 +44,19 @@ services:
     volumes:
       - ./api-gateway/Caddyfile:/etc/caddy/Caddyfile
     restart: unless-stopped
+
+  player:
+    image: macrun/player:latest
+    build:
+      context: ./player-service
+    container_name: player
+    ports:
+      - "9000:9000"
+    restart: unless-stopped
+
+  hrm:
+    image: macrun/hrm:latest
+    build:
+      context: ./hrm-service
+    container_name: hrm
+    restart: unless-stopped
