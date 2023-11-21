@@ -10,12 +10,12 @@ import com.cas.playerservice.service.MessageService;
 import com.cas.playerservice.service.PlayerService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.Objects;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -25,22 +25,22 @@ public class PlayerServiceImpl implements PlayerService {
     @Value("${spring.rabbitmq.geo.queue}")
     private String queueName;
 
-    private HttpSession httpSession;
-
     private final PlayerRepository playerRepository;
 
     private final MessageService messageService;
+
+    private final StringRedisTemplate redisTemplate;
 
     private final ObjectMapper objectMapper;
 
     @Autowired
     public PlayerServiceImpl(
             PlayerRepository playerRepository,
-            MessageService messageService,
-            HttpSession httpSession) {
+            StringRedisTemplate redisTemplate,
+            MessageService messageService) {
         this.messageService = messageService;
         this.playerRepository = playerRepository;
-        this.httpSession = httpSession;
+        this.redisTemplate = redisTemplate;
         this.objectMapper = new ObjectMapper();
     }
 
@@ -119,7 +119,8 @@ public class PlayerServiceImpl implements PlayerService {
                     throw new RuntimeException(e);
                 }
 
-                httpSession.setAttribute(CACHE_PLAYER_SESSION + request.getUsername(), playerJson);
+                redisTemplate.opsForValue().set(request.getUsername(), "loggedIn");
+
                 response =
                         GenericMessage.<PlayerDto>builder()
                                 .status(HttpStatus.OK)
@@ -149,7 +150,8 @@ public class PlayerServiceImpl implements PlayerService {
                         .build();
             }
 
-            httpSession.removeAttribute(CACHE_PLAYER_SESSION + request.getUsername());
+            redisTemplate.delete(request.getUsername());
+
             return GenericMessage.builder()
                     .status(HttpStatus.OK)
                     .message("player has been logged out...")
@@ -184,12 +186,10 @@ public class PlayerServiceImpl implements PlayerService {
                     .build();
         }
 
-        String playerObj =
-                httpSession.getAttribute(CACHE_PLAYER_SESSION + request.getUsername()).toString();
+        Player player = playerRepository.findByUsername(request.getUsername()).orElse(null);
+        PlayerDto playerDto = Objects.nonNull(player) ? player.toDto() : null;
 
-        PlayerDto playerDto;
         try {
-            playerDto = objectMapper.readValue(playerObj, PlayerDto.class);
             MessageDto messageDto =
                     MessageDto.builder()
                             .action(PLAYER_ACTION_SET_LOCATION)
@@ -217,6 +217,6 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public Boolean isPlayerLoggedIn(String username) {
         log.info("check if user is logged in" + CACHE_PLAYER_SESSION + username);
-        return Objects.nonNull(httpSession.getAttribute(CACHE_PLAYER_SESSION + username));
+        return redisTemplate.hasKey(username);
     }
 }
