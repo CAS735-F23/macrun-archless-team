@@ -1,6 +1,6 @@
 server:
   ip:
-  port: 9000
+  port: 9090
 
 discovery:
   host: 34.130.59.222 #127.0.0.1
