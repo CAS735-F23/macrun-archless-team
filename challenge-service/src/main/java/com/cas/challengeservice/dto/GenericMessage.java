@@ -1,17 +1,16 @@
+/* (C)2023 */
 package com.cas.challengeservice.dto;
 
-import org.springframework.http.HttpStatus;
-
+import jakarta.annotation.Nullable;
+import lombok.*;
+import org.springframework.http.HttpStatusCode;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
+@Builder(toBuilder = true)
 public class GenericMessage<T> {
-    private HttpStatus status;
+    private HttpStatusCode status;
     private String message;
-    private T data;
-
-    public GenericMessage(HttpStatus httpStatus, String challengeStartedSuccessfully, T challengeDto) {
-    }
-
-    public int getStatus() {
-        return status.value();
-    }
-    // getters and setters
+    @Nullable private T data;
 }
