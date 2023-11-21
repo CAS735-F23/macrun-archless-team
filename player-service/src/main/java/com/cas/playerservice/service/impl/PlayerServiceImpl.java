@@ -1,5 +1,5 @@
 /* (C)2023 */
-package com.cas.playerservice.service.Impl;
+package com.cas.playerservice.service.impl;
 
 import static com.cas.playerservice.constant.Constants.*;
 
@@ -11,6 +11,7 @@ import com.cas.playerservice.service.PlayerService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpSession;
+import java.util.Arrays;
 import java.util.Objects;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Log4j2
 public class PlayerServiceImpl implements PlayerService {
-    @Value("${spring.rabbitmq.queue}")
+    @Value("${spring.rabbitmq.geo.queue}")
     private String queueName;
 
     private HttpSession httpSession;
@@ -61,7 +62,7 @@ public class PlayerServiceImpl implements PlayerService {
                         .build();
 
         if (Objects.nonNull(playerRepository.findByUsername(request.getUsername()).orElse(null))) {
-            log.info("Player already exists for : [{}]", player.getUsername());
+            log.error("Player already exists for : [{}]", player.getUsername());
             return GenericMessage.<PlayerDto>builder()
                     .status(HttpStatus.FORBIDDEN)
                     .message("Player already exists...")
@@ -99,7 +100,7 @@ public class PlayerServiceImpl implements PlayerService {
      * @return 200 if login successful, 401 if password is wrong, 500 if player not found
      */
     @Override
-    public GenericMessage<PlayerDto> login(PlayerLoginRequest request) {
+    public GenericMessage<PlayerDto> login(PlayerRequest request) {
         Player player = playerRepository.findByUsername(request.getUsername()).orElse(null);
         GenericMessage<PlayerDto> response;
 
@@ -118,7 +119,7 @@ public class PlayerServiceImpl implements PlayerService {
                     throw new RuntimeException(e);
                 }
 
-                httpSession.setAttribute(CACHE_PLAYER_SESSION, playerJson);
+                httpSession.setAttribute(CACHE_PLAYER_SESSION + request.getUsername(), playerJson);
                 response =
                         GenericMessage.<PlayerDto>builder()
                                 .status(HttpStatus.OK)
@@ -138,26 +139,84 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public void startGame() {
-        String playerObj = httpSession.getAttribute(CACHE_PLAYER_SESSION).toString();
-        System.out.println(httpSession.getAttribute(CACHE_PLAYER_SESSION));
+    public GenericMessage<Object> logout(PlayerRequest request) {
+        try {
+            if (!isPlayerLoggedIn(request.getUsername())) {
+                log.error("player is not logged in...");
+                return GenericMessage.builder()
+                        .status(HttpStatus.BAD_REQUEST)
+                        .message("player is not logged in...")
+                        .build();
+            }
+
+            httpSession.removeAttribute(CACHE_PLAYER_SESSION + request.getUsername());
+            return GenericMessage.builder()
+                    .status(HttpStatus.OK)
+                    .message("player has been logged out...")
+                    .build();
+        } catch (Exception e) {
+            log.error("failed to logout player...");
+            return GenericMessage.builder()
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .message("failed to logged out user, please try again...")
+                    .build();
+        }
+    }
+
+    @Override
+    public GenericMessage<Object> setLocation(PlayerSetLocationRequest request) {
+        if (!isPlayerLoggedIn(request.getUsername())) {
+            log.error("player is not logged in...");
+            return GenericMessage.<Object>builder()
+                    .status(HttpStatus.BAD_REQUEST)
+                    .message("player is not logged in...")
+                    .build();
+        }
+
+        try {
+            Location.valueOf(request.getLocation());
+        } catch (IllegalArgumentException ex) {
+            return GenericMessage.builder()
+                    .status(HttpStatus.BAD_REQUEST)
+                    .message(
+                            "Location you set is not in the available zone : "
+                                    + Arrays.toString(Location.values()))
+                    .build();
+        }
+
+        String playerObj =
+                httpSession.getAttribute(CACHE_PLAYER_SESSION + request.getUsername()).toString();
 
         PlayerDto playerDto;
         try {
             playerDto = objectMapper.readValue(playerObj, PlayerDto.class);
             MessageDto messageDto =
                     MessageDto.builder()
-                            .gameType(GAME_TYPE_CARDIO)
-                            .action(PLAYER_ACTION_START_GAME)
+                            .action(PLAYER_ACTION_SET_LOCATION)
                             .playerDto(playerDto)
+                            .message(request.getLocation())
                             .build();
 
             messageService.sendMessage(
                     MQ_GAME_SERVICE_EXCHANGE,
                     queueName,
                     objectMapper.writeValueAsString(messageDto));
+
+            return GenericMessage.builder()
+                    .status(HttpStatus.OK)
+                    .message(
+                            "Successfully sent set location request as location: "
+                                    + request.getLocation())
+                    .build();
+
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public Boolean isPlayerLoggedIn(String username) {
+        log.info("check if user is logged in" + CACHE_PLAYER_SESSION + username);
+        return Objects.nonNull(httpSession.getAttribute(CACHE_PLAYER_SESSION + username));
     }
 }

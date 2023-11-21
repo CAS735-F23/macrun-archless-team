@@ -1,17 +1,11 @@
 /* (C)2023 */
 package com.cas.playerservice.controller;
 
-import com.cas.playerservice.dto.GenericMessage;
-import com.cas.playerservice.dto.PlayerDto;
-import com.cas.playerservice.dto.PlayerLoginRequest;
-import com.cas.playerservice.dto.PlayerRegisterRequest;
+import com.cas.playerservice.dto.*;
 import com.cas.playerservice.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "player")
@@ -31,15 +25,26 @@ public class PlayerController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<GenericMessage<PlayerDto>> login(
-            @RequestBody PlayerLoginRequest request) {
+    public ResponseEntity<GenericMessage<PlayerDto>> login(@RequestBody PlayerRequest request) {
         GenericMessage<PlayerDto> response = playerService.login(request);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
-    @PostMapping("/game/start-game")
-    public ResponseEntity<String> startGame() {
-        playerService.startGame();
-        return null;
+    @PostMapping("/logout")
+    public ResponseEntity<GenericMessage<Object>> logout(@RequestBody PlayerRequest request) {
+        GenericMessage<Object> response = playerService.logout(request);
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
+    @GetMapping("/{username}/is-logged-in")
+    public Boolean isPlayerLoggedIn(@PathVariable("username") String username) {
+        return playerService.isPlayerLoggedIn(username);
+    }
+
+    @PostMapping("/set-location")
+    public ResponseEntity<GenericMessage<Object>> setLocation(
+            @RequestBody PlayerSetLocationRequest request) {
+        GenericMessage<Object> response = playerService.setLocation(request);
+        return ResponseEntity.status(response.getStatus()).body(response);
     }
 }

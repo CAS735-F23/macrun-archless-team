@@ -1,6 +1,7 @@
 /* (C)2023 */
 package com.cas.playerservice.dto;
 
+import jakarta.annotation.Nullable;
 import lombok.*;
 
 @Data
@@ -8,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class PlayerLoginRequest {
-    private String username;
-    private String password;
+public class PlayerRequest {
+    @NonNull private String username;
+    @Nullable private String password;
 }

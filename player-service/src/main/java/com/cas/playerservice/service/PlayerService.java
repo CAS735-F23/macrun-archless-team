@@ -1,15 +1,18 @@
 /* (C)2023 */
 package com.cas.playerservice.service;
 
-import com.cas.playerservice.dto.GenericMessage;
-import com.cas.playerservice.dto.PlayerDto;
-import com.cas.playerservice.dto.PlayerLoginRequest;
-import com.cas.playerservice.dto.PlayerRegisterRequest;
+import com.cas.playerservice.dto.*;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface PlayerService {
     public GenericMessage<PlayerDto> register(PlayerRegisterRequest request);
 
-    GenericMessage<PlayerDto> login(PlayerLoginRequest request);
+    GenericMessage<PlayerDto> login(PlayerRequest request);
 
-    void startGame();
+    GenericMessage<Object> logout(PlayerRequest request);
+
+    GenericMessage<Object> setLocation(PlayerSetLocationRequest request);
+
+    Boolean isPlayerLoggedIn(String username);
 }

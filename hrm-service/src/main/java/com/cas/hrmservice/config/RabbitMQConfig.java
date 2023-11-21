@@ -1,5 +1,5 @@
 /* (C)2023 */
-package com.cas.playerservice.config;
+package com.cas.hrmservice.config;
 
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
@@ -24,10 +24,10 @@ public class RabbitMQConfig {
     @Value("${spring.rabbitmq.password}")
     private String password;
 
-    @Value("${spring.rabbitmq.geo.exchange}")
+    @Value("${spring.rabbitmq.exchange}")
     private String exchangeName;
 
-    @Value("${spring.rabbitmq.geo.queue}")
+    @Value("${spring.rabbitmq.game.queue}")
     private String queueName;
 
     @Bean

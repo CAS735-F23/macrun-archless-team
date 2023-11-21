@@ -1,5 +1,5 @@
 /* (C)2023 */
-package com.cas.playerservice.dto;
+package com.cas.hrmservice.dto;
 
 import jakarta.annotation.Nullable;
 import lombok.*;
@@ -10,7 +10,7 @@ import lombok.*;
 @EqualsAndHashCode
 @Builder(toBuilder = true)
 public class MessageDto {
-    @Nullable private PlayerDto playerDto;
+    @Nullable private HeartRateDto heartRateDto;
     @NonNull private String action;
     @Nullable private String message;
 }
