@@ -26,8 +26,8 @@ spring:
     port: 5672
     username: guest
     password: guest
-    exchange: player-service
-    queue: player
+    exchange: player.service
+    queue: player->game
   data:
     redis:
       host: 34.130.59.222
