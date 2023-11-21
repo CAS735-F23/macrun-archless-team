@@ -96,7 +96,7 @@ public class PlayerServiceImpl implements PlayerService {
     /**
      * player login
      *
-     * @param request login request playload
+     * @param request login request payload
      * @return 200 if login successful, 401 if password is wrong, 500 if player not found
      */
     @Override
@@ -112,13 +112,6 @@ public class PlayerServiceImpl implements PlayerService {
                             .build();
         } else {
             if (Objects.equals(player.getPassword(), request.getPassword())) {
-                String playerJson;
-                try {
-                    playerJson = objectMapper.writeValueAsString(player.toDto());
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-
                 redisTemplate.opsForValue().set(request.getUsername(), "loggedIn");
 
                 response =
@@ -169,7 +162,7 @@ public class PlayerServiceImpl implements PlayerService {
     public GenericMessage<Object> setLocation(PlayerSetLocationRequest request) {
         if (!isPlayerLoggedIn(request.getUsername())) {
             log.error("player is not logged in...");
-            return GenericMessage.<Object>builder()
+            return GenericMessage.builder()
                     .status(HttpStatus.BAD_REQUEST)
                     .message("player is not logged in...")
                     .build();
