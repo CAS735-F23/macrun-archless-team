@@ -1,64 +1,63 @@
+/* (C)2023 */
 package com.cas.challengeservice.service.Impl;
 
 import com.cas.challengeservice.dto.*;
 import com.cas.challengeservice.entity.Challenge;
 import com.cas.challengeservice.repository.ChallengeRepository;
 import com.cas.challengeservice.service.ChallengeService;
+import com.cas.challengeservice.service.MessageService;
+import jakarta.servlet.http.HttpSession;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
-@Service
+@Component
+@Log4j2
 public class ChallengeServiceImpl implements ChallengeService {
+    @Value("${spring.rabbitmq.queue}")
+    private String queueName;
+
     private final ChallengeRepository challengeRepository;
-    private final Map<Integer, TrainingPlan> trainingPlanMap;
+
+    private final MessageService messageService;
 
     @Autowired
-    public ChallengeServiceImpl(ChallengeRepository challengeRepository) {
+    public ChallengeServiceImpl(
+            ChallengeRepository challengeRepository,
+            MessageService messageService,
+            HttpSession httpSession) {
         this.challengeRepository = challengeRepository;
-        this.trainingPlanMap = new HashMap<>();
-        initializeTrainingPlanMap();
+        this.messageService = messageService;
     }
-
-    private void initializeTrainingPlanMap() {
-        trainingPlanMap.put(160, new TrainingPlan("push-up", 30));
-        trainingPlanMap.put(150, new TrainingPlan("pull-up", 15));
-        trainingPlanMap.put(120, new TrainingPlan("jogging", 15));
-        trainingPlanMap.put(130, new TrainingPlan("squat", 20));
-    }
-
+    /**
+     * get challenge
+     *
+     * @param request getChallenge request playload
+     * @return 200 if getChallenge successful, 401 if heart rate is not in range, 500 if challenge not found
+     */
     @Override
-    public GenericMessage<ChallengeDto> startChallenge(ChallengeStartRequest request) {
-        Challenge challenge = challengeRepository.findById(request.getUserId())
-                .orElseGet(() -> new Challenge(request.getUserId()));
+    public GenericMessage<ChallengeDto> getChallenge(ChallengeGetRequest request) {
+        Challenge challenge = challengeRepository.findByUserHeartRate(request.getUserHeartRate()).orElse(null);
+        GenericMessage<ChallengeDto> response;
 
-        // You need to define the logic of starting a challenge based on your business requirements
-        // For example, you might want to update the badge and score of the challenge
-
-        challengeRepository.save(challenge);
-
-        ChallengeDto challengeDto = new ChallengeDto(challenge.getId(), challenge.getBadge(), challenge.getScore());
-        return new GenericMessage<>(HttpStatus.OK, "Challenge started successfully", challengeDto);
-    }
-
-    @Override
-    public ChallengeSelection getOptions(String userId) {
-        // Here I'm just returning hardcoded options, but you might want to determine these based on user's data
-        return new ChallengeSelection("Option 1", "Option 2", "Option 3");
-    }
-
-    @Override
-    public TrainingPlanResponse getTrainingPlan(int heartRate) {
-        String trainingPlan = trainingPlanMap.get(heartRate);
-        if (trainingPlan == null) {
-            return new TrainingPlanResponse("No training plan available for the given heart rate");
+        if (Objects.isNull(challenge)) {
+            response =
+                    GenericMessage.<ChallengeDto>builder()
+                            .status(HttpStatus.NOT_ACCEPTABLE)
+                            .message("No challenge assoicated with this heart rate")
+                            .build();
         } else {
-            return new TrainingPlanResponse(trainingPlan);
+            response =
+                    GenericMessage.<ChallengeDto>builder()
+                            .status(HttpStatus.OK)
+                            .message("Challenge found successfully, and returned")
+                            .data(challenge.toDto())
+                            .build();
         }
+        return response;
     }
 }

@@ -1,7 +1,7 @@
 FROM golang:alpine AS builder
 
 WORKDIR /src
-COPY ./game-service /src
+COPY . /src
 
 RUN go build -o game-service main.go
 

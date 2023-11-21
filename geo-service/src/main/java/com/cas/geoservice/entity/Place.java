@@ -1,8 +1,15 @@
 package com.cas.geoservice.entity;
 
+import com.cas.geoservice.dto.PlaceDto;
 import jakarta.persistence.*;
 import lombok.*;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
+@Builder(toBuilder = true)
+@Table
 @Entity
 public class Place {
 
@@ -11,11 +18,10 @@ public class Place {
     private Long id;
 
     private String name;
-    private int x;
-    private int y;
+    private Long x;
+    private Long y;
 
-    public Place() {
+    public PlaceDto toDto() {
+        return PlaceDto.builder().name(name).x(x).y(y).build();
     }
-
-    // getter 和 setter 方法...
 }

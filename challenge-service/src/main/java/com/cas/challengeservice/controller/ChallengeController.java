@@ -18,21 +18,10 @@ public class ChallengeController {
         this.challengeService = challengeService;
     }
 
-    @PostMapping("/start")
-    public ResponseEntity<GenericMessage<ChallengeDto>> startChallenge(
-            @RequestBody ChallengeStartRequest request) {
-        com.cas.challengeservice.dto.GenericMessage<ChallengeDto> response = challengeService.startChallenge(request);
+    @PostMapping("/get-challenge")
+    public ResponseEntity<GenericMessage<ChallengeDto>> getChallenge(
+            @RequestBody ChallengeGetRequest request) {
+        GenericMessage<ChallengeDto> response = challengeService.getChallenge(request);
         return ResponseEntity.status(response.getStatus()).body(response);
-    }
-
-    @GetMapping("/options/{userId}")
-    public ChallengeSelection getOptions(@PathVariable String userId) {
-        return challengeService.getOptions(userId);
-    }
-
-    @PostMapping("/training-plan")
-    public TrainingPlanResponse getTrainingPlan(@RequestBody Map<String, Integer> body) {
-        Integer heartRate = body.get("heartRate");
-        return challengeService.getTrainingPlan(heartRate);
     }
 }

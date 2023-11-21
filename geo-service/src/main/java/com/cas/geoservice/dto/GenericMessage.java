@@ -1,9 +1,10 @@
 /* (C)2023 */
-package com.cas.challengeservice.dto;
+package com.cas.geoservice.dto;
 
 import jakarta.annotation.Nullable;
 import lombok.*;
 import org.springframework.http.HttpStatusCode;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
