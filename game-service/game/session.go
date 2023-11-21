@@ -26,7 +26,7 @@ func (app *App) handleGameStartEvent(msg *dto.MessageDTO) error {
 	//	return fmt.Errorf("game %s for %s already started", msg.GameType, msg.PlayerDTO.Username)
 	//}
 	//
-	//fmt.Println(app.reg.Lookup("player-service"))
+	//fmt.Println(app.reg.LookupIPPort("player-service"))
 	//
 	//session := &Session{
 	//	Challenge: struct{}{},

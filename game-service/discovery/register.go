@@ -2,6 +2,8 @@ package discovery
 
 import (
 	"errors"
+	"net"
+	"strconv"
 
 	"github.com/nacos-group/nacos-sdk-go/v2/clients"
 	"github.com/nacos-group/nacos-sdk-go/v2/clients/naming_client"
@@ -70,7 +72,7 @@ func (r *Registry) Deregister() error {
 	return err
 }
 
-func (r *Registry) Lookup(name string) (string, int, error) {
+func (r *Registry) LookupIPPort(name string) (string, int, error) {
 	md, err := r.cli.GetService(vo.GetServiceParam{
 		ServiceName: name,
 	})
@@ -83,4 +85,9 @@ func (r *Registry) Lookup(name string) (string, int, error) {
 	}
 
 	return md.Hosts[0].Ip, int(md.Hosts[0].Port), nil
+}
+
+func (r *Registry) LookupHost(name string) (string, error) {
+	host, port, err := r.LookupIPPort(name)
+	return net.JoinHostPort(host, strconv.Itoa(port)), err
 }
