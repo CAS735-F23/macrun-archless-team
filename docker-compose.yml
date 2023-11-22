@@ -69,7 +69,5 @@ services:
     depends_on:
       - nacos
       - rabbitmq
-      - mariadb
-      - redis
     container_name: hrm
     restart: unless-stopped
