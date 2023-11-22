@@ -14,7 +14,5 @@ public interface PlayerService {
 
     GenericMessage<Object> setLocation(PlayerSetLocationRequest request);
 
-    GenericMessage<PlayerDto> getPlayerInfo(String username);
-
     Boolean isPlayerLoggedIn(String username);
 }
