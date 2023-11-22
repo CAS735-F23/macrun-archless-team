@@ -19,6 +19,10 @@ type Config struct {
 	RabbitMQ struct {
 		URL string
 	}
+	Redis struct {
+		Host string
+		Port int
+	}
 }
 
 func LoadConfigFromFile(filename string) (*Config, error) {
