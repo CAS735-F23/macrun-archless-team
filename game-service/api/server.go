@@ -2,16 +2,30 @@ package api
 
 import (
 	"fmt"
+	"net"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/redis/go-redis/v9"
 
 	"game-service/consts"
 	"game-service/game"
 )
 
 func New(app *game.App) *gin.Engine {
+
+	// Init Cache/Session Redis Client
+	_cache = redis.NewClient(&redis.Options{
+		Addr: net.JoinHostPort(
+			app.Config().Redis.Host,
+			strconv.Itoa(app.Config().Redis.Port)),
+		Password: "", // no password set
+		DB:       0,  // use default DB
+	})
+
+	// Init GIN Engine
 	r := gin.New()
 	{
 		// register middleware

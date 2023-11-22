@@ -21,7 +21,13 @@ func handleGameStart(app *game.App) gin.HandlerFunc {
 			return
 		}
 
-		if err := app.StartGame(query.Username, query.Location); err != nil {
+		player, err := getPlayerDTO(c, query.Username)
+		if err != nil {
+			abortWithStatusMessage(c, http.StatusInternalServerError, err)
+			return
+		}
+
+		if err := app.StartGame(player, query.Location); err != nil {
 			abortWithStatusMessage(c, http.StatusInternalServerError, err)
 			return
 		}
@@ -45,7 +51,13 @@ func handleGameStop(app *game.App) gin.HandlerFunc {
 			return
 		}
 
-		if err := app.StopGame(query.Username); err != nil {
+		player, err := getPlayerDTO(c, query.Username)
+		if err != nil {
+			abortWithStatusMessage(c, http.StatusInternalServerError, err)
+			return
+		}
+
+		if err := app.StopGame(player.Username /* use username from player dto */); err != nil {
 			abortWithStatusMessage(c, http.StatusInternalServerError, err)
 			return
 		}

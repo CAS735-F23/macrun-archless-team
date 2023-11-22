@@ -1,28 +1,15 @@
 package game
 
 import (
-	"fmt"
-
-	"game-service/consts"
+	"game-service/dto"
 	"game-service/game/session"
 )
 
-func (app *App) StartGame(username, location string) error {
+func (app *App) StartGame(player *dto.PlayerDTO, location string) error {
 
-	isLoggedIn := false
-	if err := app.GetService(
-		consts.PlayerServiceName,
-		fmt.Sprintf("/player/%s/is-logged-in", username),
-		&isLoggedIn); err != nil {
-		return err
-	}
-
-	if !isLoggedIn {
-		return fmt.Errorf("user: %s is not logged in", username)
-	}
-
-	if err := app.StoreSession(username, &session.Session{
-		Score: 0,
+	if err := app.StoreSession(player.Username, &session.Session{
+		Player: player,
+		Score:  0,
 	}); err != nil {
 		return err
 	}

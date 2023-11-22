@@ -28,6 +28,10 @@ func New(cfg *config.Config) (*App, error) {
 	}, nil
 }
 
+func (app *App) Config() *config.Config {
+	return app.cfg
+}
+
 func (app *App) Start() {
 
 	var err error

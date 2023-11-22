@@ -6,7 +6,7 @@ import (
 
 type Session struct {
 	//Challenge struct{}
-	Player    dto.PlayerDTO
+	Player    *dto.PlayerDTO
 	HeartRate int
 	Score     int
 }
