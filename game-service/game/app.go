@@ -8,7 +8,7 @@ import (
 	"game-service/consts"
 	"game-service/discovery"
 	"game-service/dto"
-	"game-service/game/session"
+	"game-service/game/context"
 	"game-service/message"
 )
 
@@ -18,13 +18,13 @@ type App struct {
 
 	hrmMQ *message.MQ
 
-	sessions map[string]*session.Session
+	sessions map[string]*context.Context
 }
 
 func New(cfg *config.Config) (*App, error) {
 	return &App{
 		cfg:      cfg,
-		sessions: make(map[string]*session.Session),
+		sessions: make(map[string]*context.Context),
 	}, nil
 }
 
@@ -79,7 +79,7 @@ func (app *App) Start() {
 				continue
 			}
 
-			if s, err := app.GetSession(msg.HeartRateDto.Username); err != nil {
+			if s, err := app.GetContext(msg.HeartRateDto.Username); err != nil {
 				log.Printf("hrm message: get session failed for user: %s", msg.HeartRateDto.Username)
 			} else {
 				s.UpdateHeartRate(msg.HeartRateDto.HeartRate)

@@ -3,10 +3,10 @@ package game
 import (
 	"fmt"
 
-	"game-service/game/session"
+	"game-service/game/context"
 )
 
-func (app *App) StoreSession(name string, s *session.Session) error {
+func (app *App) StoreContext(name string, s *context.Context) error {
 	_, ok := app.sessions[name]
 	if ok {
 		return fmt.Errorf("session already exists: %s", name)
@@ -15,7 +15,7 @@ func (app *App) StoreSession(name string, s *session.Session) error {
 	return nil
 }
 
-func (app *App) GetSession(name string) (*session.Session, error) {
+func (app *App) GetContext(name string) (*context.Context, error) {
 	s, ok := app.sessions[name]
 	if !ok {
 		return nil, fmt.Errorf("session not found: %s", name)
@@ -23,8 +23,8 @@ func (app *App) GetSession(name string) (*session.Session, error) {
 	return s, nil
 }
 
-func (app *App) DeleteSession(name string) error {
-	if s, err := app.GetSession(name); err != nil {
+func (app *App) DeleteContext(name string) error {
+	if s, err := app.GetContext(name); err != nil {
 		return err
 	} else {
 		_ = s

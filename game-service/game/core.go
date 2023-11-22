@@ -2,12 +2,12 @@ package game
 
 import (
 	"game-service/dto"
-	"game-service/game/session"
+	"game-service/game/context"
 )
 
 func (app *App) StartGame(player *dto.PlayerDTO, location string) error {
 
-	if err := app.StoreSession(player.Username, &session.Session{
+	if err := app.StoreContext(player.Username, &context.Context{
 		Player: player,
 		Score:  0,
 	}); err != nil {
@@ -18,14 +18,14 @@ func (app *App) StartGame(player *dto.PlayerDTO, location string) error {
 }
 
 func (app *App) StopGame(username string) error {
-	s, err := app.GetSession(username)
+	s, err := app.GetContext(username)
 	if err != nil {
 		return err
 	}
 
 	_ = s // clean up session if any.
 
-	if err = app.DeleteSession(username); err != nil {
+	if err = app.DeleteContext(username); err != nil {
 		return err
 	}
 
