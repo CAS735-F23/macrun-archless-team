@@ -27,7 +27,7 @@ spring:
     username: guest
     password: guest
     geo:
-      exchange: geo.service
+      exchange: geo-service
       queue: player->geo
   data:
     redis:
