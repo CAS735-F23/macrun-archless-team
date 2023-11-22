@@ -36,6 +36,11 @@ public class PlayerController {
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
+    @GetMapping("/{username}/profile")
+    public GenericMessage<PlayerDto> getPlayerInfo(@PathVariable("username") String username) {
+        return playerService.getPlayerInfo(username);
+    }
+
     @GetMapping("/{username}/is-logged-in")
     public Boolean isPlayerLoggedIn(@PathVariable("username") String username) {
         return playerService.isPlayerLoggedIn(username);

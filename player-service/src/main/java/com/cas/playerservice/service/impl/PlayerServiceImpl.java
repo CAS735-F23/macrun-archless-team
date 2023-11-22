@@ -208,6 +208,27 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
+    public GenericMessage<PlayerDto> getPlayerInfo(String username) {
+        Player player = playerRepository.findByUsername(username).orElse(null);
+        if (Objects.isNull(player)) {
+            return GenericMessage.<PlayerDto>builder()
+                    .status(HttpStatus.NOT_FOUND)
+                    .message(
+                            "Player with username "
+                                    + username
+                                    + " does not exist, please double check...")
+                    .build();
+        } else {
+            log.info("player info for :" + username + " : " + player.toDto().toString());
+            return GenericMessage.<PlayerDto>builder()
+                    .status(HttpStatus.OK)
+                    .data(player.toDto())
+                    .message("succcefully fetch player info for " + username)
+                    .build();
+        }
+    }
+
+    @Override
     public Boolean isPlayerLoggedIn(String username) {
         log.info("check if user is logged in" + CACHE_PLAYER_SESSION + username);
         return redisTemplate.hasKey(username);
