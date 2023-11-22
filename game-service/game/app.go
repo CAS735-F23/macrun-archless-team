@@ -16,9 +16,9 @@ type App struct {
 	cfg *config.Config
 	reg *discovery.Registry
 
-	sessions map[string]*session.Session
-
 	hrmMQ *message.MQ
+
+	sessions map[string]*session.Session
 }
 
 func New(cfg *config.Config) (*App, error) {
