@@ -3,44 +3,8 @@ package game
 import (
 	"fmt"
 
-	"game-service/dto"
 	"game-service/game/session"
 )
-
-func (app *App) handleGameStartEvent(msg *dto.MessageDTO) error {
-
-	//if msg.Action != consts.GameStartAction && msg.Action != consts.GameStopAction {
-	//	return fmt.Errorf("unknown game action: %s", msg.Action)
-	//}
-	//
-	//// Game stop logic
-	//if msg.Action == consts.GameStopAction {
-	//	if err := app.DeleteSession(msg.PlayerDTO.Username); err != nil {
-	//		return err
-	//	}
-	//	log.Printf("User %s session has been deleted!", msg.PlayerDTO.Username)
-	//}
-	//
-	//// Check session existence
-	//if _, ok := app.sessions[msg.PlayerDTO.Username]; ok {
-	//	return fmt.Errorf("game %s for %s already started", msg.GameType, msg.PlayerDTO.Username)
-	//}
-	//
-	//fmt.Println(app.reg.LookupIPPort("player-service"))
-	//
-	//session := &Session{
-	//	Challenge: struct{}{},
-	//	Player:    msg.PlayerDTO,
-	//	Score:     0, // init
-	//}
-	//
-	//if err := app.StoreSessionByUser(msg.PlayerDTO.Username, session); err != nil {
-	//	return err
-	//}
-	//log.Printf("User %s session created!", msg.PlayerDTO.Username)
-
-	return nil
-}
 
 func (app *App) StoreSession(name string, s *session.Session) error {
 	_, ok := app.sessions[name]
@@ -69,11 +33,3 @@ func (app *App) DeleteSession(name string) error {
 	delete(app.sessions, name)
 	return nil
 }
-
-type ReactOption uint8
-
-const (
-	Sheltering ReactOption = iota
-	Escaping
-	Fighting
-)
