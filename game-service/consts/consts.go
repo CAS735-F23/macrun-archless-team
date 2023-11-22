@@ -12,7 +12,7 @@ const (
 	GameServiceExchange = GameServiceName
 	GameStartKey        = "game_start"
 	PlayerToGameQueue   = "player->game"
-	HRMStartKey         = "hrm_start"
+	HRMStartKey         = "hrm_transmit"
 	HRMToGameQueue      = "hrm->game"
 
 	PlayerServiceExchange = PlayerServiceName
@@ -21,11 +21,5 @@ const (
 )
 
 const (
-	GameStatusActionOK     = "game_status_action_ok"
-	GameStatusActionFailed = "game_status_action_failed"
-)
-
-const (
-	GameStartAction = "START_GAME"
-	GameStopAction  = "STOP_GAME"
+	HRMSendAction = "SEND_HEART_RATE"
 )

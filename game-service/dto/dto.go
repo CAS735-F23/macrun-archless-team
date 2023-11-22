@@ -7,9 +7,12 @@ type PlayerDTO struct {
 	Age      int
 }
 
-type MessageDTO struct {
-	PlayerDTO PlayerDTO
-	Action    string
-	GameType  string
-	Message   string
+type HeartRateDTO struct {
+	Username  string
+	HeartRate int
+}
+
+type ActionDTO struct {
+	Action  string
+	Message string
 }

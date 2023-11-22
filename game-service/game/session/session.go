@@ -6,8 +6,13 @@ import (
 
 type Session struct {
 	//Challenge struct{}
-	Player dto.PlayerDTO
-	Score  int
+	Player    dto.PlayerDTO
+	HeartRate int
+	Score     int
+}
+
+func (s *Session) UpdateHeartRate(v int) {
+	s.HeartRate = v
 }
 
 func (s *Session) HandleReaction() {

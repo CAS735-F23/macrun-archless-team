@@ -66,7 +66,21 @@ func (app *App) Start() {
 				HeartRateDto dto.HeartRateDTO
 			}{}
 			if err := json.Unmarshal(delivery.Body, &msg); err != nil {
-				
+				log.Printf("hrm message: unmarshal failed: %v", err)
+				continue
+			}
+
+			if msg.Action != consts.HRMSendAction {
+				log.Printf("hrm message: invalid action: %s", msg.Action)
+				continue
+			}
+
+			if s, err := app.GetSession(msg.HeartRateDto.Username); err != nil {
+				log.Printf("hrm message: get session failed for user: %s", msg.HeartRateDto.Username)
+			} else {
+				s.UpdateHeartRate(msg.HeartRateDto.HeartRate)
+				log.Printf("hrm message: set heart rate for user: %s (%d)",
+					msg.HeartRateDto.Username, msg.HeartRateDto.HeartRate)
 			}
 		}
 	}()
