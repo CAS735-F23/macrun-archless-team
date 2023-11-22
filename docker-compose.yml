@@ -38,6 +38,9 @@ services:
 
   caddy:
     image: caddy:latest
+    depends_on:
+      - player
+      - hrm
     container_name: caddy
     ports:
       - "8080:8080"
@@ -49,6 +52,11 @@ services:
     image: macrun/player:latest
     build:
       context: ./player-service
+    depends_on:
+      - nacos
+      - rabbitmq
+      - mariadb
+      - redis
     container_name: player
     ports:
       - "9000:9000"
@@ -58,5 +66,10 @@ services:
     image: macrun/hrm:latest
     build:
       context: ./hrm-service
+    depends_on:
+      - nacos
+      - rabbitmq
+      - mariadb
+      - redis
     container_name: hrm
     restart: unless-stopped
