@@ -8,6 +8,7 @@ import (
 	"game-service/consts"
 	"game-service/discovery"
 	"game-service/dto"
+	"game-service/game/session"
 	"game-service/message"
 )
 
@@ -15,7 +16,7 @@ type App struct {
 	cfg *config.Config
 	reg *discovery.Registry
 
-	sessions map[string]*Session
+	sessions map[string]*session.Session
 
 	gameMQ *message.MQ
 	hrmMQ  *message.MQ
@@ -24,7 +25,7 @@ type App struct {
 func New(cfg *config.Config) (*App, error) {
 	return &App{
 		cfg:      cfg,
-		sessions: make(map[string]*Session),
+		sessions: make(map[string]*session.Session),
 	}, nil
 }
 

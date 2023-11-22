@@ -15,21 +15,16 @@ services:
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
-#    environment:
-#      - RABBITMQ_DEFAULT_USER=guest
-#      - RABBITMQ_DEFAULT_PASS=guest
     ports:
       - "5672:5672"
       - "15672:15672"
     restart: unless-stopped
 
   mariadb:
-    image: linuxserver/mariadb:latest
+    image: mariadb:latest
     container_name: mariadb
     environment:
-      - MYSQL_ROOT_PASSWORD=admin
-    volumes:
-      - ./db:/config
+      - MARIADB_ROOT_PASSWORD=root
     ports:
       - "3306:3306"
     restart: unless-stopped
@@ -42,10 +37,26 @@ services:
     restart: unless-stopped
 
   caddy:
-    image: caddy:2.7
+    image: caddy:latest
     container_name: caddy
     ports:
       - "8080:8080"
     volumes:
       - ./api-gateway/Caddyfile:/etc/caddy/Caddyfile
+    restart: unless-stopped
+
+  player:
+    image: macrun/player:latest
+    build:
+      context: ./player-service
+    container_name: player
+    ports:
+      - "9000:9000"
+    restart: unless-stopped
+
+  hrm:
+    image: macrun/hrm:latest
+    build:
+      context: ./hrm-service
+    container_name: hrm
     restart: unless-stopped

@@ -26,9 +26,9 @@ spring:
     port: 5672
     username: guest
     password: guest
-    exchange: hrm.service
+    exchange: hrm-service
     game:
-      exchange: game.service
+      exchange: game-service
       queue: hrm->game
   data:
     redis:

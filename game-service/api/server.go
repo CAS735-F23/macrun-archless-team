@@ -3,6 +3,7 @@ package api
 import (
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 
@@ -25,7 +26,9 @@ func New(app *game.App) *gin.Engine {
 
 	gm := r.Group("/game")
 	{
-		gm.POST("/action", handleAction(app))
+		gm.POST("/start", handleGameStart(app))
+		gm.POST("/stop", handleGameStop(app))
+		gm.POST("/action", handleGameAction(app))
 	}
 
 	return r
@@ -53,25 +56,25 @@ func recovery() gin.HandlerFunc {
 
 func notFound() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		abortWithStatusMessage(c, http.StatusNotFound,
-			http.StatusText(http.StatusNotFound))
+		abortWithStatusMessage(c, http.StatusNotFound, "")
 	}
 }
 
 func notAllowed() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		abortWithStatusMessage(c, http.StatusMethodNotAllowed,
-			http.StatusText(http.StatusMethodNotAllowed))
+		abortWithStatusMessage(c, http.StatusMethodNotAllowed, "")
 	}
 }
 
 func abortWithStatusMessage(c *gin.Context, code int, message any) {
 	c.AbortWithStatusJSON(code, &responseMessage{
-		Error: fmt.Sprintf("%d %v", code, message),
+		Status:  strings.ToUpper(http.StatusText(code)),
+		Message: fmt.Sprintf("%v", message),
 	})
 }
 
 type responseMessage struct {
-	Data  any    `json:"data,omitempty"`
-	Error string `json:"error,omitempty"`
+	Status  string `json:"status"`
+	Message string `json:"message,omitempty"`
+	Data    any    `json:"data,omitempty"`
 }

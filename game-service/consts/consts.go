@@ -1,11 +1,11 @@
 package consts
 
 const (
-	GameServiceName      = "game.service"
-	ChallengeServiceName = "challenge.service"
-	PlayerServiceName    = "player.service"
-	GEOServiceName       = "geo.service"
-	HRMServiceName       = "hrm.service"
+	GameServiceName      = "game-service"
+	ChallengeServiceName = "challenge-service"
+	PlayerServiceName    = "player-service"
+	GEOServiceName       = "geo-service"
+	HRMServiceName       = "hrm-service"
 )
 
 const (

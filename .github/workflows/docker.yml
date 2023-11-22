@@ -41,3 +41,19 @@ jobs:
           push: true
           platforms: linux/amd64
           tags: macrun/game-service:latest
+
+      - name: Build and Push (Player Service)
+        uses: docker/build-push-action@v3
+        with:
+          context: ./player-service
+          push: true
+          platforms: linux/amd64
+          tags: macrun/player-service:latest
+
+      - name: Build and Push (HRM Service)
+        uses: docker/build-push-action@v3
+        with:
+          context: ./hrm-service
+          push: true
+          platforms: linux/amd64
+          tags: macrun/hrm-service:latest
