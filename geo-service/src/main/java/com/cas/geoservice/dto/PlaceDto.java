@@ -4,10 +4,8 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
-@Builder(toBuilder = true)
 public class PlaceDto {
     private String name;
-    private Long x;
-    private Long y;
+    private CoordinateDto coordinate;
+    private String type;
 }
