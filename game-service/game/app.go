@@ -3,6 +3,7 @@ package game
 import (
 	"encoding/json"
 	"log"
+	"sync"
 
 	"game-service/config"
 	"game-service/consts"
@@ -18,6 +19,7 @@ type App struct {
 
 	hrmMQ *message.MQ
 
+	mu       sync.RWMutex
 	sessions map[string]*context.Context
 }
 
