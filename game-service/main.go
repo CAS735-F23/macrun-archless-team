@@ -9,7 +9,6 @@ import (
 	"game-service/api"
 	"game-service/config"
 	"game-service/game"
-	"game-service/utils"
 )
 
 func init() {
@@ -22,10 +21,6 @@ func main() {
 	cfg, err := config.LoadConfigFromFile("./resources/application.yml")
 	if err != nil {
 		log.Fatalln(err)
-	}
-
-	if cfg.Server.IP == "" {
-		cfg.Server.IP = utils.GetPrimaryIP(cfg.Discovery.Host, cfg.Discovery.Port)
 	}
 
 	// Run Service

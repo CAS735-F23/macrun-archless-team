@@ -45,6 +45,9 @@ func New(cfg *config.Config) (*Registry, error) {
 }
 
 func (r *Registry) Register() error {
+	if r.cfg.Server.IP == "" {
+		r.cfg.Server.IP = getPrimaryIP(r.cfg.Discovery.Host, r.cfg.Discovery.Port)
+	}
 	_, err := r.cli.RegisterInstance(vo.RegisterInstanceParam{
 		Ip:          r.cfg.Server.IP,
 		Port:        uint64(r.cfg.Server.Port),
