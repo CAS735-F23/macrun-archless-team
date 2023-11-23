@@ -9,7 +9,7 @@ import (
 func (app *App) StoreContext(name string, s *context.Context) error {
 	_, ok := app.sessions[name]
 	if ok {
-		return fmt.Errorf("session already exists: %s", name)
+		return fmt.Errorf("game context already exists: %s", name)
 	}
 	app.sessions[name] = s
 	return nil
@@ -18,7 +18,7 @@ func (app *App) StoreContext(name string, s *context.Context) error {
 func (app *App) GetContext(name string) (*context.Context, error) {
 	s, ok := app.sessions[name]
 	if !ok {
-		return nil, fmt.Errorf("session not found: %s", name)
+		return nil, fmt.Errorf("game context not found: %s", name)
 	}
 	return s, nil
 }
