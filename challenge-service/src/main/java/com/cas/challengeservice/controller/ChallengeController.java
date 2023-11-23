@@ -24,4 +24,18 @@ public class ChallengeController {
         GenericMessage<ChallengeDto> response = challengeService.getChallenge(request);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
+
+    @PostMapping("/add-challenge")
+    public ResponseEntity<GenericMessage<ChallengeDto>> addChallenge(
+            @RequestBody ChallengeAddRequest request) {
+        GenericMessage<ChallengeDto> response = challengeService.addChallenge(request);
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
+    @DeleteMapping("/delete-challenge")
+    public ResponseEntity<GenericMessage<Void>> deleteChallenge(
+            @RequestBody ChallengeDeleteRequest request) {
+        GenericMessage<Void> response = challengeService.deleteChallenge(request);
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
 }
