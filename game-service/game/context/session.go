@@ -1,18 +1,20 @@
 package context
 
 import (
+	"go.uber.org/atomic"
+
 	"game-service/dto"
 )
 
 type Context struct {
 	//Challenge struct{}
 	Player    *dto.PlayerDTO
-	HeartRate int
+	HeartRate atomic.Int64
 	Score     int
 }
 
 func (c *Context) UpdateHeartRate(v int) {
-	c.HeartRate = v
+	c.HeartRate.Store(int64(v))
 }
 
 func (c *Context) HandleReaction() {

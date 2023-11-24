@@ -8,6 +8,7 @@ require (
 	github.com/nacos-group/nacos-sdk-go/v2 v2.2.3
 	github.com/rabbitmq/amqp091-go v1.9.0
 	github.com/redis/go-redis/v9 v9.3.0
+	go.uber.org/atomic v1.11.0
 	gopkg.in/yaml.v2 v2.4.0
 )
 
@@ -44,7 +45,6 @@ require (
 	github.com/prometheus/procfs v0.7.3 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.11 // indirect
-	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
 	go.uber.org/zap v1.21.0 // indirect
 	golang.org/x/arch v0.6.0 // indirect
