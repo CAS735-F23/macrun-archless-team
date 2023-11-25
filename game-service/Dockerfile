@@ -7,7 +7,7 @@ RUN go build -o game-service main.go
 
 FROM alpine:latest
 
-COPY --from=builder /src/game-service /game-service
-COPY --from=builder /src/resources/application.yml /resources/application.yml
+COPY --from=builder /src/game-service /srv/game-service
+COPY --from=builder /src/application.yml /srv/application.yml
 
-CMD ["/game-service"]
+CMD ["/srv/game-service"]
