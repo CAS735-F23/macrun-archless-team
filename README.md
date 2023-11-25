@@ -1,7 +1,7 @@
 # MACRUN Services
 
-- [Project Assignment Description](./docs/Project_Assignment_Description.pdf)
-- [Case Study (Fall 23): ACME Run](./docs/Case_Study_Fall2023.pdf)
+- [Project Assignment Description](.project-docs/Project_Assignment_Description.pdf)
+- [Case Study (Fall 23): ACME Run](.project-docs/Case_Study_Fall2023.pdf)
 
 ## Architecture Report
 
