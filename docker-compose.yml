@@ -36,18 +36,6 @@ services:
       - "6379:6379"
     restart: unless-stopped
 
-  caddy:
-    image: caddy:latest
-    depends_on:
-      - player
-      - hrm
-    container_name: caddy
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./api-gateway/Caddyfile:/etc/caddy/Caddyfile
-    restart: unless-stopped
-
   player:
     image: macrun/player:latest
     build:
@@ -58,8 +46,6 @@ services:
       - mariadb
       - redis
     container_name: player
-    ports:
-      - "9000:9000"
     restart: unless-stopped
 
   hrm:
@@ -70,4 +56,29 @@ services:
       - nacos
       - rabbitmq
     container_name: hrm
+    restart: unless-stopped
+
+  game:
+    image: macrun/game:latest
+    build:
+      context: ./game-service
+    depends_on:
+      - nacos
+      - rabbitmq
+      - redis
+      - hrm
+      - player
+    container_name: game
+    restart: unless-stopped
+
+  caddy:
+    image: caddy:latest
+    depends_on:
+      - player
+      - hrm
+    container_name: caddy
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./api-gateway/Caddyfile:/etc/caddy/Caddyfile
     restart: unless-stopped
