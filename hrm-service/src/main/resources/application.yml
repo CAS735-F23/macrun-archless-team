@@ -11,7 +11,7 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://34.130.59.222:3306/player-service?createDatabaseIfNotExist=true
     username: root
-    password: admin
+    password: root
   jpa:
     hibernate:
       ddl-auto: update
