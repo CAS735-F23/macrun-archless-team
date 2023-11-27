@@ -1,46 +1,8 @@
 version: "2.4"
 
 services:
-  nacos:
-    image: nacos/nacos-server:latest
-    container_name: nacos
-    environment:
-      - PREFER_HOST_MODE=hostname
-      - MODE=standalone
-    ports:
-      - "8848:8848"
-      - "9848:9848"
-    restart: unless-stopped
-
-  rabbitmq:
-    image: rabbitmq:3-management
-    container_name: rabbitmq
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    restart: unless-stopped
-
-  mariadb:
-    image: mariadb:latest
-    container_name: mariadb
-    environment:
-      - MARIADB_ROOT_PASSWORD=root
-    ports:
-      - "3306:3306"
-    restart: unless-stopped
-
-  redis:
-    image: redis:alpine
-    container_name: redis
-    ports:
-      - "6379:6379"
-    restart: unless-stopped
-
   caddy:
     image: caddy:latest
-    depends_on:
-      - player
-      - hrm
     container_name: caddy
     ports:
       - "8080:8080"
@@ -52,11 +14,6 @@ services:
     image: macrun/player-service:latest
     build:
       context: ./player-service
-    depends_on:
-      - nacos
-      - rabbitmq
-      - mariadb
-      - redis
     container_name: player
     restart: unless-stopped
 
@@ -64,9 +21,6 @@ services:
     image: macrun/hrm-service:latest
     build:
       context: ./hrm-service
-    depends_on:
-      - nacos
-      - rabbitmq
     container_name: hrm
     restart: unless-stopped
 
@@ -74,11 +28,5 @@ services:
     image: macrun/game-service:latest
     build:
       context: ./game-service
-    depends_on:
-      - nacos
-      - rabbitmq
-      - redis
-      - hrm
-      - player
     container_name: game
     restart: unless-stopped
