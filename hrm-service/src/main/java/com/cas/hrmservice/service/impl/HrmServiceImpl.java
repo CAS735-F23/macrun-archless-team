@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -33,7 +34,8 @@ public class HrmServiceImpl implements HrmService {
 
     @Autowired
     public HrmServiceImpl(
-            MessageService messageService, SendingHeartRateScheduler sendingHeartRateScheduler) {
+            MessageService messageService,
+            @Lazy SendingHeartRateScheduler sendingHeartRateScheduler) {
         this.messageService = messageService;
         this.sendingHeartRateScheduler = sendingHeartRateScheduler;
         this.objectMapper = new ObjectMapper();
@@ -54,20 +56,25 @@ public class HrmServiceImpl implements HrmService {
         if (0 > request.getHeartRate() || request.getHeartRate() > 400) {
             return GenericMessage.<HeartRateDto>builder()
                     .status(HttpStatus.BAD_REQUEST)
-                    .data((HeartRateDto) request)
+                    .data(request.toDto())
                     .message("heart rate is not valid, please double check...")
                     .build();
         } else {
-            if (sendHeartRate(request.getUsername(), request.getHeartRate())) {
+            boolean response = sendHeartRate(request.getUsername(), request.getHeartRate());
+            if (response) {
+                log.info("SCHEDULER - hr to game service sent...");
+
                 return GenericMessage.<HeartRateDto>builder()
                         .status(HttpStatus.OK)
-                        .data((HeartRateDto) request)
+                        .data(request.toDto())
                         .message("successfully sent heart rate to game service...")
                         .build();
             } else {
+                log.info("SCHEDULER - hr to game service failed to send...");
+
                 return GenericMessage.<HeartRateDto>builder()
                         .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .data((HeartRateDto) request)
+                        .data(request.toDto())
                         .message("failed to sent heart rate to game service...")
                         .build();
             }

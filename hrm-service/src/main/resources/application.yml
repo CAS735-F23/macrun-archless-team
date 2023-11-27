@@ -1,8 +1,8 @@
 spring:
-  application:
-    name: hrm-service
   main:
     allow-circular-references: true
+  application:
+    name: hrm-service
   cloud:
     nacos:
       discovery:

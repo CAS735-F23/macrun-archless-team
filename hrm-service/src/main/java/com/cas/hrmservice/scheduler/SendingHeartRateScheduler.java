@@ -3,7 +3,6 @@ package com.cas.hrmservice.scheduler;
 
 import static com.cas.hrmservice.constant.Constants.SENDING_HEART_RATE_SCHEDULED;
 
-import com.cas.hrmservice.dto.HeartRateDto;
 import com.cas.hrmservice.dto.HrmReceiveRequest;
 import com.cas.hrmservice.service.HrmService;
 import java.util.ArrayList;
@@ -24,6 +23,7 @@ public class SendingHeartRateScheduler {
     @Autowired
     public SendingHeartRateScheduler(HrmService hrmService) {
         this.hrmService = hrmService;
+        this.usernames = new ArrayList<>();
     }
 
     public void start(String username) {
@@ -38,13 +38,14 @@ public class SendingHeartRateScheduler {
     public void sendHeartRate() {
         if (!usernames.isEmpty()) {
             for (String usrname : usernames) {
-                HeartRateDto request =
+                HrmReceiveRequest request =
                         HrmReceiveRequest.builder()
-                                .heartRate(new Random().nextInt(301) + 400)
+                                .heartRate(new Random().nextInt(301) + 100)
                                 .username(usrname)
                                 .build();
 
-                hrmService.transmitHeartRate((HrmReceiveRequest) request);
+                log.info("SCHEDULER - sending hrm to game service..." + request.toString());
+                hrmService.transmitHeartRate(request);
             }
         }
     }
