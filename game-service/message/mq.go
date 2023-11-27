@@ -37,13 +37,17 @@ func New(url, exchange, key, queue string, declare bool) (*MQ, error) {
 	}
 
 	if declare {
+		args := amqp.Table{
+			amqp.QueueMaxLenArg: 100,
+		}
+
 		ch.QueueDeclare(
 			queue,
 			true,
 			false,
 			false,
 			false,
-			nil)
+			args)
 	}
 
 	err = ch.QueueBind(
