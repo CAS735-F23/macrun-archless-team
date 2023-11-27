@@ -6,6 +6,7 @@ import com.cas.hrmservice.dto.HeartRateDto;
 import com.cas.hrmservice.dto.HrmReceiveRequest;
 import com.cas.hrmservice.service.HrmService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,5 +28,17 @@ public class HrmController {
             @RequestBody HrmReceiveRequest request) {
         GenericMessage<HeartRateDto> response = hrmService.transmitHeartRate(request);
         return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
+    @PostMapping("/start")
+    public ResponseEntity<String> startHrm(@RequestBody HrmReceiveRequest request) {
+        hrmService.startHrm(request.getUsername());
+        return ResponseEntity.status(HttpStatus.OK).body("Heart rate monitor started...");
+    }
+
+    @PostMapping("/stop")
+    public ResponseEntity<String> stopHrm(@RequestBody HrmReceiveRequest request) {
+        hrmService.stopHrm(request.getUsername());
+        return ResponseEntity.status(HttpStatus.OK).body("Heart rate monitor stopped...");
     }
 }

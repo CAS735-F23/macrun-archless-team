@@ -4,12 +4,12 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: nacos
+        server-addr: 34.130.59.222
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://mariadb:3306/player-service?createDatabaseIfNotExist=true
+    url: jdbc:mariadb://34.130.59.222:3306/player-service?createDatabaseIfNotExist=true
     username: root
-    password: root
+    password: admin
   jpa:
     hibernate:
       ddl-auto: update
@@ -22,7 +22,7 @@ spring:
     init:
       mode: always
   rabbitmq:
-    host: rabbitmq
+    host: 34.130.59.222
     port: 5672
     username: guest
     password: guest
@@ -32,7 +32,7 @@ spring:
       queue: hrm->game
   data:
     redis:
-      host: redis
+      host: 34.130.59.222
       port: 6379
 
 server:

@@ -8,6 +8,7 @@ import com.cas.hrmservice.dto.GenericMessage;
 import com.cas.hrmservice.dto.HeartRateDto;
 import com.cas.hrmservice.dto.HrmReceiveRequest;
 import com.cas.hrmservice.dto.MessageDto;
+import com.cas.hrmservice.scheduler.SendingHeartRateScheduler;
 import com.cas.hrmservice.service.HrmService;
 import com.cas.hrmservice.service.MessageService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -26,12 +27,26 @@ public class HrmServiceImpl implements HrmService {
 
     private final MessageService messageService;
 
+    private final SendingHeartRateScheduler sendingHeartRateScheduler;
+
     private final ObjectMapper objectMapper;
 
     @Autowired
-    public HrmServiceImpl(MessageService messageService) {
+    public HrmServiceImpl(
+            MessageService messageService, SendingHeartRateScheduler sendingHeartRateScheduler) {
         this.messageService = messageService;
+        this.sendingHeartRateScheduler = sendingHeartRateScheduler;
         this.objectMapper = new ObjectMapper();
+    }
+
+    @Override
+    public void startHrm(String username) {
+        sendingHeartRateScheduler.start(username);
+    }
+
+    @Override
+    public void stopHrm(String username) {
+        sendingHeartRateScheduler.stop(username);
     }
 
     @Override
