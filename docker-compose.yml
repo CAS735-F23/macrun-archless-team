@@ -29,31 +29,3 @@ services:
     build:
       context: ./game-service
     container_name: game
-
-  challenge:
-    image: macrun/challenge:latest
-    build:
-      context: ./challenge-service
-    depends_on:
-      - nacos
-      - rabbitmq
-      - mariadb
-      - redis
-    container_name: challenge
-    ports:
-      - "9001:9001"
-    restart: unless-stopped
-
-  geo:
-    image: macrun/geo:latest
-    build:
-      context: ./geo-service
-    depends_on:
-        - nacos
-        - rabbitmq
-        - mariadb
-        - redis
-    container_name: geo
-    ports:
-        - "9002:9002"
-    restart: unless-stopped
