@@ -1,17 +1,30 @@
 package game
 
 import (
+	"time"
+
 	"game-service/dto"
 	"game-service/game/context"
 )
 
 func (app *App) StartGame(player *dto.PlayerDTO, location string) error {
 
-	if err := app.StoreContext(player.Username, &context.Context{
+	ctx := &context.Context{
 		Player: player,
 		Score:  0,
-	}); err != nil {
+	}
+
+	if err := app.StoreContext(player.Username, ctx); err != nil {
 		return err
+	}
+
+	initHeartRate := 0
+	for i := 0; i < 5; i++ {
+		initHeartRate = ctx.GetHeartRate()
+		if initHeartRate >= 10 {
+			break
+		}
+		time.Sleep(2 * time.Second)
 	}
 
 	return nil

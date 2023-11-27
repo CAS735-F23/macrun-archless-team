@@ -9,12 +9,16 @@ import (
 type Context struct {
 	//Challenge struct{}
 	Player    *dto.PlayerDTO
-	HeartRate atomic.Int64
+	heartRate atomic.Int64
 	Score     int
 }
 
 func (c *Context) UpdateHeartRate(v int) {
-	c.HeartRate.Store(int64(v))
+	c.heartRate.Store(int64(v))
+}
+
+func (c *Context) GetHeartRate() int {
+	return int(c.heartRate.Load())
 }
 
 func (c *Context) HandleReaction() {
