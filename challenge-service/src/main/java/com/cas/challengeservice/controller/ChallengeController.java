@@ -33,9 +33,9 @@ public class ChallengeController {
     }
 
     @DeleteMapping("/delete-challenge")
-    public ResponseEntity<GenericMessage<Void>> deleteChallenge(
+    public ResponseEntity<GenericMessage<ChallengeTypeDto>> deleteChallenge(
             @RequestBody ChallengeDeleteRequest request) {
-        GenericMessage<Void> response = challengeService.deleteChallenge(request);
+        GenericMessage<ChallengeTypeDto> response = challengeService.deleteChallenge(request);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 }

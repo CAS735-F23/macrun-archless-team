@@ -17,9 +17,9 @@ public class Trail {
     private Long id;
     private String zone;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Coordinate> path;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "trail")
+    private List<Place> path;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "trail")
     private List<Place> places;
 }

@@ -14,6 +14,6 @@ public class Coordinate {
     private Double x;
     private Double y;
 
-    @ManyToOne
-    private Trail trail;
+    @OneToOne(mappedBy = "coordinate")
+    private Place place;
 }
