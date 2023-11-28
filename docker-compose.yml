@@ -29,3 +29,15 @@ services:
     build:
       context: ./game-service
     container_name: game
+
+  geo:
+    image: macrun/geo-service:latest
+    build:
+      context: ./geo-service
+    container_name: geo
+
+  challenge:
+    image: macrun/challenge-service:latest
+    build:
+      context: ./challenge-service
+    container_name: challenge

@@ -2,4 +2,6 @@ http://:8080 {
 	reverse_proxy /hrm/* http://hrm:9500
 	reverse_proxy /player/* http://player:9000
 	reverse_proxy /game/* http://game:9090
+	reverse_proxy /challenge/* http://challenge:9001
+	reverse_proxy /geo/* http://geo:9002
 }
