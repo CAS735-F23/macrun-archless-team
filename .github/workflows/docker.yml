@@ -27,6 +27,14 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            src:
+              - '.github/workflows/**'
+              - '${{ matrix.service }}-service/**'
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
         with:
@@ -42,6 +50,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and Push
+        if: steps.changes.outputs.src == 'true'
         uses: docker/build-push-action@v3
         with:
           context: ${{ matrix.service }}-service
