@@ -3,6 +3,17 @@ version: "2.4"
 services:
   caddy:
     image: caddy:latest
+    depends_on:
+      game:
+        condition: service_healthy
+      player:
+        condition: service_healthy
+      hrm:
+        condition: service_healthy
+      geo:
+        condition: service_healthy
+      challenge:
+        condition: service_healthy
     container_name: caddy
     ports:
       - "8080:8080"
@@ -16,6 +27,10 @@ services:
     image: macrun/player-service:latest
     build:
       context: ./player-service
+    healthcheck:
+      test: ["CMD", "curl", "-s", "http://localhost:9000"]
+      interval: 10s
+      start_period: 10s
     networks:
       - srvnet
     container_name: player
@@ -25,6 +40,10 @@ services:
     image: macrun/hrm-service:latest
     build:
       context: ./hrm-service
+    healthcheck:
+      test: [ "CMD", "curl", "-s", "http://localhost:9500" ]
+      interval: 10s
+      start_period: 10s
     networks:
       - srvnet
     container_name: hrm
@@ -34,6 +53,10 @@ services:
     image: macrun/game-service:latest
     build:
       context: ./game-service
+    healthcheck:
+      test: [ "CMD", "curl", "-s", "http://localhost:9090" ]
+      interval: 10s
+      start_period: 2s
     networks:
       - srvnet
     container_name: game
@@ -43,6 +66,10 @@ services:
     image: macrun/geo-service:latest
     build:
       context: ./geo-service
+    healthcheck:
+      test: [ "CMD", "curl", "-s", "http://localhost:9002" ]
+      interval: 10s
+      start_period: 10s
     networks:
       - srvnet
     container_name: geo
@@ -52,6 +79,10 @@ services:
     image: macrun/challenge-service:latest
     build:
       context: ./challenge-service
+    healthcheck:
+      test: [ "CMD", "curl", "-s", "http://localhost:9001" ]
+      interval: 10s
+      start_period: 10s
     networks:
       - srvnet
     container_name: challenge
