@@ -1,6 +1,7 @@
 package game
 
 import (
+	"log"
 	"time"
 
 	"game-service/dto"
@@ -26,6 +27,8 @@ func (app *App) StartGame(player *dto.PlayerDTO, location string) error {
 		}
 		time.Sleep(2 * time.Second)
 	}
+
+	log.Printf("Game started with initial heart rate at %d", initHeartRate)
 
 	return nil
 }
