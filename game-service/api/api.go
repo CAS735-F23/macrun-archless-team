@@ -57,7 +57,8 @@ func handleGameStop(app *game.App) gin.HandlerFunc {
 			return
 		}
 
-		if err := app.StopGame(player.Username /* use username from player dto */); err != nil {
+		ctx, err := app.StopGame(player.Username /* use username from player dto */)
+		if err != nil {
 			abortWithStatusMessage(c, http.StatusInternalServerError, err)
 			return
 		}
@@ -65,12 +66,40 @@ func handleGameStop(app *game.App) gin.HandlerFunc {
 		c.JSON(http.StatusOK, &responseMessage{
 			Status:  http.StatusText(http.StatusOK),
 			Message: "Game stopped, bye 👋",
+			Data:    ctx,
 		})
 	}
 }
 
+type actionQuery struct {
+	Username string `form:"username" binding:"required"`
+	Action   string `form:"action" binding:"required"`
+	Location string `form:"location"`
+}
+
 func handleGameAction(app *game.App) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.Render(100, nil)
+		query := &actionQuery{}
+		if err := c.ShouldBindJSON(query); err != nil {
+			abortWithStatusMessage(c, http.StatusBadRequest, err)
+			return
+		}
+
+		player, err := getPlayerDTO(c, query.Username)
+		if err != nil {
+			abortWithStatusMessage(c, http.StatusInternalServerError, err)
+			return
+		}
+
+		msg, err := app.ProcessGameAction(player, query.Location, query.Action)
+		if err != nil {
+			abortWithStatusMessage(c, http.StatusInternalServerError, err)
+			return
+		}
+
+		c.JSON(http.StatusOK, &responseMessage{
+			Status:  http.StatusText(http.StatusOK),
+			Message: msg,
+		})
 	}
 }

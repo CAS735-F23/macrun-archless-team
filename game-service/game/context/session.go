@@ -34,5 +34,5 @@ func (c *Context) CalcScore() {
 }
 
 func (c *Context) Close() {
-	// TODO: add stop logic here if any.
+	// add stop logic here if needed.
 }

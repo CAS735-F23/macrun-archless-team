@@ -30,17 +30,27 @@ func (app *App) StartGame(player *dto.PlayerDTO, location string) error {
 	return nil
 }
 
-func (app *App) StopGame(username string) error {
-	s, err := app.GetContext(username)
+func (app *App) ProcessGameAction(player *dto.PlayerDTO, location, action string) (string, error) {
+	return "", nil
+}
+
+func (app *App) StopGame(username string) (*context.Context, error) {
+	ctx, err := app.GetContext(username)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	_ = s // clean up session if any.
+	// make a shallow copy.
+	co := &context.Context{
+		Player: ctx.Player,
+		Score:  ctx.Score,
+	}
+
+	ctx.Close()
 
 	if err = app.DeleteContext(username); err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return co, nil
 }
