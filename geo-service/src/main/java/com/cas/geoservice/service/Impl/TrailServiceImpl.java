@@ -26,41 +26,6 @@ public class TrailServiceImpl implements TrailService {
         this.trailRepository = trailRepository;
     }
 
-//    @Override
-//    public TrailDto createTrail(TrailDto trailDto) {
-//        Trail trail = new Trail();
-//        trail.setZone(trailDto.getZone());
-//
-//        List<Coordinate> path = trailDto.getPath().stream().map(coordinateDto -> {
-//            Coordinate coordinate = new Coordinate();
-//            coordinate.setX(coordinateDto.getX());
-//            coordinate.setY(coordinateDto.getY());
-//            coordinate.setTrail(trail);
-//            return coordinate;
-//        }).collect(Collectors.toList());
-//        trail.setPath(path);
-//
-//        List<Place> places = trailDto.getPlaces().stream().map(placeDto -> {
-//            Place place = new Place();
-//            place.setName(placeDto.getName());
-//            place.setType(placeDto.getType());
-//            place.setTrail(trail);
-//
-//            CoordinateDto coordinateDto = placeDto.getCoordinate();
-//            Coordinate coordinate = new Coordinate();
-//            coordinate.setX(coordinateDto.getX());
-//            coordinate.setY(coordinateDto.getY());
-//            coordinate.setTrail(trail);
-//            place.setCoordinate(coordinate);
-//
-//            return place;
-//        }).collect(Collectors.toList());
-//        trail.setPlaces(places);
-//
-//        trailRepository.save(trail);
-//
-//        return trailDto;
-//    }
     @Override
     public TrailDto getTrail(String zone) {
 //        Trail trail = trailRepository.findByZone(zone);

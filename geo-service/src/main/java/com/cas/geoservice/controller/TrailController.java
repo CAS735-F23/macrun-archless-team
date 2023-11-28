@@ -21,6 +21,9 @@ public class TrailController {
 
     @GetMapping("/trail")
     public ResponseEntity<TrailDto> getTrail(@RequestParam String zone) {
+        if (!"mac".equalsIgnoreCase(zone)) {
+            return ResponseEntity.badRequest().build();
+        }
         TrailDto trailDto = trailService.getTrail(zone);
         if (trailDto == null) {
             return ResponseEntity.notFound().build();
