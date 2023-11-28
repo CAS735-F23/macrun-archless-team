@@ -2,7 +2,6 @@ package game
 
 import (
 	"log"
-	"time"
 
 	"game-service/dto"
 	"game-service/game/context"
@@ -19,14 +18,8 @@ func (app *App) StartGame(player *dto.PlayerDTO, location string) error {
 		return err
 	}
 
-	initHeartRate := 0
-	for i := 0; i < 5; i++ {
-		initHeartRate = ctx.GetHeartRate()
-		if initHeartRate >= 10 {
-			break
-		}
-		time.Sleep(2 * time.Second)
-	}
+	// A simple algorithm to calculate heart rate based on weight and age.
+	initHeartRate := (100-player.Age)/2 + player.Weight
 
 	log.Printf("Game started with initial heart rate at %d", initHeartRate)
 
