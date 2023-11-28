@@ -7,4 +7,4 @@ RUN mvn -f /home/app/pom.xml clean package
 FROM eclipse-temurin:latest
 COPY --from=build /home/app/target/geo-service-0.0.1-SNAPSHOT.jar /usr/local/lib/geo-service.jar
 EXPOSE 9002
-ENTRYPOINT ["java","-jar","/usr/local/lib/player-service.jar"]
+ENTRYPOINT ["java","-jar","/usr/local/lib/geo-service.jar"]
