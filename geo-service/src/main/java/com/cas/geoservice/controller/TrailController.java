@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/geoMap")
+@RequestMapping(value = "/geo")
 public class TrailController {
     private final TrailService trailService;
 
@@ -19,7 +19,7 @@ public class TrailController {
         this.trailService = trailService;
     }
 
-    @GetMapping("/get-trail")
+    @GetMapping("/trail")
     public ResponseEntity<TrailDto> getTrail(@RequestParam String zone) {
         TrailDto trailDto = trailService.getTrail(zone);
         return ResponseEntity.ok(trailDto);
