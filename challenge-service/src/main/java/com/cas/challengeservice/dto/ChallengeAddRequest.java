@@ -8,5 +8,6 @@ import lombok.*;
 @Builder(toBuilder = true)
 public class ChallengeAddRequest {
     private Long userHeartRate;
+    private Long exerciseCount;
     private String type;
 }

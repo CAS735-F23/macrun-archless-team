@@ -16,8 +16,10 @@ public class Trail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String zone;
-    @ElementCollection
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Coordinate> path;
-    @ElementCollection
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Place> places;
 }

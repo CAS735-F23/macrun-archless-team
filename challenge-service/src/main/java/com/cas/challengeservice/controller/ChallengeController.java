@@ -19,16 +19,16 @@ public class ChallengeController {
     }
 
     @PostMapping("/get-challenge")
-    public ResponseEntity<GenericMessage<ChallengeDto>> getChallenge(
+    public ResponseEntity<GenericMessage<ChallengeTypeDto>> getChallenge(
             @RequestBody ChallengeGetRequest request) {
-        GenericMessage<ChallengeDto> response = challengeService.getChallenge(request);
+        GenericMessage<ChallengeTypeDto> response = challengeService.getChallenge(request);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
     @PostMapping("/add-challenge")
-    public ResponseEntity<GenericMessage<ChallengeDto>> addChallenge(
+    public ResponseEntity<GenericMessage<ChallengeTypeDto>> addChallenge(
             @RequestBody ChallengeAddRequest request) {
-        GenericMessage<ChallengeDto> response = challengeService.addChallenge(request);
+        GenericMessage<ChallengeTypeDto> response = challengeService.addChallenge(request);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 

@@ -7,9 +7,18 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Embeddable
+@Entity
 public class Place {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Coordinate coordinate;
+
     private String type;
+
+    @ManyToOne
+    private Trail trail;
 }

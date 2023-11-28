@@ -3,11 +3,14 @@ package com.cas.challengeservice.dto;
 import lombok.*;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder(toBuilder = true)
-public class ChallengeDeleteRequest {
+@AllArgsConstructor
+@Getter
+@NoArgsConstructor
+@EqualsAndHashCode
+public class ChallengeTypeDto {
+    private Long id;
+    private String description;
     private Long userHeartRate;
     private Long exerciseCount;
-    private String type;
 }
