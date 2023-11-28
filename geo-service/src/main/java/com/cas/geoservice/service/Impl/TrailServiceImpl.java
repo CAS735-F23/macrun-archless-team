@@ -22,6 +22,9 @@ public class TrailServiceImpl implements TrailService {
     @Override
     public TrailDto getTrail(String zone) {
         Trail trail = trailRepository.findByZone(zone);
+        if (trail == null) {
+            return null;
+        }
         return modelMapper.map(trail, TrailDto.class);
     }
 }
