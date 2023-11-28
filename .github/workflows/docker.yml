@@ -36,14 +36,17 @@ jobs:
               - '${{ matrix.service }}-service/**'
 
       - name: Set up QEMU
+        if: steps.changes.outputs.src == 'true'
         uses: docker/setup-qemu-action@v3
         with:
           platforms: amd64 # we only need x86_64 arch for now.
 
       - name: Set up Docker Buildx
+        if: steps.changes.outputs.src == 'true'
         uses: docker/setup-buildx-action@v3
 
       - name: Login to GitHub Container Registry
+        if: steps.changes.outputs.src == 'true'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
