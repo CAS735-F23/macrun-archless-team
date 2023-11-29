@@ -7,7 +7,5 @@ import lombok.*;
 @NoArgsConstructor
 @Builder(toBuilder = true)
 public class ChallengeDeleteRequest {
-    private Long userHeartRate;
-    private Long exerciseCount;
     private String type;
 }

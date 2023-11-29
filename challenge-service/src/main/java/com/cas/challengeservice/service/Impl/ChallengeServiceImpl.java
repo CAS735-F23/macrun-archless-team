@@ -32,58 +32,40 @@ public class ChallengeServiceImpl implements ChallengeService {
      * get challenge
      *
      * @param request getChallenge request playload
-     * @return 200 if getChallenge successful, 401 if heart rate is not in range or type invalid, 500 if challenge not found
+     * @return 200 if getChallenge successful, 401 if Heart rate is not in the range of this challenge typed, 404 if No challenge type associated with this type
      */
     @Override
     public GenericMessage<ChallengeTypeDto> getChallenge(ChallengeGetRequest request) {
-//        Optional<ChallengeType> challengeTypeOptional = challengeTypeRepository.findByDescriptionAndUserHeartRate(request.getType(), request.getUserHeartRate());
-//        GenericMessage<ChallengeTypeDto> response;
-//
-//        if (challengeTypeOptional.isEmpty()) {
-//            response = GenericMessage.<ChallengeTypeDto>builder()
-//                    .status(HttpStatus.NOT_FOUND)
-//                    .message("No challenge type associated with this heart rate and type")
-//                    .build();
-//        } else {
-//            ChallengeType challengeType = challengeTypeOptional.get();
-//            response = GenericMessage.<ChallengeTypeDto>builder()
-//                    .status(HttpStatus.OK)
-//                    .message("Challenge type found successfully, and returned")
-//                    .data(challengeType.toDto())
-//                    .build();
-//        }
-//
-//        return response;
         ChallengeTypeDto matchingChallengeType = null;
 
         // Try to find a challenge type that matches the request
         for (ChallengeTypeDto challengeType : challengeTypes) {
-            System.out.println("=============================Challenge type:=============================");
-            System.out.println(challengeType);
-            System.out.println(request);
-            if (challengeType.getDescription().equals(request.getType()) &&
-                    challengeType.getUserHeartRate().equals(request.getUserHeartRate())) {
-                matchingChallengeType = challengeType;
-                break;
+            if (challengeType.getDescription().equals(request.getType())) {
+                if (request.getUserHeartRate() >= challengeType.getUserHeartRate() - 30 &&
+                        request.getUserHeartRate() <= challengeType.getUserHeartRate() + 30) {
+                    matchingChallengeType = challengeType;
+                    break;
+                } else {
+                    return GenericMessage.<ChallengeTypeDto>builder()
+                            .status(HttpStatus.UNAUTHORIZED)
+                            .message("Heart rate is not in the range of this challenge type")
+                            .build();
+                }
             }
         }
 
-        GenericMessage<ChallengeTypeDto> response;
-
         if (matchingChallengeType == null) {
-            response = GenericMessage.<ChallengeTypeDto>builder()
+            return GenericMessage.<ChallengeTypeDto>builder()
                     .status(HttpStatus.NOT_FOUND)
-                    .message("No challenge type associated with this heart rate and type")
+                    .message("No challenge type associated with this type")
                     .build();
         } else {
-            response = GenericMessage.<ChallengeTypeDto>builder()
+            return GenericMessage.<ChallengeTypeDto>builder()
                     .status(HttpStatus.OK)
                     .message("Challenge type found successfully, and returned")
                     .data(matchingChallengeType)
                     .build();
         }
-
-        return response;
     }
 
     /**
@@ -94,31 +76,8 @@ public class ChallengeServiceImpl implements ChallengeService {
      */
     @Override
     public GenericMessage<ChallengeTypeDto> addChallenge(ChallengeAddRequest request) {
-//        Optional<ChallengeType> existingChallengeType = challengeTypeRepository.findByDescriptionAndUserHeartRateAndExerciseCount(request.getType(), request.getUserHeartRate(), request.getExerciseCount());
-//
-//        if (existingChallengeType.isPresent()) {
-//            return GenericMessage.<ChallengeTypeDto>builder()
-//                    .status(HttpStatus.CONFLICT)
-//                    .message("A challenge type with this type and user heart rate already exists")
-//                    .build();
-//        }
-//
-//        ChallengeType newChallengeType = new ChallengeType(null, request.getType(), request.getUserHeartRate(), request.getExerciseCount());
-//        challengeTypeRepository.save(newChallengeType);
-//
-//        GenericMessage<ChallengeTypeDto> response = GenericMessage.<ChallengeTypeDto>builder()
-//                .status(HttpStatus.CREATED)
-//                .message("Challenge type added successfully")
-//                .data(newChallengeType.toDto())
-//                .build();
-//
-//        return response;
-
         boolean exists = challengeTypes.stream()
-                .anyMatch(challengeType ->
-                        challengeType.getDescription().equals(request.getType()) &&
-                                challengeType.getUserHeartRate().equals(request.getUserHeartRate()) &&
-                                challengeType.getExerciseCount().equals(request.getExerciseCount()));
+                .anyMatch(challengeType -> challengeType.getDescription().equals(request.getType()));
 
         if (exists) {
             return GenericMessage.<ChallengeTypeDto>builder()
@@ -141,31 +100,16 @@ public class ChallengeServiceImpl implements ChallengeService {
                 .data(newChallengeType)
                 .build();
     }
-
+    /**
+     * delete challenge
+     *
+     * @param request deleteChallenge request playload
+     * @return 200 if deleteChallenge successful, 404 if challenge not found
+     */
     @Override
     public GenericMessage<ChallengeTypeDto> deleteChallenge(ChallengeDeleteRequest request) {
-//        Optional<ChallengeType> challengeType = challengeTypeRepository.findByDescriptionAndUserHeartRateAndExerciseCount(request.getType(), request.getUserHeartRate(), request.getExerciseCount());
-//
-//        if (challengeType.isEmpty()) {
-//            return GenericMessage.<Void>builder()
-//                    .status(HttpStatus.NOT_FOUND)
-//                    .message("Challenge type not found")
-//                    .build();
-//        }
-//
-//        challengeTypeRepository.delete(challengeType.get());
-//
-//        GenericMessage<Void> response = GenericMessage.<Void>builder()
-//                .status(HttpStatus.OK)
-//                .message("Challenge type deleted successfully")
-//                .build();
-//
-//        return response;
         ChallengeTypeDto challengeTypeDto = challengeTypes.stream()
-                .filter(challengeType ->
-                        challengeType.getDescription().equals(request.getType()) &&
-                                challengeType.getUserHeartRate().equals(request.getUserHeartRate()) &&
-                                challengeType.getExerciseCount().equals(request.getExerciseCount()))
+                .filter(challengeType -> challengeType.getDescription().equals(request.getType()))
                 .findFirst()
                 .orElse(null);
 

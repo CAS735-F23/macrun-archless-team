@@ -18,9 +18,10 @@ public class ChallengeController {
         this.challengeService = challengeService;
     }
 
-    @PostMapping("/get-challenge")
+    @GetMapping("/get-challenge")
     public ResponseEntity<GenericMessage<ChallengeTypeDto>> getChallenge(
-            @RequestBody ChallengeGetRequest request) {
+            @RequestParam Long userHeartRate, @RequestParam String type) {
+        ChallengeGetRequest request = new ChallengeGetRequest(userHeartRate, type);
         GenericMessage<ChallengeTypeDto> response = challengeService.getChallenge(request);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
