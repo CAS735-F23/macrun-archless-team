@@ -13,8 +13,8 @@
 
 - API Gateway (Caddy)
 - Health Check (Docker)
+- Session Cache (Redis)
 - Event Queue (RabbitMQ)
-- Circuit Breaker (Redis)
 - Service Discovery (Nacos)
 
 ## How to Build
@@ -42,11 +42,11 @@ docker-compose up -d
 ### Deploy Dependent Services
 
 > Dependent services (such as Redis, RabbitMQ) provide basic support for our application services. In general, you **do
-> not need to** deploy these services yourself, as we have them hosted on **Google Cloud**. However, if you want to
-> fully test the project locally, you can of course start these dependent services by running the following command:
+> not need to** deploy these services yourself, as we have already hosted them on **Google Cloud**. However, if you want
+> to fully test the project locally, you can of course start these dependent services by running the following command:
 >
-> NOTE: If you choose to skip our cloud services and do a full local test, you will need to rebuild our image yourself
-> by first running the global text replacement to replace `34.130.59.222` with the dependent service IP (
+> NOTE: If you choose to skip our cloud services and do a full local test, you will also need to rebuild our image
+> yourself by first running the global text replacement to replace `34.130.59.222` with the dependent service IP (
 > e.g. `127.0.0.1`).
 
 ```shell
