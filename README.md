@@ -32,6 +32,9 @@ docker-compose build
 
 ### Deploy (Micro-)services
 
+> If you find that our service is a little slow to start, this is normal. We have health check steps to ensure that each
+> service is created and started properly before the API Gateway is launched.
+
 ```shell
 docker-compose up -d
 ````
