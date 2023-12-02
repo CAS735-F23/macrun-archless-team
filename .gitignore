@@ -1,3 +1,8 @@
 **/.DS_Store
 
 .idea/
+
+# Game Service
+game-service/log/
+game-service/cache/
+game-service/game-service
