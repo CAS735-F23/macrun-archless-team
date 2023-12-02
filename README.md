@@ -19,7 +19,7 @@
 
 ## How to Build
 
-### Build App Services
+### Build (Micro-)services
 
 > We automatically build and push the image to [DockerHub](https://hub.docker.com/u/macrun) via GitHub Actions, so you
 > don't need to build it locally. But if you want to build it anyway, please run the following command:
@@ -30,7 +30,7 @@ docker-compose build
 
 ## How to Deploy
 
-### Deploy App Services
+### Deploy (Micro-)services
 
 ```shell
 docker-compose up -d
@@ -42,8 +42,9 @@ docker-compose up -d
 > not need to** deploy these services yourself, as we have them hosted on **Google Cloud**. However, if you want to
 > fully test the project locally, you can of course start these dependent services by running the following command:
 >
-> NOTE: If you choose to do a full local test (skip our cloud services), you will need to rebuild our image yourself by
-> first running the global text replacement to replace "34.130.59.222" with the dependent service IP (e.g. "127.0.0.1").
+> NOTE: If you choose to skip our cloud services and do a full local test, you will need to rebuild our image yourself
+> by first running the global text replacement to replace `34.130.59.222` with the dependent service IP (
+> e.g. `127.0.0.1`).
 
 ```shell
 docker-compose -f docker-compose.dep.yml up -d
