@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"net/url"
 )
 
 func (app *App) GetService(service, path string, v any) error {
@@ -14,10 +13,7 @@ func (app *App) GetService(service, path string, v any) error {
 		return err
 	}
 
-	uri, err := url.JoinPath("http://"+host, path)
-	if err != nil {
-		return err
-	}
+	uri := fmt.Sprintf("http://%s%s", host, path)
 
 	log.Printf("Make GET Request to service %s: %s", service, uri)
 
