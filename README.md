@@ -14,7 +14,7 @@
 - API Gateway (Caddy)
 - Health Check (Docker)
 - Session Cache (Redis)
-- Event Queue (RabbitMQ)
+- Message Queue (RabbitMQ)
 - Service Discovery (Nacos)
 
 ## How to Build
