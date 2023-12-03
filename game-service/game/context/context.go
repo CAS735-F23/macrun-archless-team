@@ -17,7 +17,7 @@ type Context struct {
 		Type              string
 		RequiredHeartRate int
 		ExerciseCount     int
-	}
+	} `json:"-"`
 	Score int
 }
 
