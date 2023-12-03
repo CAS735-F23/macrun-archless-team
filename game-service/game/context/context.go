@@ -12,7 +12,12 @@ type Context struct {
 	heartRate atomic.Int64
 	shelters  []dto.PointDTO
 	location  dto.PointDTO
-	Score     int
+	Working   struct {
+		Type              string
+		RequiredHeartRate int
+		ExerciseCount     int
+	}
+	Score int
 }
 
 func (c *Context) UpdateHeartRate(v int) {
