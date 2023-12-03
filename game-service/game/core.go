@@ -7,13 +7,14 @@ import (
 	"math/rand"
 	"strings"
 
+	"game-service/consts"
 	"game-service/dto"
 	"game-service/game/context"
 )
 
 func (app *App) StartGame(player *dto.PlayerDTO, zone string, location dto.PointDTO) error {
 
-	if _, ok := dto.AllowedZones[strings.ToUpper(zone)]; !ok {
+	if _, ok := consts.AllowedZones[strings.ToUpper(zone)]; !ok {
 		return fmt.Errorf("zone is not allowed: %s", zone)
 	}
 
@@ -114,7 +115,7 @@ func (app *App) ProcessGameAction(player *dto.PlayerDTO, action, cType string, l
 	if h := ctx.GetHeartRate(); h < ctx.Working.RequiredHeartRate-30 || h > ctx.Working.RequiredHeartRate+30 {
 		if ctx.GetAttackMode() == "" {
 			resp.Attack.On = true
-			resp.Attack.Name = dto.AttackModes[rand.Intn(len(dto.AttackModes))]
+			resp.Attack.Name = consts.AttackModes[rand.Intn(len(consts.AttackModes))]
 			ctx.UpdateAttackMode(resp.Attack.Name)
 
 			resp.SetMessage(fmt.Sprintf("You are under attack by %s, be careful! 😱", resp.Attack.Name))
@@ -144,7 +145,7 @@ func (app *App) ProcessGameAction(player *dto.PlayerDTO, action, cType string, l
 			resp.SetMessage(resp.GetMessage() + "(your reaction is required now!)")
 		} else {
 			switch strings.ToUpper(action) {
-			case dto.ReactSheltering:
+			case consts.ReactSheltering:
 				for _, shelter := range ctx.GetShelters() { // close to shelter...
 					if math.Abs(shelter.X-location.X) < 2 && math.Abs(shelter.Y-location.Y) < 2 {
 						resp.SetMessage(resp.GetMessage() + "(You're in the shelter, so you're safe now!)")
@@ -155,7 +156,7 @@ func (app *App) ProcessGameAction(player *dto.PlayerDTO, action, cType string, l
 					}
 					resp.SetMessage("(Find a shelter soon!)")
 				}
-			case dto.ReactEscaping:
+			case consts.ReactEscaping:
 				if currentSpeed > 20 { // run fast...
 					resp.SetMessage(resp.GetMessage() + "(You're fast! Escaping succeeded!)")
 					ctx.UpdateAttackMode()
@@ -164,7 +165,7 @@ func (app *App) ProcessGameAction(player *dto.PlayerDTO, action, cType string, l
 				} else {
 					resp.SetMessage(resp.GetMessage() + fmt.Sprintf("(Run, %s run!)", player.Username))
 				}
-			case dto.ReactFighting:
+			case consts.ReactFighting:
 				if ctx.GetHeartRate() > ((100-player.Age)/2+player.Weight)+rand.Intn(20)-10 { // fighting back...
 					resp.SetMessage(resp.GetMessage() + "(You kicked it ass! Good job!)")
 					ctx.UpdateAttackMode()
