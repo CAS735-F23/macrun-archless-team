@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -101,8 +100,8 @@ func handleGameAction(app *game.App) gin.HandlerFunc {
 		}
 
 		msg := "Game action handled, keep on! 💪"
-		if resp != nil && resp.Attack.On {
-			msg = fmt.Sprintf("You are under attack by %s, be careful! 😱", resp.Attack.Name)
+		if resp != nil && resp.GetMessage() != "" {
+			msg = resp.GetMessage()
 		}
 
 		c.JSON(http.StatusOK, &responseMessage{

@@ -23,6 +23,12 @@ type PointDTO struct {
 }
 
 const (
+	ReactSheltering = "SHELTERING"
+	ReactEscaping   = "ESCAPING"
+	ReactFighting   = "FIGHTING"
+)
+
+const (
 	AttackModeProf   = "Grumpy Prof"
 	AttackModeBeaver = "Coot Beaver"
 )
@@ -38,4 +44,18 @@ type ActionResponseDTO struct {
 		Name string
 	}
 	Location PointDTO
+
+	message string
+}
+
+func (r *ActionResponseDTO) GetMessage() string {
+	return r.message
+}
+
+func (r *ActionResponseDTO) SetMessage(s string) {
+	r.message = s
+}
+
+func (r *ActionResponseDTO) ResetMessage() {
+	r.message = ""
 }

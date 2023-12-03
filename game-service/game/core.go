@@ -5,6 +5,7 @@ import (
 	"log"
 	"math"
 	"math/rand"
+	"strings"
 
 	"game-service/dto"
 	"game-service/game/context"
@@ -107,11 +108,71 @@ func (app *App) ProcessGameAction(player *dto.PlayerDTO, action, cType string, l
 
 	// Generate Attack
 	if h := ctx.GetHeartRate(); h < ctx.Working.RequiredHeartRate-30 || h > ctx.Working.RequiredHeartRate+30 {
-		resp.Attack.On = true
-		resp.Attack.Name = dto.AttackModes[rand.Intn(len(dto.AttackModes))]
+		if ctx.GetAttackMode() == "" {
+			resp.Attack.On = true
+			resp.Attack.Name = dto.AttackModes[rand.Intn(len(dto.AttackModes))]
+			ctx.UpdateAttackMode(resp.Attack.Name)
+
+			resp.SetMessage(fmt.Sprintf("You are under attack by %s, be careful! 😱", resp.Attack.Name))
+		}
+		ctx.Score -= 10 // Under Attack
 	} else /* Clear Attack */ {
+		if ctx.GetAttackMode() != "" {
+			resp.Attack.On = false
+			resp.Attack.Name = ""
+			ctx.UpdateAttackMode() // Reset Attack
+			ctx.Score += 1000      // Attack OK!
+
+			resp.SetMessage("Congrats, attack is gone! 😊")
+		}
+		resp.ResetMessage()
+	}
+
+	if ctx.GetAttackMode() == "" && action != "" {
 		resp.Attack.On = false
 		resp.Attack.Name = ""
+		resp.SetMessage(resp.GetMessage() + "(no reaction is needed for now)")
+	} else if ctx.GetAttackMode() != "" {
+		resp.Attack.On = true
+		resp.Attack.Name = ctx.GetAttackMode()
+
+		if action == "" {
+			resp.SetMessage(resp.GetMessage() + "(your reaction is required now!)")
+		} else {
+			switch strings.ToUpper(action) {
+			case dto.ReactSheltering:
+				for _, shelter := range ctx.GetShelters() { // close to shelter...
+					if math.Abs(shelter.X-location.X) < 2 && math.Abs(shelter.Y-location.Y) < 2 {
+						resp.SetMessage(resp.GetMessage() + "(You're in the shelter, so you're safe now!)")
+						ctx.UpdateAttackMode()
+						resp.Attack.On = false
+						resp.Attack.Name = ""
+						break
+					}
+					resp.SetMessage("(Find a shelter soon!)")
+				}
+			case dto.ReactEscaping:
+				if currentSpeed > 20 { // run fast...
+					resp.SetMessage(resp.GetMessage() + "(You're fast! Escaping succeeded!)")
+					ctx.UpdateAttackMode()
+					resp.Attack.On = false
+					resp.Attack.Name = ""
+				} else {
+					resp.SetMessage(resp.GetMessage() + fmt.Sprintf("(Run, %s run!)", player.Username))
+				}
+			case dto.ReactFighting:
+				if ctx.GetHeartRate() > ((100-player.Age)/2+player.Weight)+rand.Intn(20)-10 { // fighting back...
+					resp.SetMessage(resp.GetMessage() + "(You kicked it ass! Good job!)")
+					ctx.UpdateAttackMode()
+					resp.Attack.On = false
+					resp.Attack.Name = ""
+				} else {
+					resp.SetMessage(resp.GetMessage() + "(Fight it back! Go go go!)")
+				}
+			default:
+				return nil, fmt.Errorf("unknown action mode: %s", action)
+			}
+		}
 	}
 
 	{

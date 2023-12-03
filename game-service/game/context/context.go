@@ -7,12 +7,13 @@ import (
 )
 
 type Context struct {
-	//Challenge struct{}
-	Player    *dto.PlayerDTO
-	heartRate atomic.Int64
-	shelters  []dto.PointDTO
-	location  dto.PointDTO
-	Working   struct {
+	heartRate  atomic.Int64
+	shelters   []dto.PointDTO
+	location   dto.PointDTO
+	attackMode string
+
+	Player  *dto.PlayerDTO
+	Working struct {
 		Type              string
 		RequiredHeartRate int
 		ExerciseCount     int
@@ -20,8 +21,26 @@ type Context struct {
 	Score int
 }
 
+func (c *Context) GetAttackMode() string {
+	return c.attackMode
+}
+
+func (c *Context) UpdateAttackMode(v ...string) {
+	if len(v) == 0 {
+		c.attackMode = ""
+		return
+	}
+	for _, s := range v {
+		c.attackMode = s
+	}
+}
+
 func (c *Context) UpdateHeartRate(v int) {
 	c.heartRate.Store(int64(v))
+}
+
+func (c *Context) GetShelters() []dto.PointDTO {
+	return c.shelters
 }
 
 func (c *Context) UpdateShelters(v []dto.PointDTO) {
@@ -38,18 +57,6 @@ func (c *Context) UpdateLocation(v dto.PointDTO) {
 
 func (c *Context) GetHeartRate() int {
 	return int(c.heartRate.Load())
-}
-
-func (c *Context) HandleReaction() {
-
-}
-
-func (c *Context) GenerateAttack() {
-
-}
-
-func (c *Context) CalcScore() {
-
 }
 
 func (c *Context) Close() {
