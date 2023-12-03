@@ -22,6 +22,11 @@ type PointDTO struct {
 	Y float64
 }
 
+var AllowedZones = map[string]any{
+	"MAC":      nil,
+	"MCMASTER": nil,
+}
+
 const (
 	ReactSheltering = "SHELTERING"
 	ReactEscaping   = "ESCAPING"

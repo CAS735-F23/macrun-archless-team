@@ -11,7 +11,11 @@ import (
 	"game-service/game/context"
 )
 
-func (app *App) StartGame(player *dto.PlayerDTO, location dto.PointDTO) error {
+func (app *App) StartGame(player *dto.PlayerDTO, zone string, location dto.PointDTO) error {
+
+	if _, ok := dto.AllowedZones[strings.ToUpper(zone)]; !ok {
+		return fmt.Errorf("zone is not allowed: %s", zone)
+	}
 
 	ctx := &context.Context{
 		Player: player,

@@ -11,6 +11,7 @@ import (
 
 type startQuery struct {
 	Username string       `form:"username" binding:"required"`
+	Zone     string       `form:"zone"`
 	Location dto.PointDTO `form:"location"`
 }
 
@@ -28,7 +29,13 @@ func handleGameStart(app *game.App) gin.HandlerFunc {
 			return
 		}
 
-		if err := app.StartGame(player, query.Location); err != nil {
+		if err := app.StartGame(player, query.Zone, query.Location); err != nil {
+			abortWithStatusMessage(c, http.StatusInternalServerError, err)
+			return
+		}
+
+		ctx, err := app.GetContext(player.Username)
+		if err != nil {
 			abortWithStatusMessage(c, http.StatusInternalServerError, err)
 			return
 		}
@@ -36,6 +43,9 @@ func handleGameStart(app *game.App) gin.HandlerFunc {
 		c.JSON(http.StatusOK, &responseMessage{
 			Status:  http.StatusText(http.StatusOK),
 			Message: "Game started successfully! 🥳",
+			Data: gin.H{
+				"shelters": ctx.GetShelters(),
+			},
 		})
 	}
 }
