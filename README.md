@@ -57,6 +57,7 @@ docker-compose -f docker-compose.dep.yml up -d
 ### With Simulator Script
 
 - Please make sure you have **Python3.7+** installed.
+- Run the following commands in your shell:
 
 ```shell
 cd ./simulator-script
@@ -64,10 +65,13 @@ python3 -m pip install -U requests
 python3 ./simulator.py 127.0.0.1:8080
 ```
 
+> NOTE: If you start the services with a different address or port, you must change the `127.0.0.1:8080` parameter to
+> your new service address.
+
 ### With Postman
 
-1. Import all postman collection files from [postman-files](./postman-files)
-2. Run the service APIs in Postman in the following order
+1. Import all postman collection files from [postman-files](./postman-files).
+2. Run the service APIs in Postman in the following order:
     - Player Register
     - Player Login
     - HRM start
@@ -77,7 +81,7 @@ python3 ./simulator.py 127.0.0.1:8080
     - HRM Stop
     - Player Logout
 
-> NOTE: If you start the service with a different address or port, you must change the `{{BASE_URL}}` variable in each
+> NOTE: If you start the services with a different address or port, you must change the `{{BASE_URL}}` variable in each
 > postman collection. The default value is `http://localhost:8080`.
 
 ## How to Test
