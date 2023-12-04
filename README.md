@@ -1,21 +1,20 @@
-# MACRUN Services
+# MacRun Services
 
 - [Project Assignment Description](.project-docs/Project_Assignment_Description.pdf)
 - [Case Study (Fall 23): ACME Run](.project-docs/Case_Study_Fall2023.pdf)
 
 ## Architecture Report
 
-- [Google Docs](https://docs.google.com/document/d/1autqAB21GcHH2TUhu9ez9Kf1AKQdTmIThb3qxiyk7p8/edit?usp=sharing)
-- [Draw.io](https://drive.google.com/file/d/1AnPuMwdSt3I8YnaW6hJ_1sEzjOeWUa1R/view?usp=sharing)
-- [Excalidraw](https://excalidraw.com/#room=45b045f7d8633e2dcb16,2WYKwb4ekFGbVGb4dKoM3g)
+- [MVP Report](https://docs.google.com/document/d/1autqAB21GcHH2TUhu9ez9Kf1AKQdTmIThb3qxiyk7p8/edit?usp=sharing)
+- [Final Report](https://docs.google.com/document/d/10VK-EgGRhk5Q-xbG0QR4D0luVF6JTTd3wDxl1OF0oBA/edit?usp=sharing)
 
 ## Features
 
-- API Gateway (Caddy)
-- Health Check (Docker)
-- Session Cache (Redis)
-- Event Queue (RabbitMQ)
-- Service Discovery (Nacos)
+- API Gateway ([Caddy](https://caddyserver.com/))
+- Health Check ([Docker](https://www.docker.com/))
+- Session Cache ([Redis](https://redis.io/))
+- Service Discovery ([Nacos](https://nacos.io/en-us/))
+- Message Queue ([RabbitMQ](https://www.rabbitmq.com/))
 
 ## How to Build
 
@@ -53,6 +52,46 @@ docker-compose up -d
 docker-compose -f docker-compose.dep.yml up -d
 ```
 
+## How to Use
+
+### With Simulator Script
+
+- Please make sure you have **Python3.7+** installed.
+- Run the following commands in your shell:
+
+```shell
+cd ./simulator-script
+python3 -m pip install -U requests
+python3 ./simulator.py 127.0.0.1:8080
+```
+
+> NOTE: If you start the services with a different address or port, you must change the `127.0.0.1:8080` parameter to
+> your new service address.
+
+### With Postman
+
+1. Import all postman collection files from [postman-files](./postman-files).
+2. Run the service APIs in Postman in the following order:
+    - Player Register
+    - Player Login
+    - HRM start
+    - Game Start
+    - Game Action
+    - Game Stop
+    - HRM Stop
+    - Player Logout
+
+> NOTE: If you start the services with a different address or port, you must change the `{{BASE_URL}}` variable in each
+> postman collection. The default value is `http://localhost:8080`.
+
 ## How to Test
 
-TBA
+### Player Service
+
+### Game Service
+
+### Challenge Service
+
+### GEO Service
+
+### HRM Service

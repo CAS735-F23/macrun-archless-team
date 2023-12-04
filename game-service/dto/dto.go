@@ -22,19 +22,6 @@ type PointDTO struct {
 	Y float64
 }
 
-const (
-	ReactSheltering = "SHELTERING"
-	ReactEscaping   = "ESCAPING"
-	ReactFighting   = "FIGHTING"
-)
-
-const (
-	AttackModeProf   = "Grumpy Prof"
-	AttackModeBeaver = "Coot Beaver"
-)
-
-var AttackModes = []string{AttackModeProf, AttackModeBeaver}
-
 type ActionResponseDTO struct {
 	HeartRate int
 	Speed     float64
