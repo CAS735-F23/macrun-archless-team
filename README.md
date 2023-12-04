@@ -5,9 +5,8 @@
 
 ## Architecture Report
 
-- [Google Docs](https://docs.google.com/document/d/1autqAB21GcHH2TUhu9ez9Kf1AKQdTmIThb3qxiyk7p8/edit?usp=sharing)
-- [Draw.io](https://drive.google.com/file/d/1AnPuMwdSt3I8YnaW6hJ_1sEzjOeWUa1R/view?usp=sharing)
-- [Excalidraw](https://excalidraw.com/#room=45b045f7d8633e2dcb16,2WYKwb4ekFGbVGb4dKoM3g)
+- [MVP Report](https://docs.google.com/document/d/1autqAB21GcHH2TUhu9ez9Kf1AKQdTmIThb3qxiyk7p8/edit?usp=sharing)
+- [Final Report](https://docs.google.com/document/d/10VK-EgGRhk5Q-xbG0QR4D0luVF6JTTd3wDxl1OF0oBA/edit?usp=sharing)
 
 ## Features
 
