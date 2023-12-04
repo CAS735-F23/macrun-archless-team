@@ -56,7 +56,7 @@ docker-compose -f docker-compose.dep.yml up -d
 
 ### With Simulator Script
 
-- Please make sure you have **Python3.7+** installed.
+- Please make sure you have **Python3.8+** installed.
 - Run the following commands in your shell:
 
 ```shell
@@ -74,7 +74,7 @@ python3 ./simulator.py 127.0.0.1:8080
 2. Run the service APIs in Postman in the following order:
     - Player Register
     - Player Login
-    - HRM start
+    - HRM Start
     - Game Start
     - Game Action
     - Game Stop
