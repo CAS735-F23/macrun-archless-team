@@ -52,6 +52,42 @@ docker-compose up -d
 docker-compose -f docker-compose.dep.yml up -d
 ```
 
+## How to Use
+
+### With Simulator Script
+
+- Please make sure you have **Python3.7+** installed.
+
+```shell
+cd ./simulator-script
+python3 -m pip install -U requests
+python3 ./simulator.py 127.0.0.1:8080
+```
+
+### With Postman
+
+1. Import all postman collection files from [postman-files](./postman-files)
+2. Run the service APIs in Postman in the following order
+    - Player Register
+    - Player Login
+    - HRM start
+    - Game Start
+    - Game Action
+    - Game Stop
+    - HRM Stop
+    - Player Logout
+
+> NOTE: If you start the service with a different address or port, you must change the `{{BASE_URL}}` variable in each
+> postman collection. The default value is `http://localhost:8080`.
+
 ## How to Test
 
-TBA
+### Player Service
+
+### Game Service
+
+### Challenge Service
+
+### GEO Service
+
+### HRM Service

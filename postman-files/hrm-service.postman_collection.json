@@ -1,0 +1,124 @@
+{
+	"info": {
+		"_postman_id": "8925a21f-c219-49ff-a96d-cef6cacbb98c",
+		"name": "hrm-service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10200332",
+		"_collection_link": "https://restless-zodiac-981332.postman.co/workspace/CAS735-Project~6fb8367e-e817-4b28-9058-10c87c160c8f/collection/10200332-8925a21f-c219-49ff-a96d-cef6cacbb98c?action=share&source=collection_link&creator=10200332"
+	},
+	"item": [
+		{
+			"name": "transmit heart rate",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"leon\",\n    \"heartRate\": 200\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/{{HRM_URI}}/transmit",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"{{HRM_URI}}",
+						"transmit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "start scheduled hrm",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"leon\",\n    \"heartRate\": 0\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/{{HRM_URI}}/start",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"{{HRM_URI}}",
+						"start"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "stop scheduled hrm",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"leon\",\n    \"heartRate\": 0\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/{{HRM_URI}}/stop",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"{{HRM_URI}}",
+						"stop"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "HRM_URI",
+			"value": "hrm",
+			"type": "string"
+		}
+	]
+}
