@@ -80,9 +80,9 @@ func (app *App) ProcessGameAction(player *dto.PlayerDTO, action, cType string, l
 		prevLoc := ctx.GetLocation()
 		currLoc := location
 
-		currentSpeed = math.Sqrt(
+		currentSpeed = math.Ceil(math.Sqrt(
 			math.Pow(math.Abs(currLoc.X-prevLoc.X), 2) +
-				math.Pow(math.Abs(currLoc.Y-prevLoc.Y), 2))
+				math.Pow(math.Abs(currLoc.Y-prevLoc.Y), 2)))
 
 		ctx.Score += int(currentSpeed)
 		ctx.UpdateLocation(location)
@@ -180,7 +180,7 @@ func (app *App) ProcessGameAction(player *dto.PlayerDTO, action, cType string, l
 		}
 	}
 
-	{
+	{ // Set basic attributes
 		resp.Score = ctx.Score
 		resp.Speed = currentSpeed
 		resp.Location = ctx.GetLocation()
