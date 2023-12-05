@@ -37,20 +37,27 @@ func (app *App) StartGame(player *dto.PlayerDTO, zone string, location dto.Point
 
 	{ // Get Trails
 		data := struct {
-			Places []struct {
-				Name       string
-				Type       string
-				Coordinate dto.PointDTO
+			Data struct {
+				Zone string
+				Path []struct {
+					Name        string
+					Type        string
+					CoordinateX float64
+					CoordinateY float64
+				}
 			}
 		}{}
-		if err := app.GetService("geo-service", "/geo/trail?zone=mac", &data); err != nil {
+		if err := app.GetService("geo-service", fmt.Sprintf("/geo/trail?zone=%s", strings.ToLower(zone)), &data); err != nil {
 			return fmt.Errorf("get init trail failed: %v", err)
 		}
 
-		shelters := make([]dto.PointDTO, 0, len(data.Places))
-		for _, place := range data.Places {
+		shelters := make([]dto.PointDTO, 0, len(data.Data.Path))
+		for _, place := range data.Data.Path {
 			if place.Type == "shelter" {
-				shelters = append(shelters, place.Coordinate)
+				shelters = append(shelters, dto.PointDTO{
+					X: place.CoordinateX,
+					Y: place.CoordinateY,
+				})
 			}
 		}
 
