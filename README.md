@@ -58,7 +58,7 @@ docker-compose -f docker-compose.dep.yml up -d
 ### With Simulator Script
 
 The script will simulate all actions like player registration, login, start heart rate monitor, start game, etc. It will
-randomly generate heart rate, move random distance and react to game attacks.
+also randomly generate heart rate, move random distance and react to game attacks.
 
 - Please make sure you have **Python3.8+** installed.
 - Run the following commands in your shell:
@@ -92,7 +92,7 @@ python3 ./simulator.py 127.0.0.1:8080
 
 ### Auto Test
 
-We automate the testing of our services using GitHub Action (CI/CD). You can view the test results at:
+We automate the testing of our services using GitHub Actions (CI/CD). You can view the test results at:
 
 - <https://github.com/CAS735-F23/macrun-archless-team/actions/workflows/test.yml>.
 
@@ -111,6 +111,6 @@ mvn test
 - Golang Services, e.g. game-service:
 
 ```shell
-cd ./player-service
+cd ./game-service
 go test ./...
 ```
