@@ -18,14 +18,14 @@ import java.util.*;
 public class ChallengeServiceImpl implements ChallengeService {
     private final ChallengeTypeRepository challengeTypeRepository;
 
-    private List<ChallengeTypeDto> challengeTypes = new ArrayList<>(Arrays.asList(
-            new ChallengeTypeDto(1L, "Cardio", 120L, 30L),
-            new ChallengeTypeDto(2L, "Muscle", 80L, 50L),
-            new ChallengeTypeDto(3L, "Flexibility", 70L, 40L),
-            new ChallengeTypeDto(4L, "Balance", 70L, 30L)
-    ));
+//    private List<ChallengeTypeDto> challengeTypes = new ArrayList<>(Arrays.asList(
+//            new ChallengeTypeDto(1L, "Cardio", 120L, 30L),
+//            new ChallengeTypeDto(2L, "Muscle", 80L, 50L),
+//            new ChallengeTypeDto(3L, "Flexibility", 70L, 40L),
+//            new ChallengeTypeDto(4L, "Balance", 70L, 30L)
+//    ));
     @Autowired
-    public ChallengeServiceImpl(ChallengeTypeRepository challengeTypeRepository, MessageService messageService) {
+    public ChallengeServiceImpl(ChallengeTypeRepository challengeTypeRepository) {
         this.challengeTypeRepository = challengeTypeRepository;
     }
     /**
@@ -36,70 +36,63 @@ public class ChallengeServiceImpl implements ChallengeService {
      */
     @Override
     public GenericMessage<ChallengeTypeDto> getChallenge(ChallengeGetRequest request) {
-        ChallengeTypeDto matchingChallengeType = null;
+        Optional<ChallengeType> matchingChallengeType = challengeTypeRepository.findByDescription(request.getType());
 
-        // Try to find a challenge type that matches the request
-        for (ChallengeTypeDto challengeType : challengeTypes) {
-            if (challengeType.getDescription().equals(request.getType())) {
-                if (request.getUserHeartRate() >= challengeType.getUserHeartRate() - 30 &&
-                        request.getUserHeartRate() <= challengeType.getUserHeartRate() + 30) {
-                    matchingChallengeType = challengeType;
-                    break;
-                } else {
-                    return GenericMessage.<ChallengeTypeDto>builder()
-                            .status(HttpStatus.UNAUTHORIZED)
-                            .message("Heart rate is not in the range of this challenge type")
-                            .build();
-                }
+        if (matchingChallengeType.isPresent()) {
+            ChallengeType challengeType = matchingChallengeType.get();
+            if (request.getUserHeartRate() >= challengeType.getUserHeartRate() - 30 &&
+                    request.getUserHeartRate() <= challengeType.getUserHeartRate() + 30) {
+                return GenericMessage.<ChallengeTypeDto>builder()
+                        .status(HttpStatus.OK)
+                        .message("Challenge type found successfully, and returned")
+                        .data(challengeType.toDto())
+                        .build();
+            } else {
+                return GenericMessage.<ChallengeTypeDto>builder()
+                        .status(HttpStatus.UNAUTHORIZED)
+                        .message("Heart rate is not in the range of this challenge type")
+                        .build();
             }
-        }
-
-        if (matchingChallengeType == null) {
+        } else {
             return GenericMessage.<ChallengeTypeDto>builder()
                     .status(HttpStatus.NOT_FOUND)
                     .message("No challenge type associated with this type")
-                    .build();
-        } else {
-            return GenericMessage.<ChallengeTypeDto>builder()
-                    .status(HttpStatus.OK)
-                    .message("Challenge type found successfully, and returned")
-                    .data(matchingChallengeType)
                     .build();
         }
     }
 
     /**
-     * create challenge
+     * add challenge
      *
      * @param request createChallenge request playload
      * @return 200 if createChallenge successful, 409 if challenge already exists
      */
     @Override
     public GenericMessage<ChallengeTypeDto> addChallenge(ChallengeAddRequest request) {
-        boolean exists = challengeTypes.stream()
-                .anyMatch(challengeType -> challengeType.getDescription().equals(request.getType()));
+        Optional<ChallengeType> existingChallengeType = challengeTypeRepository.findByDescription(request.getType());
 
-        if (exists) {
+        if (existingChallengeType.isPresent()) {
             return GenericMessage.<ChallengeTypeDto>builder()
                     .status(HttpStatus.CONFLICT)
                     .message("Challenge type already exists.")
                     .build();
         }
 
-        ChallengeTypeDto newChallengeType = new ChallengeTypeDto(
+        ChallengeType newChallengeType = new ChallengeType(
                 new Random().nextLong(),
                 request.getType(),
                 request.getUserHeartRate(),
                 request.getExerciseCount()
         );
-        challengeTypes.add(newChallengeType);
+        challengeTypeRepository.save(newChallengeType);
 
         return GenericMessage.<ChallengeTypeDto>builder()
                 .status(HttpStatus.CREATED)
                 .message("Challenge type added successfully")
-                .data(newChallengeType)
+                .data(newChallengeType.toDto())
                 .build();
     }
+
     /**
      * delete challenge
      *
@@ -108,24 +101,21 @@ public class ChallengeServiceImpl implements ChallengeService {
      */
     @Override
     public GenericMessage<ChallengeTypeDto> deleteChallenge(ChallengeDeleteRequest request) {
-        ChallengeTypeDto challengeTypeDto = challengeTypes.stream()
-                .filter(challengeType -> challengeType.getDescription().equals(request.getType()))
-                .findFirst()
-                .orElse(null);
+        Optional<ChallengeType> existingChallengeType = challengeTypeRepository.findByDescription(request.getType());
 
-        if (challengeTypeDto == null) {
+        if (!existingChallengeType.isPresent()) {
             return GenericMessage.<ChallengeTypeDto>builder()
                     .status(HttpStatus.NOT_FOUND)
                     .message("Challenge type not found")
                     .build();
         }
 
-        challengeTypes.remove(challengeTypeDto);
+        challengeTypeRepository.delete(existingChallengeType.get());
 
         return GenericMessage.<ChallengeTypeDto>builder()
                 .status(HttpStatus.OK)
                 .message("Challenge type deleted successfully")
-                .data(challengeTypeDto)
+                .data(existingChallengeType.get().toDto())
                 .build();
     }
 }

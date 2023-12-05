@@ -32,7 +32,7 @@ jobs:
         with:
           filters: |
             src:
-              - '.github/workflows/**'
+              - '.github/workflows/docker.yml'
               - '${{ matrix.service }}-service/**'
 
       - name: Set up QEMU

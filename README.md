@@ -13,6 +13,7 @@
 - API Gateway ([Caddy](https://caddyserver.com/))
 - Health Check ([Docker](https://www.docker.com/))
 - Session Cache ([Redis](https://redis.io/))
+- Build Test CI/CD ([Actions](https://github.com/features/actions))
 - Service Discovery ([Nacos](https://nacos.io/en-us/))
 - Message Queue ([RabbitMQ](https://www.rabbitmq.com/))
 
@@ -36,7 +37,7 @@ docker-compose build
 
 ```shell
 docker-compose up -d
-````
+```
 
 ### Deploy Dependent Services
 
@@ -56,7 +57,10 @@ docker-compose -f docker-compose.dep.yml up -d
 
 ### With Simulator Script
 
-- Please make sure you have **Python3.7+** installed.
+The script will simulate all actions like player registration, login, start heart rate monitor, start game, etc. It will
+randomly generate heart rate, move random distance and react to game attacks.
+
+- Please make sure you have **Python3.8+** installed.
 - Run the following commands in your shell:
 
 ```shell
@@ -74,7 +78,7 @@ python3 ./simulator.py 127.0.0.1:8080
 2. Run the service APIs in Postman in the following order:
     - Player Register
     - Player Login
-    - HRM start
+    - HRM Start
     - Game Start
     - Game Action
     - Game Stop
@@ -86,12 +90,27 @@ python3 ./simulator.py 127.0.0.1:8080
 
 ## How to Test
 
-### Player Service
+### Auto Test
 
-### Game Service
+We automate the testing of our services using GitHub Action (CI/CD). You can view the test results at:
 
-### Challenge Service
+- <https://github.com/CAS735-F23/macrun-archless-team/actions/workflows/test.yml>.
 
-### GEO Service
+### Manual Test
 
-### HRM Service
+If you want to run all the tests manually, go to each service folder and run test commands. Java and Golang environments
+are required to run the tests.
+
+- Java Services, e.g. player-service:
+
+```shell
+cd ./player-service
+mvn test
+```
+
+- Golang Services, e.g. game-service:
+
+```shell
+cd ./player-service
+go test ./...
+```
