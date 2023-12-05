@@ -8,6 +8,22 @@
 - [MVP Report](https://docs.google.com/document/d/1autqAB21GcHH2TUhu9ez9Kf1AKQdTmIThb3qxiyk7p8/edit?usp=sharing)
 - [Final Report](https://docs.google.com/document/d/10VK-EgGRhk5Q-xbG0QR4D0luVF6JTTd3wDxl1OF0oBA/edit?usp=sharing)
 
+## Contents
+
+- [Features](#features)
+- [Live Demo](#live-demo)
+- [How to Build](#how-to-build)
+  - [Build (Micro-)services](#build-micro-services)
+- [How to Deploy](#how-to-deploy)
+  - [Deploy (Micro-)services](#deploy-micro-services)
+  - [Deploy Locally](#deploy-locally)
+- [How to Use](#how-to-use)
+  - [With Simulator Script](#with-simulator-script)
+  - [With Postman](#with-postman)
+- [How to Test](#how-to-test)
+  - [Auto Test](#auto-test)
+  - [Manual Test](#manual-test)
+
 ## Features
 
 - API Gateway ([Caddy](https://caddyserver.com/))
