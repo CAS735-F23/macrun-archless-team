@@ -28,7 +28,7 @@ spring:
     username: guest
     password: guest
     exchange: challenge-service
-    queue: challenge
+    queue: game->challenge
   data:
     redis:
       host: 34.130.59.222

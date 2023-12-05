@@ -1,11 +1,16 @@
 /* (C)2023 */
 package com.cas.challengeservice.config;
 
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +35,9 @@ public class RabbitMQConfig {
     @Value("${spring.rabbitmq.queue}")
     private String queueName;
 
+    @Autowired
+    private BadgeListener badgeListener;
+
     @Bean
     public ConnectionFactory connectionFactory() {
         CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
@@ -51,7 +59,22 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public Queue playerQueue() {
+    public Queue challengeQueue() {
         return new Queue(queueName, true);
+    }
+
+    @Bean
+    public SimpleMessageListenerContainer badgeListenerContainer(
+            ConnectionFactory connectionFactory,
+            @Qualifier("challengeQueue") Queue queue,
+            @Qualifier("topicExchange") TopicExchange exchange) {
+
+        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+        container.setQueues(queue);
+        container.setMessageListener(badgeListener);
+
+        Binding binding = BindingBuilder.bind(queue).to(exchange).with("#");
+        return container;
     }
 }
