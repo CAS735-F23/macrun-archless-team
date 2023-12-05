@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -21,13 +22,15 @@ func getPlayerDTOBySessionID(sessionID, username string) (*dto.PlayerDTO, error)
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
+	log.Printf("GET Session from `%s` for `%s`", sessionID, username)
+
 	cmd := _cache.HGet(ctx,
 		fmt.Sprintf("spring:session:sessions:%s", sessionID),
-		fmt.Sprintf("sessionAttr:PLAYER_SESSION%s", username))
+		fmt.Sprintf("sessionAttr:PLAYER_SESSION_%s", username))
 
 	data, err := cmd.Bytes()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("redis cmd returned error: %s", err)
 	}
 
 	res, err := jserial.ParseSerializedObjectMinimal(data)
