@@ -1,4 +1,6 @@
+/* (C)2023 */
 package com.cas.challengeservice.entity;
+
 import com.cas.challengeservice.dto.BadgeDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,6 +15,7 @@ public class Badge {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String challenge;
     private String username;
     private String badgeName;

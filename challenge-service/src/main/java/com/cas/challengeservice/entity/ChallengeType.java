@@ -1,3 +1,4 @@
+/* (C)2023 */
 package com.cas.challengeservice.entity;
 
 import com.cas.challengeservice.dto.ChallengeTypeDto;
@@ -9,10 +10,10 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 public class ChallengeType {
-//    CARDIO("Cardio", 120L, 30L),
-//    MUSCLE("Muscle", 80L, 50L),
-//    FLEXIBILITY("Flexibility", 70L, 40L),
-//    BALANCE("Balance", 70L, 30L);
+    //    CARDIO("Cardio", 120L, 30L),
+    //    MUSCLE("Muscle", 80L, 50L),
+    //    FLEXIBILITY("Flexibility", 70L, 40L),
+    //    BALANCE("Balance", 70L, 30L);
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
