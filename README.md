@@ -17,6 +17,14 @@
 - Service Discovery ([Nacos](https://nacos.io/en-us/))
 - Message Queue ([RabbitMQ](https://www.rabbitmq.com/))
 
+## Live Demo
+
+- Watch our demo video:
+
+https://github.com/CAS735-F23/macrun-archless-team/assets/28824352/15e0d137-3a91-4c6f-91fc-181152ebafc2
+
+> Feel free to use our demo services <http://34.130.59.222:8080> on Cloud, so you don't have to build and deploy anything manually!
+
 ## How to Build
 
 ### Build (Micro-)services
