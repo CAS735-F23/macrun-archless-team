@@ -96,7 +96,7 @@ public class PlayerServiceImpl implements PlayerService {
     /**
      * player login
      *
-     * @param request login request playload
+     * @param request login request payload
      * @return 200 if login successful, 401 if password is wrong, 500 if player not found
      */
     @Override
@@ -142,23 +142,23 @@ public class PlayerServiceImpl implements PlayerService {
     public GenericMessage<Object> logout(PlayerRequest request) {
         try {
             if (!isPlayerLoggedIn(request.getUsername())) {
-                log.error("player is not logged in...");
+                log.error("Logout failed, Player is not logged in...");
                 return GenericMessage.builder()
                         .status(HttpStatus.BAD_REQUEST)
-                        .message("player is not logged in...")
+                        .message("Logout failed, player is not logged in...")
                         .build();
             }
 
             httpSession.removeAttribute(CACHE_PLAYER_SESSION + request.getUsername());
             return GenericMessage.builder()
                     .status(HttpStatus.OK)
-                    .message("player has been logged out...")
+                    .message("Logout successful, Player has been logged out...")
                     .build();
         } catch (Exception e) {
-            log.error("failed to logout player...");
+            log.error("Logout failed, failed to logout player...");
             return GenericMessage.builder()
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .message("failed to logged out user, please try again...")
+                    .message("Logout failed, please try again...")
                     .build();
         }
     }
@@ -169,7 +169,7 @@ public class PlayerServiceImpl implements PlayerService {
             log.error("player is not logged in...");
             return GenericMessage.<Object>builder()
                     .status(HttpStatus.BAD_REQUEST)
-                    .message("player is not logged in...")
+                    .message("SetLocation failed, player is not logged in....")
                     .build();
         }
 
