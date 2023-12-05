@@ -21,8 +21,8 @@
 
 ### Build (Micro-)services
 
-> We automatically build and push the image to [DockerHub](https://hub.docker.com/u/macrun) via GitHub Actions, so you
-> don't need to build it locally. But if you want to build it anyway, please run the following command:
+We automatically build and push the image to [DockerHub](https://hub.docker.com/u/macrun) via GitHub Actions, so you
+don't need to build it locally. But if you want to build it anyway, please run the following command:
 
 ```shell
 docker-compose build
@@ -30,27 +30,52 @@ docker-compose build
 
 ## How to Deploy
 
-### Deploy (Micro-)services
-
 > If you find that our service is a little slow to start, this is normal. We have health check steps to ensure that each
 > service is created and started properly before the API Gateway is launched.
+
+### Deploy (Micro-)services
+
+We have our dependent services (e.g. Redis, RabbitMQ, MariaDB) hosted on Google Cloud, so you **only** need to run the
+following command to start and deploy our main (micro-)services.
 
 ```shell
 docker-compose up -d
 ```
 
-### Deploy Dependent Services
+[//]: # (### Deploy Dependent Services)
 
-> Dependent services (such as Redis, RabbitMQ) provide basic support for our application services. In general, you **do
-> not need to** deploy these services yourself, as we have already hosted them on **Google Cloud**. However, if you want
-> to fully test the project locally, you can of course start these dependent services by running the following command:
->
-> NOTE: If you choose to skip our cloud services and do a full local test, you will also need to rebuild our image
-> yourself by first running the global text replacement to replace `34.130.59.222` with the dependent service IP (
-> e.g. `127.0.0.1`).
+[//]: # ()
+
+[//]: # (> Dependent services &#40;such as Redis, RabbitMQ&#41; provide basic support for our application services. In general, you **do)
+
+[//]: # (> not need to** deploy these services yourself, as we have already hosted them on **Google Cloud**. However, if you want)
+
+[//]: # (> to fully test the project locally, you can of course start these dependent services by running the following command:)
+
+[//]: # (>)
+
+[//]: # (> NOTE: If you choose to skip our cloud services and do a full local test, you will also need to rebuild our image)
+
+[//]: # (> yourself by first running the global text replacement to replace `34.130.59.222` with the dependent service IP &#40;)
+
+[//]: # (> e.g. `127.0.0.1`&#41;.)
+
+[//]: # ()
+
+[//]: # (```shell)
+
+[//]: # (docker-compose -f docker-compose.dep.yml up -d)
+
+[//]: # (```)
+
+### Deploy Locally
+
+However, if you are experiencing problems with our cloud services (the cloud can sometimes be a problem), or if you want
+to run our services completely on-premises, you can of course run the following command, but make sure you *undo* the
+last step.
 
 ```shell
-docker-compose -f docker-compose.dep.yml up -d
+docker-compose -f docker-compose.local.yml up -d --pull always
 ```
 
 ## How to Use
