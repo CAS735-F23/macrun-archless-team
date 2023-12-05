@@ -13,9 +13,9 @@
 - API Gateway ([Caddy](https://caddyserver.com/))
 - Health Check ([Docker](https://www.docker.com/))
 - Session Cache ([Redis](https://redis.io/))
-- Message Queue ([RabbitMQ](https://www.rabbitmq.com/))
-- Service Discovery ([Nacos](https://nacos.io/en-us/))
 - Build Test CI/CD ([Actions](https://github.com/features/actions))
+- Service Discovery ([Nacos](https://nacos.io/en-us/))
+- Message Queue ([RabbitMQ](https://www.rabbitmq.com/))
 
 ## How to Build
 
@@ -87,12 +87,24 @@ python3 ./simulator.py 127.0.0.1:8080
 
 ## How to Test
 
-### Player Service
+### Auto Test
 
-### Game Service
+We automate the testing of our services using GitHub Action (CI/CD). You can view the test results at <https://github.com/CAS735-F23/macrun-archless-team/actions/workflows/test.yml>.
 
-### Challenge Service
+### Manual Test
 
-### GEO Service
+If you want to run all the tests manually, go to the service folder and run test commands.
 
-### HRM Service
+- Java services, e.g. player-service:
+
+```shell
+cd ./player-service
+mvn test
+```
+
+- Golang services, e.g. game-service:
+
+```shell
+cd ./player-service
+go test ./...
+```
