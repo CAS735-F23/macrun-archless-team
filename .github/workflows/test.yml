@@ -10,18 +10,49 @@ on:
       - 'main'
 
 jobs:
-  build:
+  test-go:
+    name: Test Go Codes
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        service:
+          - game
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            src:
+              - '.github/workflows/test.yml'
+              - '${{ matrix.service }}-service/**'
+
+      - name: Set up Golang
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21'
+
+      - name: Run Go Test
+        if: steps.changes.outputs.src == 'true'
+        run: |
+          cd ./${{ matrix.service }}-service
+          go test ./...
+
+  test-java:
     name: Test Java Codes
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         service:
-#          - game
-#          - hrm
+          - hrm
           - player
-#          - geo
-#          - challenge
+          - geo
+          - challenge
 
     steps:
       - name: Check out code
