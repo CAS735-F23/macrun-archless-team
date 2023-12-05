@@ -13,8 +13,9 @@
 - API Gateway ([Caddy](https://caddyserver.com/))
 - Health Check ([Docker](https://www.docker.com/))
 - Session Cache ([Redis](https://redis.io/))
-- Service Discovery ([Nacos](https://nacos.io/en-us/))
 - Message Queue ([RabbitMQ](https://www.rabbitmq.com/))
+- Service Discovery ([Nacos](https://nacos.io/en-us/))
+- Build Test CI/CD ([Actions](https://github.com/features/actions))
 
 ## How to Build
 
@@ -36,7 +37,7 @@ docker-compose build
 
 ```shell
 docker-compose up -d
-````
+```
 
 ### Deploy Dependent Services
 
