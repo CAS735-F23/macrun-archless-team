@@ -97,7 +97,7 @@ func (app *App) ProcessGameAction(player *dto.PlayerDTO, action, cType string, l
 			}
 		}{}
 		if err := app.GetService("challenge-service",
-			fmt.Sprintf("/challenge/management?userHeartRate=%d&type=%s", ctx.GetHeartRate(), cType), &data); err != nil {
+			fmt.Sprintf("/challenge?userHeartRate=%d&type=%s", ctx.GetHeartRate(), cType), &data); err != nil {
 			//return nil, fmt.Errorf("get init challenge failed: %v", err)
 
 			data.Data.UserHeartRate = ((100-player.Age)/2 + player.Weight) + rand.Intn(40) - 20
