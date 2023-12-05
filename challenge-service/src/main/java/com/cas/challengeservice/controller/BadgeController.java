@@ -1,12 +1,12 @@
+/* (C)2023 */
 package com.cas.challengeservice.controller;
 
 import com.cas.challengeservice.dto.*;
 import com.cas.challengeservice.service.BadgeService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/badge")
@@ -18,7 +18,7 @@ public class BadgeController {
         this.badgeService = badgeService;
     }
 
-    @GetMapping("/get-badge-list")
+    @GetMapping("/list")
     public ResponseEntity<GenericMessage<List<BadgeDto>>> getBadgeList(
             @RequestParam String challenge, @RequestParam String username) {
         BadgeGetRequest request = new BadgeGetRequest(challenge, username);
@@ -26,14 +26,13 @@ public class BadgeController {
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
-    @PostMapping("/add-badge")
-    public ResponseEntity<GenericMessage<BadgeDto>> addBadge(
-            @RequestBody BadgeAddRequest request) {
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<GenericMessage<BadgeDto>> addBadge(@RequestBody BadgeAddRequest request) {
         GenericMessage<BadgeDto> response = badgeService.addBadge(request);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
-    @DeleteMapping("/delete-badge")
+    @RequestMapping(method = RequestMethod.DELETE)
     public ResponseEntity<GenericMessage<BadgeDto>> deleteBadge(
             @RequestBody BadgeDeleteRequest request) {
         GenericMessage<BadgeDto> response = badgeService.deleteBadge(request);

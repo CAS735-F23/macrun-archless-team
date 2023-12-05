@@ -1,3 +1,4 @@
+/* (C)2023 */
 package com.cas.challengeservice.controller;
 
 import com.cas.challengeservice.dto.*;
@@ -5,8 +6,6 @@ import com.cas.challengeservice.service.ChallengeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/challenge")
@@ -18,7 +17,7 @@ public class ChallengeController {
         this.challengeService = challengeService;
     }
 
-    @GetMapping("/management")
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<GenericMessage<ChallengeTypeDto>> getChallenge(
             @RequestParam Long userHeartRate, @RequestParam String type) {
         ChallengeGetRequest request = new ChallengeGetRequest(userHeartRate, type);
@@ -26,14 +25,14 @@ public class ChallengeController {
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
-    @PostMapping("/management")
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<GenericMessage<ChallengeTypeDto>> addChallenge(
             @RequestBody ChallengeAddRequest request) {
         GenericMessage<ChallengeTypeDto> response = challengeService.addChallenge(request);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
-    @DeleteMapping("/management")
+    @RequestMapping(method = RequestMethod.DELETE)
     public ResponseEntity<GenericMessage<ChallengeTypeDto>> deleteChallenge(
             @RequestBody ChallengeDeleteRequest request) {
         GenericMessage<ChallengeTypeDto> response = challengeService.deleteChallenge(request);

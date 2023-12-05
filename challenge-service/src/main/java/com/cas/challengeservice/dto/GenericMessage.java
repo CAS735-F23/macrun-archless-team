@@ -4,6 +4,7 @@ package com.cas.challengeservice.dto;
 import jakarta.annotation.Nullable;
 import lombok.*;
 import org.springframework.http.HttpStatusCode;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
