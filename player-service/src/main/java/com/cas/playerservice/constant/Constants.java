@@ -7,5 +7,5 @@ public class Constants {
 
     public static final String PLAYER_ACTION_SET_LOCATION = "SET_LOCATION";
 
-    public static final String CACHE_PLAYER_SESSION = "PLAYER_SESSION";
+    public static final String CACHE_PLAYER_SESSION = "PLAYER_SESSION_";
 }

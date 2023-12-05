@@ -81,7 +81,7 @@ public class HrmServiceImpl implements HrmService {
         }
     }
 
-    private Boolean sendHeartRate(String username, Integer heartRate) {
+    public Boolean sendHeartRate(String username, Integer heartRate) {
         HeartRateDto heartRateDto =
                 HeartRateDto.builder().username(username).heartRate(heartRate).build();
         MessageDto messageDto =

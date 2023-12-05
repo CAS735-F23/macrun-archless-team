@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface ChallengeTypeRepository extends JpaRepository<ChallengeType, Long> {
     Optional<ChallengeType> findByDescriptionAndUserHeartRateAndExerciseCount(String description, Long userHeartRate, Long exerciseCount);
     Optional<ChallengeType> findByDescriptionAndUserHeartRate(String description, Long userHeartRate);
+    Optional<ChallengeType> findByDescription(String description);
 }
