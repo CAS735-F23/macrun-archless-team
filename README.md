@@ -111,6 +111,6 @@ mvn test
 - Golang Services, e.g. game-service:
 
 ```shell
-cd ./player-service
+cd ./game-service
 go test ./...
 ```
