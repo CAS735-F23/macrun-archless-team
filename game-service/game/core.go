@@ -80,7 +80,7 @@ func (app *App) ProcessGameAction(player *dto.PlayerDTO, action, cType string, l
 	if err != nil {
 		return nil, err
 	}
-	ctx.Score++
+	ctx.Score += 10
 
 	resp := &dto.ActionResponseDTO{}
 
@@ -129,7 +129,7 @@ func (app *App) ProcessGameAction(player *dto.PlayerDTO, action, cType string, l
 
 			resp.SetMessage(fmt.Sprintf("You are under attack by %s, be careful! 😱", resp.Attack.Name))
 		}
-		ctx.Score -= 10 // Under Attack
+		ctx.Score -= 2 // Under Attack
 	} else /* Clear Attack */ {
 		if ctx.GetAttackMode() != "" {
 			resp.Attack.On = false
