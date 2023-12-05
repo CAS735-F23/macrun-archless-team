@@ -1,0 +1,174 @@
+version: "2.4"
+
+services:
+  nacos:
+    image: nacos/nacos-server:latest
+    container_name: nacos
+    networks:
+      - srvnet
+    environment:
+      - PREFER_HOST_MODE=hostname
+      - MODE=standalone
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+    restart: unless-stopped
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    networks:
+      - srvnet
+    environment:
+      - RABBITMQ_DEFAULT_USER=mq-cas-735
+      - RABBITMQ_DEFAULT_PASS=mq-cas-735
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    restart: unless-stopped
+
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb
+    networks:
+      - srvnet
+    environment:
+      - MARIADB_ROOT_PASSWORD=rootpwd@cas-735
+    ports:
+      - "3306:3306"
+    restart: unless-stopped
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    networks:
+      - srvnet
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    command: [ "redis-server", "--requirepass", "redis@cas-735" ]
+
+  caddy:
+    image: caddy:latest
+    depends_on:
+      game:
+        condition: service_healthy
+      player:
+        condition: service_healthy
+      hrm:
+        condition: service_healthy
+      geo:
+        condition: service_healthy
+      challenge:
+        condition: service_healthy
+    container_name: caddy
+    ports:
+      - "8080:8080"
+    networks:
+      - srvnet
+    volumes:
+      - ./api-gateway/Caddyfile:/etc/caddy/Caddyfile
+    restart: unless-stopped
+
+  player:
+    image: macrun/player-service:latest
+    build:
+      context: ./player-service
+    depends_on:
+      - rabbitmq
+      - nacos
+      - redis
+      - mariadb
+    healthcheck:
+      test: [ "CMD", "curl", "-s", "http://localhost:9000" ]
+      start_period: 30s
+    networks:
+      - srvnet
+    container_name: player
+    restart: unless-stopped
+    command: [ "java","-jar","/usr/local/lib/player-service.jar",
+               "--spring.config.additional-location=classpath:application-local.yml",
+               "--spring.profiles.active=local" ]
+
+  hrm:
+    image: macrun/hrm-service:latest
+    build:
+      context: ./hrm-service
+    depends_on:
+      - rabbitmq
+      - nacos
+      - redis
+      - mariadb
+    healthcheck:
+      test: [ "CMD", "curl", "-s", "http://localhost:9500" ]
+      start_period: 30s
+    networks:
+      - srvnet
+    container_name: hrm
+    restart: unless-stopped
+    command: [ "java","-jar","/usr/local/lib/hrm-service.jar",
+               "--spring.config.additional-location=classpath:application-local.yml",
+               "--spring.profiles.active=local" ]
+
+  game:
+    image: macrun/game-service:latest
+    build:
+      context: ./game-service
+    depends_on:
+      - rabbitmq
+      - nacos
+      - redis
+      - mariadb
+    healthcheck:
+      test: [ "CMD", "curl", "-s", "http://localhost:9090" ]
+      start_period: 5s
+    networks:
+      - srvnet
+    volumes:
+      - ./game-service/application-local.yml:/srv/application.yml:ro
+    container_name: game
+    restart: unless-stopped
+
+  geo:
+    image: macrun/geo-service:latest
+    build:
+      context: ./geo-service
+    depends_on:
+      - rabbitmq
+      - nacos
+      - redis
+      - mariadb
+    healthcheck:
+      test: [ "CMD", "curl", "-s", "http://localhost:9002" ]
+      start_period: 30s
+    networks:
+      - srvnet
+    container_name: geo
+    restart: unless-stopped
+    command: [ "java","-jar","/usr/local/lib/geo-service.jar",
+               "--spring.config.additional-location=classpath:application-local.yml",
+               "--spring.profiles.active=local" ]
+
+  challenge:
+    image: macrun/challenge-service:latest
+    build:
+      context: ./challenge-service
+    depends_on:
+      - rabbitmq
+      - nacos
+      - redis
+      - mariadb
+    healthcheck:
+      test: [ "CMD", "curl", "-s", "http://localhost:9001" ]
+      start_period: 30s
+    networks:
+      - srvnet
+    container_name: challenge
+    restart: unless-stopped
+    command: [ "java","-jar","/usr/local/lib/challenge-service.jar",
+               "--spring.config.additional-location=classpath:application-local.yml",
+               "--spring.profiles.active=local" ]
+
+networks:
+  srvnet:
+    driver: bridge
