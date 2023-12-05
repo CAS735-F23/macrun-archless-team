@@ -38,8 +38,8 @@ docker-compose build
 
 ## How to Deploy
 
-> If you find that our service is a little slow to start, this is normal. We have health check steps to ensure that each
-> service is created and started properly before the API Gateway is launched.
+> If you find that our service is a little slow (2~5 minutes)to start, this is normal. We have health check steps to
+> ensure that each service is created and started properly before the API Gateway is launched.
 
 ### Deploy (Micro-)services
 
@@ -79,7 +79,7 @@ docker-compose up -d
 ### Deploy Locally
 
 However, if you are experiencing problems with our cloud services (the cloud can sometimes be a problem), or if you want
-to run our services completely on-premises, you can of course run the following command, but make sure you *undo* the
+to run our services completely on-premises, you can of course run the following command, but make sure you **undo** the
 last step.
 
 ```shell
