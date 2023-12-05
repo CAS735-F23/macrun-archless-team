@@ -4,6 +4,9 @@ services:
   nacos:
     image: nacos/nacos-server:latest
     container_name: nacos
+    healthcheck:
+      test: [ "CMD", "curl", "-sf",
+              "http://localhost:8848/nacos/v1/ns/service/list?pageNo=1&pageSize=2" ]
     networks:
       - srvnet
     environment:
@@ -51,6 +54,8 @@ services:
   caddy:
     image: caddy:latest
     depends_on:
+      nacos:
+        condition: service_healthy
       game:
         condition: service_healthy
       player:
@@ -75,10 +80,14 @@ services:
     build:
       context: ./player-service
     depends_on:
-      - rabbitmq
-      - nacos
-      - redis
-      - mariadb
+      nacos:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+      redis:
+        condition: service_started
+      mariadb:
+        condition: service_started
     healthcheck:
       test: [ "CMD", "curl", "-s", "http://localhost:9000" ]
       start_period: 30s
@@ -95,10 +104,14 @@ services:
     build:
       context: ./hrm-service
     depends_on:
-      - rabbitmq
-      - nacos
-      - redis
-      - mariadb
+      nacos:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+      redis:
+        condition: service_started
+      mariadb:
+        condition: service_started
     healthcheck:
       test: [ "CMD", "curl", "-s", "http://localhost:9500" ]
       start_period: 30s
@@ -115,10 +128,14 @@ services:
     build:
       context: ./game-service
     depends_on:
-      - rabbitmq
-      - nacos
-      - redis
-      - mariadb
+      nacos:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+      redis:
+        condition: service_started
+      mariadb:
+        condition: service_started
     healthcheck:
       test: [ "CMD", "curl", "-s", "http://localhost:9090" ]
       start_period: 5s
@@ -134,10 +151,14 @@ services:
     build:
       context: ./geo-service
     depends_on:
-      - rabbitmq
-      - nacos
-      - redis
-      - mariadb
+      nacos:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+      redis:
+        condition: service_started
+      mariadb:
+        condition: service_started
     healthcheck:
       test: [ "CMD", "curl", "-s", "http://localhost:9002" ]
       start_period: 30s
@@ -154,10 +175,14 @@ services:
     build:
       context: ./challenge-service
     depends_on:
-      - rabbitmq
-      - nacos
-      - redis
-      - mariadb
+      nacos:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+      redis:
+        condition: service_started
+      mariadb:
+        condition: service_started
     healthcheck:
       test: [ "CMD", "curl", "-s", "http://localhost:9001" ]
       start_period: 30s

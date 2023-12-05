@@ -44,10 +44,12 @@ func (app *App) Start() {
 		log.Fatalln(err)
 	}
 
-	if err := app.reg.Register(); err != nil {
-		log.Fatalln(err)
-	}
-	defer app.reg.Deregister()
+	// WHY: game service does not need to be discovered.
+	//
+	//if err := app.reg.Register(); err != nil {
+	//	log.Fatalln(err)
+	//}
+	//defer app.reg.Deregister()
 
 	log.Printf("registered to discovery service: %s with %s:%d",
 		app.cfg.Discovery.Service, app.cfg.Server.IP, app.cfg.Server.Port)
