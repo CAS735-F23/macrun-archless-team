@@ -1,11 +1,8 @@
-/* (C)2023 */
 package com.cas.challengeservice.entity;
 
 import com.cas.challengeservice.dto.BadgeDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Data

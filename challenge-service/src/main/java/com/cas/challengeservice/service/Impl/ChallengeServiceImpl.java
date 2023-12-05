@@ -1,4 +1,3 @@
-/* (C)2023 */
 package com.cas.challengeservice.service.Impl;
 
 import com.cas.challengeservice.dto.*;
@@ -15,13 +14,6 @@ import org.springframework.stereotype.Component;
 @Log4j2
 public class ChallengeServiceImpl implements ChallengeService {
     private final ChallengeTypeRepository challengeTypeRepository;
-
-    //    private List<ChallengeTypeDto> challengeTypes = new ArrayList<>(Arrays.asList(
-    //            new ChallengeTypeDto(1L, "Cardio", 120L, 30L),
-    //            new ChallengeTypeDto(2L, "Muscle", 80L, 50L),
-    //            new ChallengeTypeDto(3L, "Flexibility", 70L, 40L),
-    //            new ChallengeTypeDto(4L, "Balance", 70L, 30L)
-    //    ));
     @Autowired
     public ChallengeServiceImpl(ChallengeTypeRepository challengeTypeRepository) {
         this.challengeTypeRepository = challengeTypeRepository;

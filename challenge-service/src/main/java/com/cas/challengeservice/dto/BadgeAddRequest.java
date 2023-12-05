@@ -1,4 +1,3 @@
-/* (C)2023 */
 package com.cas.challengeservice.dto;
 
 import lombok.*;

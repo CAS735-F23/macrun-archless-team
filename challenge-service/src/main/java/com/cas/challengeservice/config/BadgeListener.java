@@ -1,9 +1,7 @@
-/* (C)2023 */
 package com.cas.challengeservice.config;
 
 import static com.cas.challengeservice.constant.Constants.MQ_REQUEST_ADD_BADGE;
 
-import com.cas.challengeservice.constant.Constants.*;
 import com.cas.challengeservice.dto.BadgeAddRequest;
 import com.cas.challengeservice.dto.MessageDto;
 import com.cas.challengeservice.service.BadgeService;

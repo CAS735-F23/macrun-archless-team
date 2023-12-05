@@ -1,8 +1,6 @@
 package com.cas.geoservice.entity;
 
 import com.cas.geoservice.dto.PlaceDto;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.*;
 import lombok.*;
 

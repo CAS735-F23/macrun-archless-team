@@ -1,4 +1,3 @@
-/* (C)2023 */
 package com.cas.challengeservice.entity;
 
 import com.cas.challengeservice.dto.ChallengeTypeDto;

@@ -1,4 +1,3 @@
-/* (C)2023 */
 package com.cas.geoservice.dto;
 
 import jakarta.annotation.Nullable;
