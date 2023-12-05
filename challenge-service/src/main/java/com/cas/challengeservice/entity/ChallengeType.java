@@ -2,6 +2,7 @@ package com.cas.challengeservice.entity;
 
 import com.cas.challengeservice.dto.ChallengeTypeDto;
 import jakarta.persistence.*;
+import jdk.jshell.Snippet;
 import lombok.*;
 
 @Data
