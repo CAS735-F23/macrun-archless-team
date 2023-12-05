@@ -1,5 +1,9 @@
+/* (C)2023 */
 package com.cas.challengeservice.config;
 
+import static com.cas.challengeservice.constant.Constants.MQ_REQUEST_ADD_BADGE;
+
+import com.cas.challengeservice.constant.Constants.*;
 import com.cas.challengeservice.dto.BadgeAddRequest;
 import com.cas.challengeservice.dto.MessageDto;
 import com.cas.challengeservice.service.BadgeService;
@@ -9,9 +13,6 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.cas.challengeservice.constant.Constants.*;
-
-import static com.cas.challengeservice.constant.Constants.MQ_REQUEST_ADD_BADGE;
 
 @Component
 @Log4j2

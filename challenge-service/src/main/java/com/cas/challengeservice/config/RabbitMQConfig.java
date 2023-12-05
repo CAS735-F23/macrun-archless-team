@@ -35,8 +35,7 @@ public class RabbitMQConfig {
     @Value("${spring.rabbitmq.queue}")
     private String queueName;
 
-    @Autowired
-    private BadgeListener badgeListener;
+    @Autowired private BadgeListener badgeListener;
 
     @Bean
     public ConnectionFactory connectionFactory() {
