@@ -1,0 +1,16 @@
+server:
+  ip:
+  port: 9090
+
+discovery:
+  host: nacos
+  port: 8848
+  service: game-service
+
+rabbitmq:
+  url: amqp://mq-cas-735:mq-cas-735@rabbitmq:5672/
+
+redis:
+  host: redis
+  port: 6379
+  password: redis@cas-735

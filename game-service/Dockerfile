@@ -11,6 +11,7 @@ WORKDIR /srv
 
 COPY --from=builder /src/game-service /srv/game-service
 COPY --from=builder /src/application.yml /srv/application.yml
+COPY --from=builder /src/application-local.yml /srv/application-local.yml
 
 RUN apk add --no-cache curl
 
