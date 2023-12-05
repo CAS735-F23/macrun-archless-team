@@ -1,9 +1,13 @@
 package com.cas.geoservice.entity;
 
+import com.cas.geoservice.dto.PlaceDto;
+import com.cas.geoservice.dto.TrailDto;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,9 +21,18 @@ public class Trail {
     private Long id;
     private String zone;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "trail")
+    @OneToMany(mappedBy = "trail", cascade = CascadeType.ALL)
     private List<Place> path;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "trail")
-    private List<Place> places;
+    public TrailDto toDto() {
+        List<PlaceDto> placeDtos = path.stream()
+                .map(Place::toDto)
+                .collect(Collectors.toList());
+
+        return TrailDto.builder()
+                .id(id)
+                .zone(zone)
+                .path(placeDtos)
+                .build();
+    }
 }

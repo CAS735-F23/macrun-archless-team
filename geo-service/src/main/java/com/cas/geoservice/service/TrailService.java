@@ -1,8 +1,7 @@
 package com.cas.geoservice.service;
 
-import com.cas.geoservice.dto.TrailDto;
+import com.cas.geoservice.dto.*;
 
 public interface TrailService {
-    TrailDto getTrail(String zone);
-//    TrailDto createTrail(TrailDto trailDto);
+    GenericMessage<TrailDto> getTrail(TrailGetRequest request);
 }

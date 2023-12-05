@@ -1,61 +1,45 @@
 package com.cas.geoservice.service.Impl;
 
-import com.cas.geoservice.dto.CoordinateDto;
-import com.cas.geoservice.dto.PlaceDto;
-import com.cas.geoservice.dto.TrailDto;
-import com.cas.geoservice.entity.Coordinate;
-import com.cas.geoservice.entity.Place;
+import com.cas.geoservice.dto.*;
 import com.cas.geoservice.entity.Trail;
 import com.cas.geoservice.repository.TrailRepository;
 import com.cas.geoservice.service.TrailService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class TrailServiceImpl implements TrailService {
     private final TrailRepository trailRepository;
     @Autowired
-    private ModelMapper modelMapper;
-    @Autowired
-    public TrailServiceImpl(TrailRepository trailRepository, ModelMapper modelMapper) {
+    public TrailServiceImpl(TrailRepository trailRepository) {
         this.trailRepository = trailRepository;
     }
 
     @Override
-    public TrailDto getTrail(String zone) {
-//        Trail trail = trailRepository.findByZone(zone);
-//        if (trail == null) {
-//            return null;
-//        }
-//
-//        TrailDto trailDto = modelMapper.map(trail, TrailDto.class);
-//
-//        // Map each Coordinate to a CoordinateDto
-//        List<CoordinateDto> coordinateDtoList = trail.getPath().stream()
-//                .map(coordinate -> modelMapper.map(coordinate, CoordinateDto.class))
-//                .collect(Collectors.toList());
-//        trailDto.setPath(coordinateDtoList);
-//
-//        return trailDto;
-        // Hardcoded path coordinates
-        // Hardcoded path coordinates
+    public GenericMessage<TrailDto> getTrail(TrailGetRequest request) {
+        Optional<Trail> matchingTrail = trailRepository.findByZone(request.getZone());
 
-        List<PlaceDto> path = Arrays.asList(
-                new PlaceDto(1L, "shelter1", new CoordinateDto(2L, 14.0, 3.0), "shelter"),
-                new PlaceDto(2L, "shelter2", new CoordinateDto(3L, 18.0, 6.0), "shelter"),
-                new PlaceDto(3L, "shelter3", new CoordinateDto(4L, 14.0, 11.0), "shelter"),
-                new PlaceDto(4L, "shelter4", new CoordinateDto(5L, 45.0, 36.0), "shelter"),
-                new PlaceDto(5L, "shelter5", new CoordinateDto(6L, 7.0, 89.0), "shelter")
-        );
-
-        // Hardcoded places
-        List<PlaceDto> places = path;
-
-        return new TrailDto(1L, zone, path, places);
+        if (matchingTrail.isPresent()) {
+            Trail trail = matchingTrail.get();
+            return GenericMessage.<TrailDto>builder()
+                    .status(HttpStatus.OK)
+                    .message("Trail found successfully, and returned")
+                    .data(trail.toDto())
+                    .build();
+        } else {
+            return GenericMessage.<TrailDto>builder()
+                    .status(HttpStatus.NOT_FOUND)
+                    .message("No trail associated with this zone")
+                    .build();
+        }
     }
 }

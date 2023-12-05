@@ -5,13 +5,16 @@ import jakarta.persistence.Id;
 import lombok.*;
 
 @Data
+@Builder(toBuilder = true)
 @AllArgsConstructor
+@Getter
 @NoArgsConstructor
+@EqualsAndHashCode
 public class PlaceDto {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private CoordinateDto coordinate;
     private String type;
+    private Double CoordinateX;
+    private Double CoordinateY;
+    private Long trailId;
 }
