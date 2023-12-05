@@ -48,7 +48,10 @@ def simulate(base: str):
         }) as r:
             print(f'>>> Starting game in Zone: MAC ({x}, {y})')
             pprint(data := r.json())
-            shelters = data['data']['shelters']
+            try:
+                shelters = data['data']['shelters']
+            except KeyError:
+                shelters = []
             time.sleep(1)
 
         for i in range(10):
@@ -104,4 +107,7 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        exit(0)
