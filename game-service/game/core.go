@@ -1,6 +1,7 @@
 package game
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"math"
@@ -10,6 +11,7 @@ import (
 	"game-service/consts"
 	"game-service/dto"
 	"game-service/game/context"
+	"game-service/message"
 )
 
 func (app *App) StartGame(player *dto.PlayerDTO, zone string, location dto.PointDTO) error {
@@ -159,6 +161,7 @@ func (app *App) ProcessGameAction(player *dto.PlayerDTO, action, cType string, l
 						ctx.UpdateAttackMode()
 						resp.Attack.On = false
 						resp.Attack.Name = ""
+						ctx.ShelterCount++
 						break
 					}
 					resp.SetMessage("(Find a shelter soon!)")
@@ -169,6 +172,7 @@ func (app *App) ProcessGameAction(player *dto.PlayerDTO, action, cType string, l
 					ctx.UpdateAttackMode()
 					resp.Attack.On = false
 					resp.Attack.Name = ""
+					ctx.EscapeCount++
 				} else {
 					resp.SetMessage(resp.GetMessage() + fmt.Sprintf("(Run, %s run!)", player.Username))
 				}
@@ -178,6 +182,7 @@ func (app *App) ProcessGameAction(player *dto.PlayerDTO, action, cType string, l
 					ctx.UpdateAttackMode()
 					resp.Attack.On = false
 					resp.Attack.Name = ""
+					ctx.FightCount++
 				} else {
 					resp.SetMessage(resp.GetMessage() + "(Fight it back! Go go go!)")
 				}
@@ -203,12 +208,50 @@ func (app *App) StopGame(username string) (*context.Context, error) {
 		return nil, err
 	}
 
-	// make a shallow copy.
-	co := &context.Context{
-		Player: ctx.Player,
-		Score:  ctx.Score,
+	// Add Badges for player.
+	for _, badge := range []struct {
+		curCount, reqCount int
+		name               string
+	}{
+		{ctx.EscapeCount, 2, consts.BadgeRunner},
+		{ctx.FightCount, 2, consts.BadgeFighter},
+		{ctx.ShelterCount, 2, consts.BadgeHider},
+	} {
+		if badge.curCount >= badge.reqCount {
+			badgeReq := &dto.BadgeActionDTO{
+				ActionDTO: dto.ActionDTO{
+					Action:  consts.ActionAddBadge,
+					Message: "add badge",
+				},
+			}
+
+			badgeReq.BadgeAddRequest.BadgeName = badge.name
+			badgeReq.BadgeAddRequest.Username = username
+			badgeReq.BadgeAddRequest.Challenge = ctx.Working.Type
+
+			data, err := json.Marshal(badgeReq)
+			if err != nil {
+				log.Printf("JSON encode badge request failed: %v", err)
+			}
+			log.Printf("New Badge JSON: %s", data)
+
+			// Send Player Badge to Challenge with MQ Event.
+			if err := message.SendMessageToQueue(app.cfg.RabbitMQ.URL, "", consts.GameToChallengeQueue, string(data)); err != nil {
+				log.Printf("Send message to %s: %v", consts.GameToChallengeQueue, err)
+			}
+		}
 	}
 
+	// Make a shallow copy.
+	co := &context.Context{
+		Player:       ctx.Player,
+		Score:        ctx.Score,
+		FightCount:   ctx.FightCount,
+		EscapeCount:  ctx.EscapeCount,
+		ShelterCount: ctx.ShelterCount,
+	}
+
+	// Cleanup context.
 	ctx.Close()
 
 	if err = app.DeleteContext(username); err != nil {

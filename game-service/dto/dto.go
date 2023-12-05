@@ -13,8 +13,17 @@ type HeartRateDTO struct {
 }
 
 type ActionDTO struct {
-	Action  string
-	Message string
+	Action  string `json:"action"`
+	Message string `json:"message"`
+}
+
+type BadgeActionDTO struct {
+	ActionDTO
+	BadgeAddRequest struct {
+		Challenge string `json:"challenge"`
+		Username  string `json:"username"`
+		BadgeName string `json:"badgeName"`
+	} `json:"badgeAddRequest"`
 }
 
 type PointDTO struct {

@@ -12,6 +12,10 @@ type Context struct {
 	location   dto.PointDTO
 	attackMode string
 
+	FightCount   int
+	EscapeCount  int
+	ShelterCount int
+
 	Player  *dto.PlayerDTO
 	Working struct {
 		Type              string
