@@ -29,7 +29,3 @@ func (app *App) GetService(service, path string, v any) error {
 
 	return json.NewDecoder(res.Body).Decode(v)
 }
-
-func (app *App) PostService(service, path string, body any) {
-
-}

@@ -94,7 +94,7 @@ python3 ./simulator.py 127.0.0.1:8080
 
 We automate the testing of our services using GitHub Actions (CI/CD). You can view the test results at:
 
-- <https://github.com/CAS735-F23/macrun-archless-team/actions/workflows/test.yml>.
+- <https://github.com/CAS735-F23/macrun-archless-team/actions/workflows/test.yml>
 
 ### Manual Test
 
