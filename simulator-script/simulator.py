@@ -87,6 +87,14 @@ def simulate(base: str):
             pprint(r.text)
             time.sleep(1)
 
+        with session.get(url=urljoin(base, '/badge/list'), params={
+            "username": "leon",
+            "challenge": "Cardio",
+        }) as r:
+            print('>>> Get badge list for Leon...')
+            pprint(r.json())
+            time.sleep(1)
+
         with session.post(url=urljoin(base, '/player/logout'), json={
             "username": "leon"
         }) as r:
