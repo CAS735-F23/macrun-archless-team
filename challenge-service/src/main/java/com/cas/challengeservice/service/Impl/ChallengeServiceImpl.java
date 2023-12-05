@@ -22,7 +22,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     /**
      * get challenge
      *
-     * @param request getChallenge request playload
+     * @param request getChallenge request payload
      * @return 200 if getChallenge successful, 401 if Heart rate is not in the range of this
      *     challenge typed, 404 if No challenge type associated with this type
      */
@@ -57,7 +57,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     /**
      * add challenge
      *
-     * @param request createChallenge request playload
+     * @param request createChallenge request payload
      * @return 200 if createChallenge successful, 409 if challenge already exists
      */
     @Override
@@ -90,7 +90,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     /**
      * delete challenge
      *
-     * @param request deleteChallenge request playload
+     * @param request deleteChallenge request payload
      * @return 200 if deleteChallenge successful, 404 if challenge not found
      */
     @Override
