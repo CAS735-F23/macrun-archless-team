@@ -9,7 +9,7 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://34.130.59.222:3306/geo-service?createDatabaseIfNotExist=true
     username: root
-    password: root
+    password: rootpwd@cas-735
   jpa:
     hibernate:
       ddl-auto: create
@@ -25,14 +25,15 @@ spring:
   rabbitmq:
     host: 34.130.59.222
     port: 5672
-    username: guest
-    password: guest
+    username: mq-cas-735
+    password: mq-cas-735
     exchange: geo-service
     queue: geo
   data:
     redis:
       host: 34.130.59.222
       port: 6379
+      password: redis@cas-735
 
 server:
   port: 9002

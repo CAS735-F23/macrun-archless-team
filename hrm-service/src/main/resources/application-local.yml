@@ -11,7 +11,7 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://mariadb:3306/player-service?createDatabaseIfNotExist=true
     username: root
-    password: root
+    password: rootpwd@cas-735
   jpa:
     hibernate:
       ddl-auto: update
@@ -26,8 +26,8 @@ spring:
   rabbitmq:
     host: rabbitmq
     port: 5672
-    username: guest
-    password: guest
+    username: mq-cas-735
+    password: mq-cas-735
     exchange: hrm-service
     game:
       exchange: game-service
@@ -36,6 +36,7 @@ spring:
     redis:
       host: redis
       port: 6379
+      password: redis@cas-735
 
 server:
   port: 9500

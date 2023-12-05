@@ -21,8 +21,8 @@ func New(app *game.App) *gin.Engine {
 		Addr: net.JoinHostPort(
 			app.Config().Redis.Host,
 			strconv.Itoa(app.Config().Redis.Port)),
-		Password: "", // no password set
-		DB:       0,  // use default DB
+		Password: app.Config().Redis.Password, // no password set
+		DB:       0,                           // use default DB
 	})
 
 	// Init GIN Engine

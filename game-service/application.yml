@@ -8,8 +8,9 @@ discovery:
   service: game-service
 
 rabbitmq:
-  url: amqp://guest:guest@34.130.59.222:5672/
+  url: amqp://mq-cas-735:mq-cas-735@34.130.59.222:5672/
 
 redis:
   host: 34.130.59.222
   port: 6379
+  password: redis@cas-735

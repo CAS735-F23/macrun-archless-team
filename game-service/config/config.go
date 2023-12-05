@@ -20,8 +20,9 @@ type Config struct {
 		URL string
 	}
 	Redis struct {
-		Host string
-		Port int
+		Host     string
+		Port     int
+		Password string
 	}
 }
 
