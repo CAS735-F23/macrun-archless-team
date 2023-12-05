@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    name: Test
+    name: Test Java Codes
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -32,7 +32,7 @@ jobs:
         with:
           filters: |
             src:
-              - '.github/workflows/**'
+              - '.github/workflows/test.yml'
               - '${{ matrix.service }}-service/**'
 
       - name: Set up JDK 21 for x64
