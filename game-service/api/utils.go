@@ -30,7 +30,7 @@ func getPlayerDTOBySessionID(sessionID, username string) (*dto.PlayerDTO, error)
 
 	data, err := cmd.Bytes()
 	if err != nil {
-		return nil, fmt.Errorf("redis cmd returned error: %s", err)
+		return nil, fmt.Errorf("redis cmd returned error: %s, re-login might required", err)
 	}
 
 	res, err := jserial.ParseSerializedObjectMinimal(data)
