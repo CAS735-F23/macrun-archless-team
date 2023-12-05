@@ -6,6 +6,13 @@ concurrency:
 
 on:
   push:
+    paths:
+      - '.github/workflows/**'
+      - 'challenge-service/**'
+      - 'player-service/**'
+      - 'game-service/**'
+      - 'geo-service/**'
+      - 'hrm-service/**'
     branches:
       - 'main'
 
