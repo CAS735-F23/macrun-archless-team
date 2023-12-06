@@ -64,7 +64,6 @@ func (app *App) Start() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	defer app.hrmMQ.Close()
 
 	go func() {
 		log.Printf("listen to %s queue.", consts.HRMToGameQueue)
