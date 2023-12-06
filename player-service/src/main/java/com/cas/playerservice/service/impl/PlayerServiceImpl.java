@@ -228,7 +228,7 @@ public class PlayerServiceImpl implements PlayerService {
         return Objects.nonNull(httpSession.getAttribute(CACHE_PLAYER_SESSION + username));
     }
 
-    private static String hashPassword(String password) {
+    public String hashPassword(String password) {
         try {
             // Use SHA-256 algorithm for hashing
             MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");

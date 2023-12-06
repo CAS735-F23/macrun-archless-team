@@ -81,7 +81,7 @@ public class PlayerServiceTests {
 
     @Test
     public void testLoginSuccess() {
-        Player player = Player.builder().username("username").password("password").build();
+        Player player = Player.builder().username("username").password(playerServiceImpl.hashPassword("password")).build();
         when(playerRepository.findByUsername(any())).thenReturn(Optional.ofNullable(player));
 
         GenericMessage<PlayerDto> result = playerServiceImpl.login(request);
