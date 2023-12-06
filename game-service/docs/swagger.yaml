@@ -68,6 +68,12 @@ paths:
         required: true
         schema:
           type: string
+      - description: player current location
+        in: body
+        name: location
+        required: true
+        schema:
+          $ref: '#/definitions/dto.PointDTO'
       produces:
       - application/json
       responses:

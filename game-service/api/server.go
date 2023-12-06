@@ -41,14 +41,21 @@ func New(app *game.App) *gin.Engine {
 	// index page
 	r.GET("/", getIndex())
 
-	docs.SwaggerInfo.BasePath = "/game"
-	r.GET("/game-swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
-
 	gm := r.Group("/game")
 	{
 		gm.POST("/start", handleGameStart(app))
 		gm.POST("/stop", handleGameStop(app))
 		gm.POST("/action", handleGameAction(app))
+	}
+
+	docs.SwaggerInfo.BasePath = "/game"
+
+	sw := r.Group("/game-swagger")
+	{
+		sw.GET("/index.html", func(c *gin.Context) {
+			c.Redirect(http.StatusTemporaryRedirect, "/game-swagger/swagger-ui/index.html")
+		})
+		sw.GET("/swagger-ui/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	}
 
 	return r
