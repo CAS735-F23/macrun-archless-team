@@ -1,4 +1,4 @@
-# MacRun Services
+# MacRun! Services
 
 - [Project Assignment Description](.project-docs/Project_Assignment_Description.pdf)
 - [Case Study (Fall 23): ACME Run](.project-docs/Case_Study_Fall2023.pdf)
