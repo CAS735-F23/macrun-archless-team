@@ -73,7 +73,13 @@ public class RabbitMQConfig {
         container.setQueues(queue);
         container.setMessageListener(zoneListener);
 
-        Binding binding = BindingBuilder.bind(queue).to(exchange).with("#");
         return container;
+    }
+
+    @Bean
+    public Binding playerGeoBinding(
+            @Qualifier("geoQueue") Queue queue,
+            @Qualifier("topicExchange") TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(queueName);
     }
 }

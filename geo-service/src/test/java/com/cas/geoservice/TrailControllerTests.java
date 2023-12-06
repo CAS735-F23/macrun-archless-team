@@ -1,3 +1,4 @@
+/* (C)2023 */
 package com.cas.geoservice;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -22,6 +23,7 @@ public class TrailControllerTests {
 
     private GenericMessage<TrailDto> message;
     private String username;
+
     @BeforeEach
     public void setUp() {
         username = "username";

@@ -11,7 +11,10 @@ import com.cas.playerservice.service.PlayerService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpSession;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Objects;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +74,8 @@ public class PlayerServiceImpl implements PlayerService {
         }
 
         try {
+            String hashedPassword = hashPassword(player.getPassword());
+            player.setPassword(hashedPassword);
             playerRepository.save(player);
 
             log.info("Player Registration successful for : [{}]", player.getUsername());
@@ -111,7 +116,7 @@ public class PlayerServiceImpl implements PlayerService {
                             .message("No player associated with this username, please check...")
                             .build();
         } else {
-            if (Objects.equals(player.getPassword(), request.getPassword())) {
+            if (Objects.equals(player.getPassword(), hashPassword(request.getPassword()))) {
                 String playerJson;
                 try {
                     playerJson = objectMapper.writeValueAsString(player.toDto());
@@ -221,5 +226,19 @@ public class PlayerServiceImpl implements PlayerService {
     public Boolean isPlayerLoggedIn(String username) {
         log.info("check if user is logged in - " + CACHE_PLAYER_SESSION + username);
         return Objects.nonNull(httpSession.getAttribute(CACHE_PLAYER_SESSION + username));
+    }
+
+    private static String hashPassword(String password) {
+        try {
+            // Use SHA-256 algorithm for hashing
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+            byte[] hashedPassword = messageDigest.digest(password.getBytes());
+
+            // Convert the hashed password to a Base64-encoded string
+            return Base64.getEncoder().encodeToString(hashedPassword);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
