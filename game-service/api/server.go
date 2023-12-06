@@ -9,8 +9,11 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/redis/go-redis/v9"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 
 	"game-service/consts"
+	"game-service/docs"
 	"game-service/game"
 )
 
@@ -38,6 +41,9 @@ func New(app *game.App) *gin.Engine {
 	// index page
 	r.GET("/", getIndex())
 
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+
+	docs.SwaggerInfo.BasePath = "/game"
 	gm := r.Group("/game")
 	{
 		gm.POST("/start", handleGameStart(app))
