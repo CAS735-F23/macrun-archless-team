@@ -41,8 +41,6 @@ const (
 	AttackModeBeaver = "Coot Beaver"
 )
 
-var AttackModes = []string{AttackModeProf, AttackModeBeaver}
-
 const (
 	BadgeFighter = "badge_fighter"
 	BadgeHider   = "badge_hider"
