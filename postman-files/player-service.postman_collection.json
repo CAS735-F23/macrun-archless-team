@@ -1,0 +1,170 @@
+{
+	"info": {
+		"_postman_id": "807de337-44cd-4dae-aee9-ad754845bc5e",
+		"name": "player-service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10200332",
+		"_collection_link": "https://restless-zodiac-981332.postman.co/workspace/CAS735-Project~6fb8367e-e817-4b28-9058-10c87c160c8f/collection/10200332-807de337-44cd-4dae-aee9-ad754845bc5e?action=share&source=collection_link&creator=10200332"
+	},
+	"item": [
+		{
+			"name": "player register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"leon\",\n    \"password\": \"leon\",\n    \"email\": \"test@test.com\",\n    \"weight\": 58,\n    \"age\": 18\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/{{PLAYER_URI}}/register",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"{{PLAYER_URI}}",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "player login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"leon\",\n    \"password\": \"leon\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/{{PLAYER_URI}}/login",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"{{PLAYER_URI}}",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "player logout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"leon\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/{{PLAYER_URI}}/logout",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"{{PLAYER_URI}}",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "is logged in",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/{{PLAYER_URI}}/leon/is-logged-in",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"{{PLAYER_URI}}",
+						"leon",
+						"is-logged-in"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "set location",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"leon\",\n    \"zone\": \"mac\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/{{PLAYER_URI}}/set-zone",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"{{PLAYER_URI}}",
+						"set-zone"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL",
+			"value": "http://localhost:9000",
+			"type": "string"
+		},
+		{
+			"key": "PLAYER_URI",
+			"value": "player",
+			"type": "string"
+		}
+	]
+}

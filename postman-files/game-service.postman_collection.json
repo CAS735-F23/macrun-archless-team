@@ -1,0 +1,122 @@
+{
+	"info": {
+		"_postman_id": "99b94f16-1ad4-4b46-b6cc-0d9c966e6cc0",
+		"name": "game-service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10200332",
+		"_collection_link": "https://restless-zodiac-981332.postman.co/workspace/CAS735-Project~6fb8367e-e817-4b28-9058-10c87c160c8f/collection/10200332-99b94f16-1ad4-4b46-b6cc-0d9c966e6cc0?action=share&source=collection_link&creator=10200332"
+	},
+	"item": [
+		{
+			"name": "game start",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"leon\",\n    \"location\": {\n        \"x\": 10,\n        \"y\": 10\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/{{GAME_URI}}/start",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"{{GAME_URI}}",
+						"start"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "game action",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"leon\",\n    \"action\": \"Escaping\",\n    \"type\": \"Cardio\",\n    \"location\": {\n        \"x\": 1200,\n        \"y\": 100\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/{{GAME_URI}}/action",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"{{GAME_URI}}",
+						"action"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "game stop",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"leon\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/{{GAME_URI}}/stop",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"{{GAME_URI}}",
+						"stop"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL",
+			"value": "http://localhost:8080"
+		},
+		{
+			"key": "GAME_URI",
+			"value": "game"
+		}
+	]
+}

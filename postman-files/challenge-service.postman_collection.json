@@ -1,0 +1,210 @@
+{
+	"info": {
+		"_postman_id": "5c96b9c7-63b3-444d-b231-373119e610dc",
+		"name": "challenge-service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10200332",
+		"_collection_link": "https://restless-zodiac-981332.postman.co/workspace/CAS735-Project~6fb8367e-e817-4b28-9058-10c87c160c8f/collection/10200332-5c96b9c7-63b3-444d-b231-373119e610dc?action=share&source=collection_link&creator=10200332"
+	},
+	"item": [
+		{
+			"name": "badge",
+			"item": [
+				{
+					"name": "list all badges",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/{{BADGE_URL}}/list?challenge=Cardio&username=leon",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"{{BADGE_URL}}",
+								"list"
+							],
+							"query": [
+								{
+									"key": "challenge",
+									"value": "Cardio"
+								},
+								{
+									"key": "username",
+									"value": "leon"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add badge",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"challenge\": \"Cardio\",\n    \"username\": \"leon\",\n    \"badgeName\": \"Cardio_test1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/{{BADGE_URL}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"{{BADGE_URL}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete badge",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"challenge\": \"Cardio\",\n    \"username\": \"leon\",\n    \"badgeName\": \"Cardio_test1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/{{BADGE_URL}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"{{BADGE_URL}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "get challenge",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/{{CHALLENGE_URI}}?userHeartRate=120&type=Cardio",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"{{CHALLENGE_URI}}"
+					],
+					"query": [
+						{
+							"key": "userHeartRate",
+							"value": "120"
+						},
+						{
+							"key": "type",
+							"value": "Cardio"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add challenge",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userHeartRate\": 200,\n    \"exerciseCount\": 100,\n    \"type\": \"HalloWeek\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/{{CHALLENGE_URI}}",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"{{CHALLENGE_URI}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete challenge",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"HalloWeek\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/{{CHALLENGE_URI}}",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"{{CHALLENGE_URI}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL",
+			"value": "http://localhost:9001"
+		},
+		{
+			"key": "CHALLENGE_URI",
+			"value": "challenge"
+		},
+		{
+			"key": "BADGE_URL",
+			"value": "badge",
+			"type": "string"
+		}
+	]
+}

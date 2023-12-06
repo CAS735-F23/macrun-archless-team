@@ -1,0 +1,65 @@
+{
+	"info": {
+		"_postman_id": "4c46637d-0892-4f6f-9cda-c77386f0bde7",
+		"name": "geo-service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10200332",
+		"_collection_link": "https://restless-zodiac-981332.postman.co/workspace/CAS735-Project~6fb8367e-e817-4b28-9058-10c87c160c8f/collection/10200332-4c46637d-0892-4f6f-9cda-c77386f0bde7?action=share&source=collection_link&creator=10200332"
+	},
+	"item": [
+		{
+			"name": "get trail",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/{{GEO_URI}}/trail?username=leon",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"{{GEO_URI}}",
+						"trail"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "leon"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL",
+			"value": "http://localhost:9002"
+		},
+		{
+			"key": "GEO_URI",
+			"value": "geo"
+		}
+	]
+}
