@@ -22,6 +22,7 @@ type startQuery struct {
 // @Accept json
 // @Produce json
 // @Param   username  body      string  true  "player username"
+// @Param   location  body      dto.PointDTO  true  "player current location"
 // @Success 200 {object} responseMessage
 // @Router /game/start [post]
 func handleGameStart(app *game.App) gin.HandlerFunc {
