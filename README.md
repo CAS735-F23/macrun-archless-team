@@ -1,4 +1,4 @@
-# MacRun! Services
+# MacRun Services
 
 - [Project Assignment Description](.project-docs/Project_Assignment_Description.pdf)
 - [Case Study (Fall 23): ACME Run](.project-docs/Case_Study_Fall2023.pdf)
@@ -8,17 +8,18 @@
 
 - [Features](#features)
 - [Live Demo](#live-demo)
+    - [Swagger API](#swagger-api)
 - [How to Build](#how-to-build)
-  - [Build (Micro-)services](#build-micro-services)
+    - [Build (Micro-)services](#build-micro-services)
 - [How to Deploy](#how-to-deploy)
-  - [Deploy (Micro-)services](#deploy-micro-services)
-  - [Deploy Locally](#deploy-locally)
+    - [Deploy (Micro-)services](#deploy-micro-services)
+    - [Deploy Locally](#deploy-locally)
 - [How to Use](#how-to-use)
-  - [With Simulator Script](#with-simulator-script)
-  - [With Postman](#with-postman)
+    - [With Simulator Script](#with-simulator-script)
+    - [With Postman](#with-postman)
 - [How to Test](#how-to-test)
-  - [Auto Test](#auto-test)
-  - [Manual Test](#manual-test)
+    - [Auto Test](#auto-test)
+    - [Manual Test](#manual-test)
 
 ## Features
 
@@ -35,7 +36,24 @@
 
 https://github.com/CAS735-F23/macrun-archless-team/assets/28824352/15e0d137-3a91-4c6f-91fc-181152ebafc2
 
-> Feel free to use our demo services <http://34.130.59.222:8080> on Cloud, so you don't have to build and deploy anything manually!
+- Feel free to use our demo services <http://34.130.59.222:8080> on Cloud, so you don't have to build and deploy
+  anything manually! e.g.:
+
+```shell
+pip3 install -U requests
+python3 ./simulator-script/simulator.py 34.130.59.222:8080
+```
+
+### Swagger API
+
+> These Swagger APIs are also available if you are deploying our services locally, and can be accessed at
+> link <http://127.0.0.1:8080/> with corresponding paths.
+
+- **Player Service**: <http://34.130.59.222:8080/player-swagger/index.html>
+- **Game Service**: <http://34.130.59.222:8080/game-swagger/index.html>
+- **Challenge Service**: <http://34.130.59.222:8080/challenge-swagger/index.html>
+- **GEO Service**: <http://34.130.59.222:8080/geo-swagger/index.html>
+- **HRM Service**: <http://34.130.59.222:8080/hrm-swagger/index.html>
 
 ## How to Build
 
