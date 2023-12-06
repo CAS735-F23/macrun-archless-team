@@ -15,6 +15,16 @@ type startQuery struct {
 	Location dto.PointDTO `form:"location"`
 }
 
+// handleGameStart godoc
+// @Summary Start Game Session
+// @Schemes
+// @Description start game
+// @Tags
+// @Accept json
+// @Produce json
+// @Param   username  body      string  true  "player username"
+// @Success 200 {object} responseMessage
+// @Router /game/start [post]
 func handleGameStart(app *game.App) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		query := &startQuery{}
@@ -54,6 +64,16 @@ type stopQuery struct {
 	Username string `form:"username" binding:"required"`
 }
 
+// handleGameStop godoc
+// @Summary Stop Game Session
+// @Schemes
+// @Description stop game
+// @Tags
+// @Accept json
+// @Produce json
+// @Param   username  body      string  true  "player username"
+// @Success 200 {object} responseMessage
+// @Router /game/stop [post]
 func handleGameStop(app *game.App) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		query := &stopQuery{}
@@ -89,6 +109,19 @@ type actionQuery struct {
 	Location dto.PointDTO `form:"location"`
 }
 
+// handleGameAction godoc
+// @Summary Update Game Action
+// @Schemes
+// @Description update game action
+// @Tags
+// @Accept json
+// @Produce json
+// @Param   username  body      string  true  "player username"
+// @Param   action    body      string  false  "player action"
+// @Param   type      body      string  true  "player workout type"
+// @Param   location  body      dto.PointDTO  true  "player current location"
+// @Success 200 {object} responseMessage
+// @Router /game/action [post]
 func handleGameAction(app *game.App) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		query := &actionQuery{}

@@ -1,0 +1,103 @@
+definitions:
+  api.responseMessage:
+    properties:
+      data: {}
+      message:
+        type: string
+      status:
+        type: string
+    type: object
+  dto.PointDTO:
+    properties:
+      x:
+        type: number
+      "y":
+        type: number
+    type: object
+info:
+  contact: {}
+paths:
+  /game/action:
+    post:
+      consumes:
+      - application/json
+      description: update game action
+      parameters:
+      - description: player username
+        in: body
+        name: username
+        required: true
+        schema:
+          type: string
+      - description: player action
+        in: body
+        name: action
+        schema:
+          type: string
+      - description: player workout type
+        in: body
+        name: type
+        required: true
+        schema:
+          type: string
+      - description: player current location
+        in: body
+        name: location
+        required: true
+        schema:
+          $ref: '#/definitions/dto.PointDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.responseMessage'
+      summary: Update Game Action
+      tags:
+      - ""
+  /game/start:
+    post:
+      consumes:
+      - application/json
+      description: start game
+      parameters:
+      - description: player username
+        in: body
+        name: username
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.responseMessage'
+      summary: Start Game Session
+      tags:
+      - ""
+  /game/stop:
+    post:
+      consumes:
+      - application/json
+      description: stop game
+      parameters:
+      - description: player username
+        in: body
+        name: username
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.responseMessage'
+      summary: Stop Game Session
+      tags:
+      - ""
+swagger: "2.0"
