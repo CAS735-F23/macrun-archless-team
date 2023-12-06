@@ -7,6 +7,9 @@ services:
     healthcheck:
       test: [ "CMD", "curl", "-sf",
               "http://localhost:8848/nacos/v1/ns/service/list?pageNo=1&pageSize=2" ]
+      # Register & Deregister Example:
+      # curl -sf -X POST 'http://127.0.0.1:8848/nacos/v1/ns/instance?serviceName=nacos.health.test&ip=1.1.1.1&port=8888'
+      # curl -sf -X DELETE 'http://127.0.0.1:8848/nacos/v1/ns/instance?serviceName=nacos.health.test&ip=1.1.1.1&port=8888'
     networks:
       - srvnet
     environment:

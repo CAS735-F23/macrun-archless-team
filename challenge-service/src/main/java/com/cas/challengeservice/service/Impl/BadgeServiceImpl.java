@@ -15,84 +15,85 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class BadgeServiceImpl implements BadgeService {
-    private final BadgeRepository badgeRepository;
 
-    @Autowired
-    public BadgeServiceImpl(BadgeRepository badgeRepository) {
-        this.badgeRepository = badgeRepository;
+  private final BadgeRepository badgeRepository;
+
+  @Autowired
+  public BadgeServiceImpl(BadgeRepository badgeRepository) {
+    this.badgeRepository = badgeRepository;
+  }
+
+  @Override
+  public GenericMessage<List<BadgeDto>> getBadgeList(BadgeGetRequest request) {
+    List<Badge> matchingBadges =
+        badgeRepository.findAllByChallengeAndUsername(
+            request.getChallenge(), request.getUsername());
+
+    if (matchingBadges.isEmpty()) {
+      return GenericMessage.<List<BadgeDto>>builder()
+          .status(HttpStatus.NOT_FOUND)
+          .message("No badges associated with this challenge and user")
+          .build();
+    } else {
+      // Convert list of Badge to list of BadgeDto
+      List<BadgeDto> badgeDtoList =
+          matchingBadges.stream().map(Badge::toDto).collect(Collectors.toList());
+
+      return GenericMessage.<List<BadgeDto>>builder()
+          .status(HttpStatus.OK)
+          .message("Badges found successfully, and returned")
+          .data(badgeDtoList)
+          .build();
+    }
+  }
+
+  @Override
+  public GenericMessage<BadgeDto> addBadge(BadgeAddRequest request) {
+    Optional<Badge> existingBadge =
+        badgeRepository.findByChallengeAndUsernameAndBadgeName(
+            request.getChallenge(), request.getUsername(), request.getBadgeName());
+
+    if (existingBadge.isPresent()) {
+      return GenericMessage.<BadgeDto>builder()
+          .status(HttpStatus.CONFLICT)
+          .message("Badge already exists.")
+          .build();
     }
 
-    @Override
-    public GenericMessage<List<BadgeDto>> getBadgeList(BadgeGetRequest request) {
-        List<Badge> matchingBadges =
-                badgeRepository.findAllByChallengeAndUsername(
-                        request.getChallenge(), request.getUsername());
+    Badge newBadge =
+        new Badge(
+            new Random().nextLong(),
+            request.getChallenge(),
+            request.getUsername(),
+            request.getBadgeName());
+    badgeRepository.save(newBadge);
 
-        if (matchingBadges.isEmpty()) {
-            return GenericMessage.<List<BadgeDto>>builder()
-                    .status(HttpStatus.NOT_FOUND)
-                    .message("No badges associated with this challenge and user")
-                    .build();
-        } else {
-            // Convert list of Badge to list of BadgeDto
-            List<BadgeDto> badgeDtoList =
-                    matchingBadges.stream().map(Badge::toDto).collect(Collectors.toList());
+    return GenericMessage.<BadgeDto>builder()
+        .status(HttpStatus.CREATED)
+        .message("Badge added successfully")
+        .data(newBadge.toDto())
+        .build();
+  }
 
-            return GenericMessage.<List<BadgeDto>>builder()
-                    .status(HttpStatus.OK)
-                    .message("Badges found successfully, and returned")
-                    .data(badgeDtoList)
-                    .build();
-        }
+  @Override
+  public GenericMessage<BadgeDto> deleteBadge(BadgeDeleteRequest request) {
+    Optional<Badge> existingBadge =
+        badgeRepository.findByChallengeAndUsernameAndBadgeName(
+            request.getChallenge(), request.getUsername(), request.getBadgeName());
+
+    if (!existingBadge.isPresent()) {
+      return GenericMessage.<BadgeDto>builder()
+          .status(HttpStatus.NOT_FOUND)
+          .message("Badge not found")
+          .build();
     }
 
-    @Override
-    public GenericMessage<BadgeDto> addBadge(BadgeAddRequest request) {
-        Optional<Badge> existingBadge =
-                badgeRepository.findByChallengeAndUsernameAndBadgeName(
-                        request.getChallenge(), request.getUsername(), request.getBadgeName());
+    badgeRepository.delete(existingBadge.get());
 
-        if (existingBadge.isPresent()) {
-            return GenericMessage.<BadgeDto>builder()
-                    .status(HttpStatus.CONFLICT)
-                    .message("Badge already exists.")
-                    .build();
-        }
-
-        Badge newBadge =
-                new Badge(
-                        new Random().nextLong(),
-                        request.getChallenge(),
-                        request.getUsername(),
-                        request.getBadgeName());
-        badgeRepository.save(newBadge);
-
-        return GenericMessage.<BadgeDto>builder()
-                .status(HttpStatus.CREATED)
-                .message("Badge added successfully")
-                .data(newBadge.toDto())
-                .build();
-    }
-
-    @Override
-    public GenericMessage<BadgeDto> deleteBadge(BadgeDeleteRequest request) {
-        Optional<Badge> existingBadge =
-                badgeRepository.findByChallengeAndUsernameAndBadgeName(
-                        request.getChallenge(), request.getUsername(), request.getBadgeName());
-
-        if (!existingBadge.isPresent()) {
-            return GenericMessage.<BadgeDto>builder()
-                    .status(HttpStatus.NOT_FOUND)
-                    .message("Badge not found")
-                    .build();
-        }
-
-        badgeRepository.delete(existingBadge.get());
-
-        return GenericMessage.<BadgeDto>builder()
-                .status(HttpStatus.OK)
-                .message("Badge deleted successfully")
-                .data(existingBadge.get().toDto())
-                .build();
-    }
+    return GenericMessage.<BadgeDto>builder()
+        .status(HttpStatus.OK)
+        .message("Badge deleted successfully")
+        .data(existingBadge.get().toDto())
+        .build();
+  }
 }

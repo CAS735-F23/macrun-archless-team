@@ -12,7 +12,7 @@ import (
 )
 
 func init() {
-	// nop
+	log.Println("Initializing Game Service...")
 }
 
 func main() {

@@ -10,6 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class ChallengeGetRequest {
-    private Long userHeartRate;
-    private String type;
+
+  private Long userHeartRate;
+  private String type;
 }

@@ -1,4 +1,3 @@
-/* (C)2023 */
 package com.cas.geoservice;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,84 +25,80 @@ import org.springframework.http.HttpStatus;
 @SpringBootTest
 public class TrailServiceTests {
 
-    @Mock private TrailRepository trailRepository;
+  @Mock
+  private TrailRepository trailRepository;
 
-    @Mock private PlayerZoneRepository playerZoneRepository;
+  @Mock
+  private PlayerZoneRepository playerZoneRepository;
 
-    @InjectMocks private TrailServiceImpl trailServiceImpl;
+  @InjectMocks
+  private TrailServiceImpl trailServiceImpl;
 
-    private TrailGetRequest trailGetRequest;
+  private TrailGetRequest trailGetRequest;
 
-    @BeforeEach
-    public void setUp() {
-        trailGetRequest = new TrailGetRequest("username");
-    }
+  @BeforeEach
+  public void setUp() {
+    trailGetRequest = new TrailGetRequest("username");
+  }
 
-    @Test
-    public void testGetTrailWhenPlayerZoneNotExist() {
-        when(playerZoneRepository.findByUsername(anyString())).thenReturn(null);
+  @Test
+  public void testGetTrailWhenPlayerZoneNotExist() {
+    when(playerZoneRepository.findByUsername(anyString())).thenReturn(null);
 
-        GenericMessage<TrailDto> result = trailServiceImpl.getTrail(trailGetRequest);
+    GenericMessage<TrailDto> result = trailServiceImpl.getTrail(trailGetRequest);
 
-        assertEquals(HttpStatus.BAD_REQUEST, result.getStatus());
-        assertEquals("The player hasn't set zone, please set zone first...", result.getMessage());
-    }
+    assertEquals(HttpStatus.BAD_REQUEST, result.getStatus());
+    assertEquals(
+        "The player hasn't set zone, please set zone first...", result.getMessage());
+  }
 
-    @Test
-    public void testGetTrailWhenTrailNotExist() {
-        PlayerZone playerZone = new PlayerZone();
-        playerZone.setName("Zone1");
+  @Test
+  public void testGetTrailWhenTrailNotExist() {
+    PlayerZone playerZone = new PlayerZone();
+    playerZone.setName("Zone1");
 
-        when(playerZoneRepository.findByUsername(anyString())).thenReturn(playerZone);
-        when(trailRepository.findByZone(anyString())).thenReturn(Optional.empty());
+    when(playerZoneRepository.findByUsername(anyString())).thenReturn(playerZone);
+    when(trailRepository.findByZone(anyString())).thenReturn(Optional.empty());
 
-        GenericMessage<TrailDto> result = trailServiceImpl.getTrail(trailGetRequest);
+    GenericMessage<TrailDto> result = trailServiceImpl.getTrail(trailGetRequest);
 
-        assertEquals(HttpStatus.NOT_FOUND, result.getStatus());
-        assertEquals("No trail associated with this zone", result.getMessage());
-    }
+    assertEquals(HttpStatus.NOT_FOUND, result.getStatus());
+    assertEquals("No trail associated with this zone", result.getMessage());
+  }
 
-    @Test
-    public void testGetTrailSuccess() {
-        PlayerZone playerZone = new PlayerZone();
-        playerZone.setName("Zone1");
+  @Test
+  public void testGetTrailSuccess() {
+    PlayerZone playerZone = new PlayerZone();
+    playerZone.setName("Zone1");
 
-        List<Place> places = new ArrayList<>();
-        Place place1 =
-                Place.builder()
-                        .name("Place1")
-                        .type("Type1")
-                        .CoordinateX(1.0)
-                        .CoordinateY(1.0)
-                        .build();
-        Place place2 =
-                Place.builder()
-                        .name("Place2")
-                        .type("Type2")
-                        .CoordinateX(2.0)
-                        .CoordinateY(2.0)
-                        .build();
-        places.add(place1);
-        places.add(place2);
+    List<Place> places = new ArrayList<>();
+    Place place1 = Place.builder().name("Place1").type("Type1").CoordinateX(1.0).CoordinateY(1.0)
+        .build();
+    Place place2 = Place.builder().name("Place2").type("Type2").CoordinateX(2.0).CoordinateY(2.0)
+        .build();
+    places.add(place1);
+    places.add(place2);
 
-        Trail trail = Trail.builder().id(1L).zone("Zone1").path(places).build();
+    Trail trail = Trail.builder().id(1L).zone("Zone1").path(places).build();
 
-        place1.setTrail(trail);
-        place2.setTrail(trail);
+    place1.setTrail(trail);
+    place2.setTrail(trail);
 
-        when(playerZoneRepository.findByUsername(anyString())).thenReturn(playerZone);
-        when(trailRepository.findByZone(anyString())).thenReturn(Optional.ofNullable(trail));
+    when(playerZoneRepository.findByUsername(anyString())).thenReturn(playerZone);
+    when(trailRepository.findByZone(anyString())).thenReturn(Optional.ofNullable(trail));
 
-        GenericMessage<TrailDto> result = trailServiceImpl.getTrail(trailGetRequest);
+    GenericMessage<TrailDto> result = trailServiceImpl.getTrail(trailGetRequest);
 
-        assertEquals(HttpStatus.OK, result.getStatus());
-        assertEquals("Trail found successfully, and returned", result.getMessage());
+    assertEquals(HttpStatus.OK, result.getStatus());
+    assertEquals("Trail found successfully, and returned", result.getMessage());
 
-        // Additional verifications
-        assertNotNull(result.getData());
-        assertEquals(1L, result.getData().getId());
-        assertEquals("Zone1", result.getData().getZone());
-        assertArrayEquals(
-                places.stream().map(Place::toDto).toArray(), result.getData().getPath().toArray());
-    }
+    // Additional verifications
+    assertNotNull(result.getData());
+    assertEquals(1L, result.getData().getId());
+    assertEquals("Zone1", result.getData().getZone());
+    assertArrayEquals(
+        places.stream().map(Place::toDto).toArray(),
+        result.getData().getPath().toArray()
+    );
+  }
 }

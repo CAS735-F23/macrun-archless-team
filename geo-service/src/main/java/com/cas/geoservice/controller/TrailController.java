@@ -15,17 +15,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/geo")
 public class TrailController {
-    private final TrailService trailService;
 
-    @Autowired
-    public TrailController(TrailService trailService) {
-        this.trailService = trailService;
-    }
+  private final TrailService trailService;
 
-    @GetMapping("/trail")
-    public ResponseEntity<GenericMessage<TrailDto>> getTrail(@RequestParam String username) {
-        TrailGetRequest request = new TrailGetRequest(username);
-        GenericMessage<TrailDto> response = trailService.getTrail(request);
-        return ResponseEntity.status(response.getStatus()).body(response);
-    }
+  @Autowired
+  public TrailController(TrailService trailService) {
+    this.trailService = trailService;
+  }
+
+  @GetMapping("/trail")
+  public ResponseEntity<GenericMessage<TrailDto>> getTrail(@RequestParam String username) {
+    TrailGetRequest request = new TrailGetRequest(username);
+    GenericMessage<TrailDto> response = trailService.getTrail(request);
+    return ResponseEntity.status(response.getStatus()).body(response);
+  }
 }

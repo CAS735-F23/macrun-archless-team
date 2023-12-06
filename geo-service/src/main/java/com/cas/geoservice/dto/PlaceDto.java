@@ -10,10 +10,11 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class PlaceDto {
-    private Long id;
-    private String name;
-    private String type;
-    private Double CoordinateX;
-    private Double CoordinateY;
-    private Long trailId;
+
+  private Long id;
+  private String name;
+  private String type;
+  private Double CoordinateX;
+  private Double CoordinateY;
+  private Long trailId;
 }

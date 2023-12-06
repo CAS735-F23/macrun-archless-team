@@ -81,6 +81,13 @@
 			<version>2.12.3</version>
 		</dependency>
 
+		<!--		Api docs		-->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.2.0</version>
+		</dependency>
+
 		<!--         SpringCloud Nacos            -->
 		<dependency>
 			<groupId>com.alibaba.cloud</groupId>

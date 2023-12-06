@@ -1,12 +1,8 @@
-# MacRun Services
+# MacRun! Services
 
 - [Project Assignment Description](.project-docs/Project_Assignment_Description.pdf)
 - [Case Study (Fall 23): ACME Run](.project-docs/Case_Study_Fall2023.pdf)
-
-## Architecture Report
-
-- [MVP Report](https://docs.google.com/document/d/1autqAB21GcHH2TUhu9ez9Kf1AKQdTmIThb3qxiyk7p8/edit?usp=sharing)
-- [Final Report](https://docs.google.com/document/d/10VK-EgGRhk5Q-xbG0QR4D0luVF6JTTd3wDxl1OF0oBA/edit?usp=sharing)
+- [MVP Report](https://docs.google.com/document/d/1autqAB21GcHH2TUhu9ez9Kf1AKQdTmIThb3qxiyk7p8/edit?usp=sharing) | [Final Report](https://docs.google.com/document/d/10VK-EgGRhk5Q-xbG0QR4D0luVF6JTTd3wDxl1OF0oBA/edit?usp=sharing)
 
 ## Contents
 
@@ -29,7 +25,7 @@
 - API Gateway ([Caddy](https://caddyserver.com/))
 - Health Check ([Docker](https://www.docker.com/))
 - Session Cache ([Redis](https://redis.io/))
-- Build Test CI/CD ([Actions](https://github.com/features/actions))
+- Build Test CI ([Actions](https://github.com/features/actions))
 - Service Discovery ([Nacos](https://nacos.io/en-us/))
 - Message Queue ([RabbitMQ](https://www.rabbitmq.com/))
 
@@ -142,7 +138,7 @@ python3 ./simulator.py 127.0.0.1:8080
 
 ### Auto Test
 
-We automate the testing of our services using GitHub Actions (CI/CD). You can view the test results at:
+We automate the testing of our services using GitHub Actions CI. You can view the test results at:
 
 - <https://github.com/CAS735-F23/macrun-archless-team/actions/workflows/test.yml>
 

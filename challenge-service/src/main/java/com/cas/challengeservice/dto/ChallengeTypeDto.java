@@ -10,8 +10,9 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class ChallengeTypeDto {
-    private Long id;
-    private String description;
-    private Long userHeartRate;
-    private Long exerciseCount;
+
+  private Long id;
+  private String description;
+  private Long userHeartRate;
+  private Long exerciseCount;
 }

@@ -10,7 +10,8 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class BadgeAddRequest {
-    private String challenge;
-    private String username;
-    private String badgeName;
+
+  private String challenge;
+  private String username;
+  private String badgeName;
 }

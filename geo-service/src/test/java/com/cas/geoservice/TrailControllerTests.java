@@ -1,4 +1,3 @@
-/* (C)2023 */
 package com.cas.geoservice;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,30 +17,33 @@ import org.springframework.http.ResponseEntity;
 
 @SpringBootTest
 public class TrailControllerTests {
-    @Mock private TrailService trailService;
-    @InjectMocks private TrailController trailController;
 
-    private GenericMessage<TrailDto> message;
-    private String username;
+  @Mock
+  private TrailService trailService;
+  @InjectMocks
+  private TrailController trailController;
 
-    @BeforeEach
-    public void setUp() {
-        username = "username";
-        message =
-                GenericMessage.<TrailDto>builder()
-                        .status(HttpStatus.OK)
-                        .message("Trail Response")
-                        .build();
-    }
+  private GenericMessage<TrailDto> message;
+  private String username;
 
-    @Test
-    public void testGetTrail() {
-        when(trailService.getTrail(any())).thenReturn(message);
+  @BeforeEach
+  public void setUp() {
+    username = "username";
+    message =
+        GenericMessage.<TrailDto>builder()
+            .status(HttpStatus.OK)
+            .message("Trail Response")
+            .build();
+  }
 
-        ResponseEntity<GenericMessage<TrailDto>> responseEntity =
-                trailController.getTrail(username);
+  @Test
+  public void testGetTrail() {
+    when(trailService.getTrail(any())).thenReturn(message);
 
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        verify(trailService, times(1)).getTrail(any());
-    }
+    ResponseEntity<GenericMessage<TrailDto>> responseEntity =
+        trailController.getTrail(username);
+
+    assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    verify(trailService, times(1)).getTrail(any());
+  }
 }

@@ -16,18 +16,19 @@ import lombok.*;
 @Table
 @Entity
 public class Trail {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    private String zone;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @OneToMany(mappedBy = "trail", cascade = CascadeType.ALL)
-    private List<Place> path;
+  private String zone;
 
-    public TrailDto toDto() {
-        List<PlaceDto> placeDtos = path.stream().map(Place::toDto).collect(Collectors.toList());
+  @OneToMany(mappedBy = "trail", cascade = CascadeType.ALL)
+  private List<Place> path;
 
-        return TrailDto.builder().id(id).zone(zone).path(placeDtos).build();
-    }
+  public TrailDto toDto() {
+    List<PlaceDto> placeDtos = path.stream().map(Place::toDto).collect(Collectors.toList());
+
+    return TrailDto.builder().id(id).zone(zone).path(placeDtos).build();
+  }
 }

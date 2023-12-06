@@ -63,6 +63,4 @@ func (c *Context) GetHeartRate() int {
 	return int(c.heartRate.Load())
 }
 
-func (c *Context) Close() {
-	// add stop logic here if needed.
-}
+func (c *Context) Close() {}

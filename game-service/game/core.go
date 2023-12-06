@@ -45,7 +45,7 @@ func (app *App) StartGame(player *dto.PlayerDTO, location dto.PointDTO) error {
 				}
 			}
 		}{}
-		if err := app.GetService("geo-service", fmt.Sprintf("/geo/trail?username=%s", strings.ToLower(player.Username)), &data); err != nil {
+		if err := app.GetService("geo-service", fmt.Sprintf("/geo/trail?username=%s", player.Username), &data); err != nil {
 			return fmt.Errorf("get init trail failed: %v", err)
 		}
 
@@ -81,7 +81,7 @@ func (app *App) ProcessGameAction(player *dto.PlayerDTO, action, cType string, l
 	resp := &dto.ActionResponseDTO{}
 
 	var currentSpeed float64
-	{ // Location checks
+	{ // Location updates
 		prevLoc := ctx.GetLocation()
 		currLoc := location
 
@@ -103,6 +103,8 @@ func (app *App) ProcessGameAction(player *dto.PlayerDTO, action, cType string, l
 		}{}
 		if err := app.GetService("challenge-service",
 			fmt.Sprintf("/challenge?userHeartRate=%d&type=%s", ctx.GetHeartRate(), cType), &data); err != nil {
+
+			// DO NOT FAIL: add fallback logic if challenge is down.
 			//return nil, fmt.Errorf("get init challenge failed: %v", err)
 
 			data.Data.UserHeartRate = ((100-player.Age)/2 + player.Weight) + rand.Intn(40) - 20
@@ -116,11 +118,13 @@ func (app *App) ProcessGameAction(player *dto.PlayerDTO, action, cType string, l
 		ctx.Working.ExerciseCount = data.Data.ExerciseCount
 	}
 
+	var AttackModes = []string{consts.AttackModeProf, consts.AttackModeBeaver}
+
 	// Generate Attack
 	if h := ctx.GetHeartRate(); h < ctx.Working.RequiredHeartRate-30 || h > ctx.Working.RequiredHeartRate+30 {
 		if ctx.GetAttackMode() == "" {
 			resp.Attack.On = true
-			resp.Attack.Name = consts.AttackModes[rand.Intn(len(consts.AttackModes))]
+			resp.Attack.Name = AttackModes[rand.Intn(len(AttackModes))]
 			ctx.UpdateAttackMode(resp.Attack.Name)
 
 			resp.SetMessage(fmt.Sprintf("You are under attack by %s, be careful! 😱", resp.Attack.Name))
@@ -138,6 +142,7 @@ func (app *App) ProcessGameAction(player *dto.PlayerDTO, action, cType string, l
 		resp.ResetMessage()
 	}
 
+	// Set Action Response.
 	if ctx.GetAttackMode() == "" && action != "" {
 		resp.Attack.On = false
 		resp.Attack.Name = ""
@@ -149,6 +154,7 @@ func (app *App) ProcessGameAction(player *dto.PlayerDTO, action, cType string, l
 		if action == "" {
 			resp.SetMessage(resp.GetMessage() + "(your reaction is required now!)")
 		} else {
+			// Reaction Check.
 			switch strings.ToUpper(action) {
 			case consts.ReactSheltering:
 				for _, shelter := range ctx.GetShelters() { // close to shelter...
@@ -188,7 +194,7 @@ func (app *App) ProcessGameAction(player *dto.PlayerDTO, action, cType string, l
 		}
 	}
 
-	{ // Set basic attributes
+	{ // Set Basic Attributes.
 		resp.Score = ctx.Score
 		resp.Speed = currentSpeed
 		resp.Location = ctx.GetLocation()

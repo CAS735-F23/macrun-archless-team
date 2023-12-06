@@ -1,4 +1,3 @@
-/* (C)2023 */
 package com.cas.challengeservice;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,70 +17,73 @@ import org.springframework.http.ResponseEntity;
 
 @SpringBootTest
 public class ChallengeControllerTests {
-    @Mock private ChallengeService challengeService;
-    @InjectMocks private ChallengeController challengeController;
-    private Long userHeartRate;
-    private Long exerciseCount;
-    private String type;
 
-    private GenericMessage<ChallengeTypeDto> message;
-    private ChallengeGetRequest challengeGetRequest;
-    private ChallengeAddRequest challengeAddRequest;
-    private ChallengeDeleteRequest challengeDeleteRequest;
+  @Mock
+  private ChallengeService challengeService;
+  @InjectMocks
+  private ChallengeController challengeController;
+  private Long userHeartRate;
+  private Long exerciseCount;
+  private String type;
 
-    @BeforeEach
-    public void setUp() {
-        userHeartRate = 70L;
-        type = "Balance";
-        exerciseCount = 30L;
+  private GenericMessage<ChallengeTypeDto> message;
+  private ChallengeGetRequest challengeGetRequest;
+  private ChallengeAddRequest challengeAddRequest;
+  private ChallengeDeleteRequest challengeDeleteRequest;
 
-        challengeGetRequest =
-                ChallengeGetRequest.builder().userHeartRate(userHeartRate).type(type).build();
-        challengeAddRequest =
-                ChallengeAddRequest.builder()
-                        .userHeartRate(userHeartRate)
-                        .exerciseCount(exerciseCount)
-                        .type(type)
-                        .build();
-        challengeDeleteRequest = ChallengeDeleteRequest.builder().type(type).build();
+  @BeforeEach
+  public void setUp() {
+    userHeartRate = 70L;
+    type = "Balance";
+    exerciseCount = 30L;
 
-        message =
-                GenericMessage.<ChallengeTypeDto>builder()
-                        .status(HttpStatus.OK)
-                        .message("Challenge Response")
-                        .build();
-    }
+    challengeGetRequest =
+        ChallengeGetRequest.builder().userHeartRate(userHeartRate).type(type).build();
+    challengeAddRequest =
+        ChallengeAddRequest.builder()
+            .userHeartRate(userHeartRate)
+            .exerciseCount(exerciseCount)
+            .type(type)
+            .build();
+    challengeDeleteRequest = ChallengeDeleteRequest.builder().type(type).build();
 
-    @Test
-    public void testGetChallenge() {
-        when(challengeService.getChallenge(any())).thenReturn(message);
+    message =
+        GenericMessage.<ChallengeTypeDto>builder()
+            .status(HttpStatus.OK)
+            .message("Challenge Response")
+            .build();
+  }
 
-        ResponseEntity<GenericMessage<ChallengeTypeDto>> responseEntity =
-                challengeController.getChallenge(userHeartRate, type);
+  @Test
+  public void testGetChallenge() {
+    when(challengeService.getChallenge(any())).thenReturn(message);
 
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        verify(challengeService, times(1)).getChallenge(any());
-    }
+    ResponseEntity<GenericMessage<ChallengeTypeDto>> responseEntity =
+        challengeController.getChallenge(userHeartRate, type);
 
-    @Test
-    public void testAddChallenge() {
-        when(challengeService.addChallenge(any())).thenReturn(message);
+    assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    verify(challengeService, times(1)).getChallenge(any());
+  }
 
-        ResponseEntity<GenericMessage<ChallengeTypeDto>> responseEntity =
-                challengeController.addChallenge(challengeAddRequest);
+  @Test
+  public void testAddChallenge() {
+    when(challengeService.addChallenge(any())).thenReturn(message);
 
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        verify(challengeService, times(1)).addChallenge(any());
-    }
+    ResponseEntity<GenericMessage<ChallengeTypeDto>> responseEntity =
+        challengeController.addChallenge(challengeAddRequest);
 
-    @Test
-    public void testDeleteChallenge() {
-        when(challengeService.deleteChallenge(any())).thenReturn(message);
+    assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    verify(challengeService, times(1)).addChallenge(any());
+  }
 
-        ResponseEntity<GenericMessage<ChallengeTypeDto>> responseEntity =
-                challengeController.deleteChallenge(challengeDeleteRequest);
+  @Test
+  public void testDeleteChallenge() {
+    when(challengeService.deleteChallenge(any())).thenReturn(message);
 
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        verify(challengeService, times(1)).deleteChallenge(any());
-    }
+    ResponseEntity<GenericMessage<ChallengeTypeDto>> responseEntity =
+        challengeController.deleteChallenge(challengeDeleteRequest);
+
+    assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    verify(challengeService, times(1)).deleteChallenge(any());
+  }
 }

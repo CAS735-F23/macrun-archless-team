@@ -11,7 +11,8 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class TrailDto {
-    private Long id;
-    private String zone;
-    private List<PlaceDto> path;
+
+  private Long id;
+  private String zone;
+  private List<PlaceDto> path;
 }

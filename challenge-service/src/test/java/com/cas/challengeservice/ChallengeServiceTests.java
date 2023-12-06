@@ -37,7 +37,8 @@ public class ChallengeServiceTests {
   public void testGetChallengeWhenChallengeTypeNotExist() {
     when(challengeTypeRepository.findByDescription(any())).thenReturn(Optional.empty());
 
-    GenericMessage<ChallengeTypeDto> result = challengeServiceImpl.getChallenge(challengeGetRequest);
+    GenericMessage<ChallengeTypeDto> result = challengeServiceImpl.getChallenge(
+        challengeGetRequest);
 
     assertEquals(HttpStatus.NOT_FOUND, result.getStatus());
     assertEquals(
@@ -96,7 +97,8 @@ public class ChallengeServiceTests {
   public void testAddChallengeTypeSuccess() {
     when(challengeTypeRepository.findByDescription(any())).thenReturn(Optional.empty());
 
-    GenericMessage<ChallengeTypeDto> result = challengeServiceImpl.addChallenge(challengeAddRequest);
+    GenericMessage<ChallengeTypeDto> result = challengeServiceImpl.addChallenge(
+        challengeAddRequest);
 
     assertEquals(HttpStatus.CREATED, result.getStatus());
     assertEquals("Challenge type added successfully", result.getMessage());
@@ -107,7 +109,8 @@ public class ChallengeServiceTests {
 
     when(challengeTypeRepository.findByDescription(any())).thenReturn(Optional.empty());
 
-    GenericMessage<ChallengeTypeDto> result = challengeServiceImpl.deleteChallenge(challengeDeleteRequest);
+    GenericMessage<ChallengeTypeDto> result = challengeServiceImpl.deleteChallenge(
+        challengeDeleteRequest);
 
     assertEquals(HttpStatus.NOT_FOUND, result.getStatus());
     assertEquals(

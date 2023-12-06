@@ -13,19 +13,20 @@ import lombok.*;
 @Table
 @Entity
 public class ChallengeType {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    private String description;
-    private Long userHeartRate;
-    private Long exerciseCount;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    public ChallengeTypeDto toDto() {
-        return ChallengeTypeDto.builder()
-                .description(description)
-                .userHeartRate(userHeartRate)
-                .exerciseCount(exerciseCount)
-                .build();
-    }
+  private String description;
+  private Long userHeartRate;
+  private Long exerciseCount;
+
+  public ChallengeTypeDto toDto() {
+    return ChallengeTypeDto.builder()
+        .description(description)
+        .userHeartRate(userHeartRate)
+        .exerciseCount(exerciseCount)
+        .build();
+  }
 }
