@@ -28,6 +28,14 @@ def simulate(base: str):
             pprint(r.json())
             time.sleep(1)
 
+        with session.post(url=urljoin(base, '/player/set-location'), json={
+            "username": "leon",
+            "zone": "mac"
+        }) as r:
+            print('>>> Trying to set player location zone...')
+            pprint(r.json())
+            time.sleep(1)
+
         with session.post(url=urljoin(base, '/hrm/start'), json={
             "username": "leon",
             "heartRate": 0

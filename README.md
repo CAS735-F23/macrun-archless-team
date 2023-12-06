@@ -54,7 +54,7 @@ docker-compose build
 
 ## How to Deploy
 
-> If you find that our service is a little slow (2~5 minutes)to start, this is normal. We have health check steps to
+> If you find that our service is a little slow (2~5 minutes) to start, this is normal. We have health check steps to
 > ensure that each service is created and started properly before the API Gateway is launched.
 
 ### Deploy (Micro-)services
@@ -127,6 +127,7 @@ python3 ./simulator.py 127.0.0.1:8080
 2. Run the service APIs in Postman in the following order:
     - Player Register
     - Player Login
+    - Player Set Zone
     - HRM Start
     - Game Start
     - Game Action
