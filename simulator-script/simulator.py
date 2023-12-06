@@ -28,7 +28,7 @@ def simulate(base: str):
             pprint(r.json())
             time.sleep(1)
 
-        with session.post(url=urljoin(base, '/player/set-location'), json={
+        with session.post(url=urljoin(base, '/player/set-zone'), json={
             "username": "leon",
             "zone": "mac"
         }) as r:
@@ -44,11 +44,10 @@ def simulate(base: str):
             pprint(r.text)
             time.sleep(1)
 
-        x, y = (12, 13)
+        x, y = (13, 14)
 
         with session.post(url=urljoin(base, '/game/start'), json={
             "username": "leon",
-            "zone": "mac",
             "location": {
                 "x": x,
                 "y": y,
@@ -64,8 +63,9 @@ def simulate(base: str):
 
         for i in range(10):
             time.sleep(2)
-            x, y = x + random.randint(1, 10), y + random.randint(1, 10)
+            x, y = x + random.randint(2, 20), y + random.randint(2, 20)
             action = random.choice(('Escaping', 'Fighting', 'Sheltering'))
+
             with session.post(url=urljoin(base, '/game/action'), json={
                 "username": "leon",
                 "action": action,

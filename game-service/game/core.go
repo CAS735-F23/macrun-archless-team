@@ -45,7 +45,7 @@ func (app *App) StartGame(player *dto.PlayerDTO, location dto.PointDTO) error {
 				}
 			}
 		}{}
-		if err := app.GetService("geo-service", fmt.Sprintf("/geo/trail?username=%s", strings.ToLower(player.Username)), &data); err != nil {
+		if err := app.GetService("geo-service", fmt.Sprintf("/geo/trail?username=%s", player.Username), &data); err != nil {
 			return fmt.Errorf("get init trail failed: %v", err)
 		}
 
