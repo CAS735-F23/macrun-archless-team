@@ -1,3 +1,4 @@
+/* (C)2023 */
 package com.cas.geoservice.service.Impl;
 
 import com.cas.geoservice.service.MessageService;
@@ -7,11 +8,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MessageServiceImpl implements MessageService{
+public class MessageServiceImpl implements MessageService {
     @Value("${spring.rabbitmq.queue}")
     private String queueName;
 
     private final RabbitTemplate rabbitTemplate;
+
     @Autowired
     public MessageServiceImpl(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;

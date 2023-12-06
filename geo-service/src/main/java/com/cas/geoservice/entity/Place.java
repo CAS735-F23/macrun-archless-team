@@ -1,3 +1,4 @@
+/* (C)2023 */
 package com.cas.geoservice.entity;
 
 import com.cas.geoservice.dto.PlaceDto;
@@ -15,6 +16,7 @@ public class Place {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
     private String type;
     private Double CoordinateX;

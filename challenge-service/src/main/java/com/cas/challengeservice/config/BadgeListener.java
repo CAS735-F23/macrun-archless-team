@@ -1,3 +1,4 @@
+/* (C)2023 */
 package com.cas.challengeservice.config;
 
 import static com.cas.challengeservice.constant.Constants.MQ_REQUEST_ADD_BADGE;

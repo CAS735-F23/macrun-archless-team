@@ -1,3 +1,4 @@
+/* (C)2023 */
 package com.cas.geoservice.controller;
 
 import com.cas.geoservice.dto.GenericMessage;
@@ -22,11 +23,9 @@ public class TrailController {
     }
 
     @GetMapping("/trail")
-    public ResponseEntity<GenericMessage<TrailDto>> getTrail(
-            @RequestParam String username) {
+    public ResponseEntity<GenericMessage<TrailDto>> getTrail(@RequestParam String username) {
         TrailGetRequest request = new TrailGetRequest(username);
         GenericMessage<TrailDto> response = trailService.getTrail(request);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 }
-

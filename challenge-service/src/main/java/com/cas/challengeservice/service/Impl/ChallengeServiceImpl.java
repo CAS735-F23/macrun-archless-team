@@ -1,3 +1,4 @@
+/* (C)2023 */
 package com.cas.challengeservice.service.Impl;
 
 import com.cas.challengeservice.dto.*;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 @Log4j2
 public class ChallengeServiceImpl implements ChallengeService {
     private final ChallengeTypeRepository challengeTypeRepository;
+
     @Autowired
     public ChallengeServiceImpl(ChallengeTypeRepository challengeTypeRepository) {
         this.challengeTypeRepository = challengeTypeRepository;
@@ -43,7 +45,9 @@ public class ChallengeServiceImpl implements ChallengeService {
             } else {
                 return GenericMessage.<ChallengeTypeDto>builder()
                         .status(HttpStatus.UNAUTHORIZED)
-                        .message("GetChallenge failed, user heart rate not in range for this challenge type")
+                        .message(
+                                "GetChallenge failed, user heart rate not in range for this"
+                                        + " challenge type")
                         .build();
             }
         } else {

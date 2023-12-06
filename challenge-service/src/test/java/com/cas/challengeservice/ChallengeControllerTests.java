@@ -1,4 +1,6 @@
+/* (C)2023 */
 package com.cas.challengeservice;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -13,6 +15,7 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 @SpringBootTest
 public class ChallengeControllerTests {
     @Mock private ChallengeService challengeService;
@@ -32,11 +35,21 @@ public class ChallengeControllerTests {
         type = "Balance";
         exerciseCount = 30L;
 
-        challengeGetRequest = ChallengeGetRequest.builder().userHeartRate(userHeartRate).type(type).build();
-        challengeAddRequest = ChallengeAddRequest.builder().userHeartRate(userHeartRate).exerciseCount(exerciseCount).type(type).build();
+        challengeGetRequest =
+                ChallengeGetRequest.builder().userHeartRate(userHeartRate).type(type).build();
+        challengeAddRequest =
+                ChallengeAddRequest.builder()
+                        .userHeartRate(userHeartRate)
+                        .exerciseCount(exerciseCount)
+                        .type(type)
+                        .build();
         challengeDeleteRequest = ChallengeDeleteRequest.builder().type(type).build();
 
-        message = GenericMessage.<ChallengeTypeDto>builder().status(HttpStatus.OK).message("Challenge Response").build();
+        message =
+                GenericMessage.<ChallengeTypeDto>builder()
+                        .status(HttpStatus.OK)
+                        .message("Challenge Response")
+                        .build();
     }
 
     @Test

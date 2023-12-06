@@ -1,8 +1,9 @@
+/* (C)2023 */
 package com.cas.geoservice.dto;
 
+import java.util.List;
 import lombok.*;
 
-import java.util.List;
 @Data
 @Builder(toBuilder = true)
 @AllArgsConstructor

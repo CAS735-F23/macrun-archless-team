@@ -1,3 +1,4 @@
+/* (C)2023 */
 package com.cas.geoservice.config;
 
 import org.springframework.amqp.core.Binding;
@@ -34,8 +35,7 @@ public class RabbitMQConfig {
     @Value("${spring.rabbitmq.queue}")
     private String queueName;
 
-    @Autowired
-    private ZoneListener zoneListener;
+    @Autowired private ZoneListener zoneListener;
 
     @Bean
     public ConnectionFactory connectionFactory() {

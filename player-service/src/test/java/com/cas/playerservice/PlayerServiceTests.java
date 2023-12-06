@@ -181,7 +181,7 @@ public class PlayerServiceTests {
         String playerObj = objectMapper.writeValueAsString(playerDto);
         when(httpSession.getAttribute(any())).thenReturn(playerObj);
 
-        String location = "HAMILTON";
+        String location = "mac";
         PlayerSetZoneRequest playerSetZoneRequest =
                 PlayerSetZoneRequest.builder().zone(location).username("username").build();
 

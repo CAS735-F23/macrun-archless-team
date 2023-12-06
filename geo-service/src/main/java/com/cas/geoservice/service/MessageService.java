@@ -1,3 +1,4 @@
+/* (C)2023 */
 package com.cas.geoservice.service;
 
 public interface MessageService {

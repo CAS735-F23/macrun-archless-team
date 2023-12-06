@@ -209,9 +209,7 @@ public class PlayerServiceImpl implements PlayerService {
 
             return GenericMessage.builder()
                     .status(HttpStatus.OK)
-                    .message(
-                            "Successfully sent set location request as location: "
-                                    + request.getZone())
+                    .message("Successfully sent set zone request as location: " + request.getZone())
                     .build();
 
         } catch (JsonProcessingException e) {

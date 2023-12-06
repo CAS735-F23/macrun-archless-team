@@ -1,3 +1,4 @@
+/* (C)2023 */
 package com.cas.challengeservice.repository;
 
 import com.cas.challengeservice.entity.Badge;

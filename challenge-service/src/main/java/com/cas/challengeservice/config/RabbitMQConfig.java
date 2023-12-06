@@ -1,3 +1,4 @@
+/* (C)2023 */
 package com.cas.challengeservice.config;
 
 import org.springframework.amqp.core.Binding;

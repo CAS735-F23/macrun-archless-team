@@ -1,3 +1,4 @@
+/* (C)2023 */
 package com.cas.geoservice;
 
 import org.springframework.boot.SpringApplication;
@@ -9,5 +10,4 @@ public class GeoServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(GeoServiceApplication.class, args);
     }
-
 }
