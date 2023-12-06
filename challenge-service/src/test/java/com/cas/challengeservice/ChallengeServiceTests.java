@@ -1,4 +1,3 @@
-/* (C)2023 */
 package com.cas.challengeservice;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -7,7 +6,6 @@ import static org.mockito.Mockito.*;
 import com.cas.challengeservice.dto.*;
 import com.cas.challengeservice.entity.ChallengeType;
 import com.cas.challengeservice.repository.ChallengeTypeRepository;
-import com.cas.challengeservice.service.*;
 import com.cas.challengeservice.service.Impl.ChallengeServiceImpl;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,109 +17,114 @@ import org.springframework.http.HttpStatus;
 
 @SpringBootTest
 public class ChallengeServiceTests {
-    @Mock private ChallengeTypeRepository challengeTypeRepository;
-    @InjectMocks private ChallengeServiceImpl challengeServiceImpl;
-    private ChallengeAddRequest challengeAddRequest;
-    private ChallengeDeleteRequest challengeDeleteRequest;
-    private ChallengeGetRequest challengeGetRequest;
 
-    @BeforeEach
-    public void setUp() {}
+  @Mock
+  private ChallengeTypeRepository challengeTypeRepository;
+  @InjectMocks
+  private ChallengeServiceImpl challengeServiceImpl;
+  private ChallengeAddRequest challengeAddRequest;
+  private ChallengeDeleteRequest challengeDeleteRequest;
+  private ChallengeGetRequest challengeGetRequest;
 
-    @Test
-    public void testGetChallengeWhenChallengeTypeNotExist() {
-        ChallengeGetRequest request = new ChallengeGetRequest(70L, "challengeType");
-        when(challengeTypeRepository.findByDescription(any())).thenReturn(Optional.empty());
+  @BeforeEach
+  public void setUp() {
+    challengeGetRequest = new ChallengeGetRequest(70L, "challengeType");
+    challengeAddRequest = new ChallengeAddRequest(70L, 10L, "testAddChallenge");
+    challengeDeleteRequest = new ChallengeDeleteRequest("testDeleteChallenge");
+  }
 
-        GenericMessage<ChallengeTypeDto> result = challengeServiceImpl.getChallenge(request);
+  @Test
+  public void testGetChallengeWhenChallengeTypeNotExist() {
+    when(challengeTypeRepository.findByDescription(any())).thenReturn(Optional.empty());
 
-        assertEquals(HttpStatus.NOT_FOUND, result.getStatus());
-        assertEquals(
-                "GetChallenge failed, no challenge type found with this type", result.getMessage());
-    }
+    GenericMessage<ChallengeTypeDto> result = challengeServiceImpl.getChallenge(challengeGetRequest);
 
-    @Test
-    public void testGetChallengeWhenUserHeartRateNotInRange() {
-        ChallengeGetRequest request = new ChallengeGetRequest(300L, "Muscle");
+    assertEquals(HttpStatus.NOT_FOUND, result.getStatus());
+    assertEquals(
+        "GetChallenge failed, no challenge type found with this type", result.getMessage());
+  }
 
-        ChallengeType challengeType =
-                ChallengeType.builder().description("Muscle").userHeartRate(200L).build();
+  @Test
+  public void testGetChallengeWhenUserHeartRateNotInRange() {
+    ChallengeGetRequest request = new ChallengeGetRequest(300L, "Muscle");
 
-        when(challengeTypeRepository.findByDescription(any()))
-                .thenReturn(Optional.ofNullable(challengeType));
+    ChallengeType challengeType =
+        ChallengeType.builder().description("Muscle").userHeartRate(200L).build();
 
-        GenericMessage<ChallengeTypeDto> result = challengeServiceImpl.getChallenge(request);
+    when(challengeTypeRepository.findByDescription(any()))
+        .thenReturn(Optional.ofNullable(challengeType));
 
-        assertEquals(HttpStatus.UNAUTHORIZED, result.getStatus());
-        assertEquals(
-                "GetChallenge failed, user heart rate not in range for this challenge type",
-                result.getMessage());
-    }
+    GenericMessage<ChallengeTypeDto> result = challengeServiceImpl.getChallenge(request);
 
-    @Test
-    public void testGetChallengeSuccess() {
-        ChallengeType challengeType =
-                ChallengeType.builder().description("Cardio").userHeartRate(120L).build();
-        ChallengeGetRequest request = new ChallengeGetRequest(120L, "Cardio");
+    assertEquals(HttpStatus.UNAUTHORIZED, result.getStatus());
+    assertEquals(
+        "GetChallenge failed, user heart rate not in range for this challenge type",
+        result.getMessage());
+  }
 
-        when(challengeTypeRepository.findByDescription(any()))
-                .thenReturn(Optional.ofNullable(challengeType));
+  @Test
+  public void testGetChallengeSuccess() {
+    ChallengeType challengeType =
+        ChallengeType.builder().description("Cardio").userHeartRate(120L).build();
+    ChallengeGetRequest request = new ChallengeGetRequest(120L, "Cardio");
 
-        GenericMessage<ChallengeTypeDto> result = challengeServiceImpl.getChallenge(request);
+    when(challengeTypeRepository.findByDescription(any()))
+        .thenReturn(Optional.ofNullable(challengeType));
 
-        assertEquals(HttpStatus.OK, result.getStatus());
-        assertEquals("Challenge type found successfully, and returned", result.getMessage());
-    }
+    GenericMessage<ChallengeTypeDto> result = challengeServiceImpl.getChallenge(request);
 
-    @Test
-    public void testAddChallengeTypeWhenChallengeTypeExist() {
-        ChallengeType challengeType =
-                ChallengeType.builder().description("Cardio").userHeartRate(120L).build();
-        ChallengeAddRequest request = new ChallengeAddRequest(120L, 30L, "Cardio");
+    assertEquals(HttpStatus.OK, result.getStatus());
+    assertEquals("Challenge type found successfully, and returned", result.getMessage());
+  }
 
-        when(challengeTypeRepository.findByDescription(any()))
-                .thenReturn(Optional.ofNullable(challengeType));
+  @Test
+  public void testAddChallengeTypeWhenChallengeTypeExist() {
+    ChallengeType challengeType =
+        ChallengeType.builder().description("Cardio").userHeartRate(120L).build();
+    ChallengeAddRequest request = new ChallengeAddRequest(120L, 30L, "Cardio");
 
-        GenericMessage<ChallengeTypeDto> result = challengeServiceImpl.addChallenge(request);
+    when(challengeTypeRepository.findByDescription(any()))
+        .thenReturn(Optional.ofNullable(challengeType));
 
-        assertEquals(HttpStatus.CONFLICT, result.getStatus());
-        assertEquals("Challenge type already exists.", result.getMessage());
-    }
+    GenericMessage<ChallengeTypeDto> result = challengeServiceImpl.addChallenge(request);
 
-    @Test
-    public void testAddChallengeTypeSuccess() {
-        ChallengeAddRequest request = new ChallengeAddRequest(70L, 10L, "testAddChallenge");
-        when(challengeTypeRepository.findByDescription(any())).thenReturn(Optional.empty());
+    assertEquals(HttpStatus.CONFLICT, result.getStatus());
+    assertEquals("Challenge type already exists.", result.getMessage());
+  }
 
-        GenericMessage<ChallengeTypeDto> result = challengeServiceImpl.addChallenge(request);
+  @Test
+  public void testAddChallengeTypeSuccess() {
+    when(challengeTypeRepository.findByDescription(any())).thenReturn(Optional.empty());
 
-        assertEquals(HttpStatus.CREATED, result.getStatus());
-        assertEquals("Challenge type added successfully", result.getMessage());
-    }
+    GenericMessage<ChallengeTypeDto> result = challengeServiceImpl.addChallenge(challengeAddRequest);
 
-    @Test
-    public void testDeleteChallengeTypeWhenChallengeTypeNotFound() {
-        ChallengeDeleteRequest request = new ChallengeDeleteRequest("testDeleteChallenge");
-        when(challengeTypeRepository.findByDescription(any())).thenReturn(Optional.empty());
+    assertEquals(HttpStatus.CREATED, result.getStatus());
+    assertEquals("Challenge type added successfully", result.getMessage());
+  }
 
-        GenericMessage<ChallengeTypeDto> result = challengeServiceImpl.deleteChallenge(request);
+  @Test
+  public void testDeleteChallengeTypeWhenChallengeTypeNotFound() {
 
-        assertEquals(HttpStatus.NOT_FOUND, result.getStatus());
-        assertEquals(
-                "DeleteChallenge failed, no challenge type found with this type",
-                result.getMessage());
-    }
+    when(challengeTypeRepository.findByDescription(any())).thenReturn(Optional.empty());
 
-    @Test
-    public void testDeleteChallengeTypeSuccess() {
-        ChallengeType challengeType = ChallengeType.builder().description("Flexibility").build();
-        ChallengeDeleteRequest request = new ChallengeDeleteRequest("Flexibility");
-        when(challengeTypeRepository.findByDescription(any()))
-                .thenReturn(Optional.ofNullable(challengeType));
+    GenericMessage<ChallengeTypeDto> result = challengeServiceImpl.deleteChallenge(challengeDeleteRequest);
 
-        GenericMessage<ChallengeTypeDto> result = challengeServiceImpl.deleteChallenge(request);
+    assertEquals(HttpStatus.NOT_FOUND, result.getStatus());
+    assertEquals(
+        "DeleteChallenge failed, no challenge type found with this type",
+        result.getMessage());
+  }
 
-        assertEquals(HttpStatus.OK, result.getStatus());
-        assertEquals("Challenge type deleted successfully", result.getMessage());
-    }
+  @Test
+  public void testDeleteChallengeTypeSuccess() {
+    ChallengeType challengeType = ChallengeType.builder().description("Flexibility").build();
+    ChallengeDeleteRequest request = new ChallengeDeleteRequest("Flexibility");
+    when(challengeTypeRepository.findByDescription(any()))
+        .thenReturn(Optional.ofNullable(challengeType));
+
+    GenericMessage<ChallengeTypeDto> result = challengeServiceImpl.deleteChallenge(request);
+
+    assertEquals(HttpStatus.OK, result.getStatus());
+    assertEquals("Challenge type deleted successfully", result.getMessage());
+  }
 }
