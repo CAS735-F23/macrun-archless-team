@@ -41,9 +41,9 @@ func New(app *game.App) *gin.Engine {
 	// index page
 	r.GET("/", getIndex())
 
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
-
 	docs.SwaggerInfo.BasePath = "/game"
+	r.GET("/game-swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+
 	gm := r.Group("/game")
 	{
 		gm.POST("/start", handleGameStart(app))
