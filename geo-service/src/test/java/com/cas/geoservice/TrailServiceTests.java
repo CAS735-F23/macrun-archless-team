@@ -72,8 +72,10 @@ public class TrailServiceTests {
     playerZone.setName("Zone1");
 
     List<Place> places = new ArrayList<>();
-    Place place1 = Place.builder().name("Place1").type("Type1").CoordinateX(1.0).CoordinateY(1.0).build();
-    Place place2 = Place.builder().name("Place2").type("Type2").CoordinateX(2.0).CoordinateY(2.0).build();
+    Place place1 = Place.builder().name("Place1").type("Type1").CoordinateX(1.0).CoordinateY(1.0)
+        .build();
+    Place place2 = Place.builder().name("Place2").type("Type2").CoordinateX(2.0).CoordinateY(2.0)
+        .build();
     places.add(place1);
     places.add(place2);
 

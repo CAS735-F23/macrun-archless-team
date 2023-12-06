@@ -9,5 +9,6 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class TrailGetRequest {
-    private String username;
+
+  private String username;
 }

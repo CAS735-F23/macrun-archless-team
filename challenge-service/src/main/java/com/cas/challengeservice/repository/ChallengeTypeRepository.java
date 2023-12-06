@@ -6,11 +6,12 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ChallengeTypeRepository extends JpaRepository<ChallengeType, Long> {
-    Optional<ChallengeType> findByDescriptionAndUserHeartRateAndExerciseCount(
-            String description, Long userHeartRate, Long exerciseCount);
 
-    Optional<ChallengeType> findByDescriptionAndUserHeartRate(
-            String description, Long userHeartRate);
+  Optional<ChallengeType> findByDescriptionAndUserHeartRateAndExerciseCount(
+      String description, Long userHeartRate, Long exerciseCount);
 
-    Optional<ChallengeType> findByDescription(String description);
+  Optional<ChallengeType> findByDescriptionAndUserHeartRate(
+      String description, Long userHeartRate);
+
+  Optional<ChallengeType> findByDescription(String description);
 }

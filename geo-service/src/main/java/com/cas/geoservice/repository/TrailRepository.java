@@ -8,5 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TrailRepository extends JpaRepository<Trail, Long> {
-    Optional<Trail> findByZone(String zone);
+
+  Optional<Trail> findByZone(String zone);
 }

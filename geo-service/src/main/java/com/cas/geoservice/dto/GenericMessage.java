@@ -11,7 +11,9 @@ import org.springframework.http.HttpStatusCode;
 @EqualsAndHashCode
 @Builder(toBuilder = true)
 public class GenericMessage<T> {
-    private HttpStatusCode status;
-    private String message;
-    @Nullable private T data;
+
+  private HttpStatusCode status;
+  private String message;
+  @Nullable
+  private T data;
 }

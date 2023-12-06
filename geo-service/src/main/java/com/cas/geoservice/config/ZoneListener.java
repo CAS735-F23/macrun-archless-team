@@ -18,52 +18,53 @@ import org.springframework.stereotype.Component;
 @Component
 @Log4j2
 public class ZoneListener implements MessageListener {
-    private PlayerZoneRepository playerZoneRepository;
 
-    private ObjectMapper objectMapper;
+  private PlayerZoneRepository playerZoneRepository;
 
-    @Autowired
-    public ZoneListener(PlayerZoneRepository playerZoneRepository) {
-        this.playerZoneRepository = playerZoneRepository;
-        objectMapper = new ObjectMapper();
+  private ObjectMapper objectMapper;
+
+  @Autowired
+  public ZoneListener(PlayerZoneRepository playerZoneRepository) {
+    this.playerZoneRepository = playerZoneRepository;
+    objectMapper = new ObjectMapper();
+  }
+
+  @Override
+  public void onMessage(Message message) {
+    try {
+      String messageBody = new String(message.getBody());
+      log.info("Received message: " + messageBody);
+
+      MessageDto messageDto = objectMapper.readValue(messageBody, MessageDto.class);
+
+      switch (messageDto.getAction()) {
+        case MQ_REQUEST_SET_ZONE:
+          log.info("MQ - Set zone: {}", messageDto.getPlayerSetZoneRequest());
+          PlayerSetZoneRequest request = messageDto.getPlayerSetZoneRequest();
+          PlayerZone playerZone =
+              PlayerZone.builder()
+                  .username(request.getUsername())
+                  .name(request.getZone())
+                  .build();
+
+          PlayerZone zone = playerZoneRepository.findByUsername(request.getUsername());
+          if (Objects.isNull(zone)) {
+            log.info(
+                "Save player {} zone to : {}",
+                playerZone.getUsername(),
+                playerZone.getName());
+            playerZoneRepository.save(playerZone);
+          } else {
+            log.info(
+                "Update player {} zone to : {}",
+                zone.getUsername(),
+                zone.getName());
+            zone.setName(request.getZone());
+            playerZoneRepository.save(zone);
+          }
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
     }
-
-    @Override
-    public void onMessage(Message message) {
-        try {
-            String messageBody = new String(message.getBody());
-            log.info("Received message: " + messageBody);
-
-            MessageDto messageDto = objectMapper.readValue(messageBody, MessageDto.class);
-
-            switch (messageDto.getAction()) {
-                case MQ_REQUEST_SET_ZONE:
-                    log.info("MQ - Set zone: {}", messageDto.getPlayerSetZoneRequest());
-                    PlayerSetZoneRequest request = messageDto.getPlayerSetZoneRequest();
-                    PlayerZone playerZone =
-                            PlayerZone.builder()
-                                    .username(request.getUsername())
-                                    .name(request.getZone())
-                                    .build();
-
-                    PlayerZone zone = playerZoneRepository.findByUsername(request.getUsername());
-                    if (Objects.isNull(zone)) {
-                        log.info(
-                                "Save player {} zone to : {}",
-                                playerZone.getUsername(),
-                                playerZone.getName());
-                        playerZoneRepository.save(playerZone);
-                    } else {
-                        log.info(
-                                "Update player {} zone to : {}",
-                                zone.getUsername(),
-                                zone.getName());
-                        zone.setName(request.getZone());
-                        playerZoneRepository.save(zone);
-                    }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+  }
 }

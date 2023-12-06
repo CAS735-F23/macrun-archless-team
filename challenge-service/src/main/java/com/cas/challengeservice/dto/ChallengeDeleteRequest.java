@@ -8,5 +8,6 @@ import lombok.*;
 @NoArgsConstructor
 @Builder(toBuilder = true)
 public class ChallengeDeleteRequest {
-    private String type;
+
+  private String type;
 }

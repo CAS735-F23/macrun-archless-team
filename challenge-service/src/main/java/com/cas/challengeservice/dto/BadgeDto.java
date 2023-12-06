@@ -10,8 +10,9 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class BadgeDto {
-    private Long id;
-    private String challenge;
-    private String username;
-    private String badgeName;
+
+  private Long id;
+  private String challenge;
+  private String username;
+  private String badgeName;
 }

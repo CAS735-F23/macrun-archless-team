@@ -12,12 +12,13 @@ import lombok.*;
 @Table
 @Entity
 public class PlayerZone {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    private String name;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Column(unique = true)
-    private String username;
+  private String name;
+
+  @Column(unique = true)
+  private String username;
 }

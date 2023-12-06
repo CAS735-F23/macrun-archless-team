@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PlayerZoneRepository extends JpaRepository<PlayerZone, Long> {
-    PlayerZone findByUsername(String username);
+
+  PlayerZone findByUsername(String username);
 }

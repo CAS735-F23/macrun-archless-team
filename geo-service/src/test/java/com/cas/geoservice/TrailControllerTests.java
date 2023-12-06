@@ -17,29 +17,33 @@ import org.springframework.http.ResponseEntity;
 
 @SpringBootTest
 public class TrailControllerTests {
-    @Mock private TrailService trailService;
-    @InjectMocks private TrailController trailController;
 
-    private GenericMessage<TrailDto> message;
-    private String username;
-    @BeforeEach
-    public void setUp() {
-        username = "username";
-        message =
-                GenericMessage.<TrailDto>builder()
-                        .status(HttpStatus.OK)
-                        .message("Trail Response")
-                        .build();
-    }
+  @Mock
+  private TrailService trailService;
+  @InjectMocks
+  private TrailController trailController;
 
-    @Test
-    public void testGetTrail() {
-        when(trailService.getTrail(any())).thenReturn(message);
+  private GenericMessage<TrailDto> message;
+  private String username;
 
-        ResponseEntity<GenericMessage<TrailDto>> responseEntity =
-                trailController.getTrail(username);
+  @BeforeEach
+  public void setUp() {
+    username = "username";
+    message =
+        GenericMessage.<TrailDto>builder()
+            .status(HttpStatus.OK)
+            .message("Trail Response")
+            .build();
+  }
 
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        verify(trailService, times(1)).getTrail(any());
-    }
+  @Test
+  public void testGetTrail() {
+    when(trailService.getTrail(any())).thenReturn(message);
+
+    ResponseEntity<GenericMessage<TrailDto>> responseEntity =
+        trailController.getTrail(username);
+
+    assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    verify(trailService, times(1)).getTrail(any());
+  }
 }

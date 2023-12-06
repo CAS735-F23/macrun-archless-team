@@ -8,7 +8,8 @@ import lombok.*;
 @NoArgsConstructor
 @Builder(toBuilder = true)
 public class BadgeDeleteRequest {
-    private String challenge;
-    private String username;
-    private String badgeName;
+
+  private String challenge;
+  private String username;
+  private String badgeName;
 }

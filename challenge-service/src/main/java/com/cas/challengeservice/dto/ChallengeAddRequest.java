@@ -8,7 +8,8 @@ import lombok.*;
 @NoArgsConstructor
 @Builder(toBuilder = true)
 public class ChallengeAddRequest {
-    private Long userHeartRate;
-    private Long exerciseCount;
-    private String type;
+
+  private Long userHeartRate;
+  private Long exerciseCount;
+  private String type;
 }

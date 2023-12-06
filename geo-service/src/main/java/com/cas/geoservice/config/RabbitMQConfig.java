@@ -17,63 +17,65 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfig {
-    @Value("${spring.rabbitmq.host}")
-    private String host;
 
-    @Value("${spring.rabbitmq.port}")
-    private int port;
+  @Value("${spring.rabbitmq.host}")
+  private String host;
 
-    @Value("${spring.rabbitmq.username}")
-    private String username;
+  @Value("${spring.rabbitmq.port}")
+  private int port;
 
-    @Value("${spring.rabbitmq.password}")
-    private String password;
+  @Value("${spring.rabbitmq.username}")
+  private String username;
 
-    @Value("${spring.rabbitmq.exchange}")
-    private String exchangeName;
+  @Value("${spring.rabbitmq.password}")
+  private String password;
 
-    @Value("${spring.rabbitmq.queue}")
-    private String queueName;
+  @Value("${spring.rabbitmq.exchange}")
+  private String exchangeName;
 
-    @Autowired private ZoneListener zoneListener;
+  @Value("${spring.rabbitmq.queue}")
+  private String queueName;
 
-    @Bean
-    public ConnectionFactory connectionFactory() {
-        CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
-        connectionFactory.setHost(host);
-        connectionFactory.setPort(port);
-        connectionFactory.setUsername(username);
-        connectionFactory.setPassword(password);
-        return connectionFactory;
-    }
+  @Autowired
+  private ZoneListener zoneListener;
 
-    @Bean
-    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
-        return new RabbitTemplate(connectionFactory);
-    }
+  @Bean
+  public ConnectionFactory connectionFactory() {
+    CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
+    connectionFactory.setHost(host);
+    connectionFactory.setPort(port);
+    connectionFactory.setUsername(username);
+    connectionFactory.setPassword(password);
+    return connectionFactory;
+  }
 
-    @Bean
-    public TopicExchange topicExchange() {
-        return new TopicExchange(exchangeName);
-    }
+  @Bean
+  public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
+    return new RabbitTemplate(connectionFactory);
+  }
 
-    @Bean
-    public Queue geoQueue() {
-        return new Queue(queueName, true);
-    }
+  @Bean
+  public TopicExchange topicExchange() {
+    return new TopicExchange(exchangeName);
+  }
 
-    @Bean
-    public SimpleMessageListenerContainer badgeListenerContainer(
-            ConnectionFactory connectionFactory,
-            @Qualifier("geoQueue") Queue queue,
-            @Qualifier("topicExchange") TopicExchange exchange) {
+  @Bean
+  public Queue geoQueue() {
+    return new Queue(queueName, true);
+  }
 
-        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-        container.setConnectionFactory(connectionFactory);
-        container.setQueues(queue);
-        container.setMessageListener(zoneListener);
+  @Bean
+  public SimpleMessageListenerContainer badgeListenerContainer(
+      ConnectionFactory connectionFactory,
+      @Qualifier("geoQueue") Queue queue,
+      @Qualifier("topicExchange") TopicExchange exchange) {
 
-        Binding binding = BindingBuilder.bind(queue).to(exchange).with("#");
-        return container;
-    }
+    SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+    container.setConnectionFactory(connectionFactory);
+    container.setQueues(queue);
+    container.setMessageListener(zoneListener);
+
+    Binding binding = BindingBuilder.bind(queue).to(exchange).with("#");
+    return container;
+  }
 }

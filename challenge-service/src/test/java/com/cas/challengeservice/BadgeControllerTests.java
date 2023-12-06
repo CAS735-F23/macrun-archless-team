@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 
 @SpringBootTest
 public class BadgeControllerTests {
+
   @Mock
   private BadgeService badgeService;
   @InjectMocks
@@ -40,8 +41,10 @@ public class BadgeControllerTests {
     badgeName = "BalanceMaster";
 
     badgeGetRequest = BadgeGetRequest.builder().challenge(challenge).username(username).build();
-    badgeAddRequest = BadgeAddRequest.builder().challenge(challenge).username(username).badgeName(badgeName).build();
-    badgeDeleteRequest = BadgeDeleteRequest.builder().challenge(challenge).username(username).build();
+    badgeAddRequest = BadgeAddRequest.builder().challenge(challenge).username(username)
+        .badgeName(badgeName).build();
+    badgeDeleteRequest = BadgeDeleteRequest.builder().challenge(challenge).username(username)
+        .build();
 
     message = GenericMessage.<BadgeDto>builder()
         .status(HttpStatus.OK)
@@ -51,7 +54,9 @@ public class BadgeControllerTests {
 
   @Test
   public void testGetBadgeList() {
-    when(badgeService.getBadgeList(any())).thenReturn(new GenericMessage<List<BadgeDto>>(HttpStatus.OK, "Badge List Response", new ArrayList<>()));
+    when(badgeService.getBadgeList(any())).thenReturn(
+        new GenericMessage<List<BadgeDto>>(HttpStatus.OK, "Badge List Response",
+            new ArrayList<>()));
 
     ResponseEntity<GenericMessage<List<BadgeDto>>> responseEntity =
         badgeController.getBadgeList(challenge, username);

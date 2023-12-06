@@ -11,31 +11,32 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/badge")
 public class BadgeController {
-    private final BadgeService badgeService;
 
-    @Autowired
-    public BadgeController(BadgeService badgeService) {
-        this.badgeService = badgeService;
-    }
+  private final BadgeService badgeService;
 
-    @GetMapping("/list")
-    public ResponseEntity<GenericMessage<List<BadgeDto>>> getBadgeList(
-            @RequestParam String challenge, @RequestParam String username) {
-        BadgeGetRequest request = new BadgeGetRequest(challenge, username);
-        GenericMessage<List<BadgeDto>> response = badgeService.getBadgeList(request);
-        return ResponseEntity.status(response.getStatus()).body(response);
-    }
+  @Autowired
+  public BadgeController(BadgeService badgeService) {
+    this.badgeService = badgeService;
+  }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<GenericMessage<BadgeDto>> addBadge(@RequestBody BadgeAddRequest request) {
-        GenericMessage<BadgeDto> response = badgeService.addBadge(request);
-        return ResponseEntity.status(response.getStatus()).body(response);
-    }
+  @GetMapping("/list")
+  public ResponseEntity<GenericMessage<List<BadgeDto>>> getBadgeList(
+      @RequestParam String challenge, @RequestParam String username) {
+    BadgeGetRequest request = new BadgeGetRequest(challenge, username);
+    GenericMessage<List<BadgeDto>> response = badgeService.getBadgeList(request);
+    return ResponseEntity.status(response.getStatus()).body(response);
+  }
 
-    @RequestMapping(method = RequestMethod.DELETE)
-    public ResponseEntity<GenericMessage<BadgeDto>> deleteBadge(
-            @RequestBody BadgeDeleteRequest request) {
-        GenericMessage<BadgeDto> response = badgeService.deleteBadge(request);
-        return ResponseEntity.status(response.getStatus()).body(response);
-    }
+  @RequestMapping(method = RequestMethod.POST)
+  public ResponseEntity<GenericMessage<BadgeDto>> addBadge(@RequestBody BadgeAddRequest request) {
+    GenericMessage<BadgeDto> response = badgeService.addBadge(request);
+    return ResponseEntity.status(response.getStatus()).body(response);
+  }
+
+  @RequestMapping(method = RequestMethod.DELETE)
+  public ResponseEntity<GenericMessage<BadgeDto>> deleteBadge(
+      @RequestBody BadgeDeleteRequest request) {
+    GenericMessage<BadgeDto> response = badgeService.deleteBadge(request);
+    return ResponseEntity.status(response.getStatus()).body(response);
+  }
 }

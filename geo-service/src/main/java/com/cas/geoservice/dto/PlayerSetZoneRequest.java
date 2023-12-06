@@ -9,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class PlayerSetZoneRequest {
-    private String username;
-    private String zone;
+
+  private String username;
+  private String zone;
 }

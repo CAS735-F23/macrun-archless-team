@@ -10,20 +10,21 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Badge {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    private String challenge;
-    private String username;
-    private String badgeName;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    public BadgeDto toDto() {
-        return BadgeDto.builder()
-                .id(this.id)
-                .challenge(this.challenge)
-                .username(this.username)
-                .badgeName(this.badgeName)
-                .build();
-    }
+  private String challenge;
+  private String username;
+  private String badgeName;
+
+  public BadgeDto toDto() {
+    return BadgeDto.builder()
+        .id(this.id)
+        .challenge(this.challenge)
+        .username(this.username)
+        .badgeName(this.badgeName)
+        .build();
+  }
 }

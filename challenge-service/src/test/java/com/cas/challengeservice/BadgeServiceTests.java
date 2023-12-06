@@ -1,4 +1,5 @@
 package com.cas.challengeservice;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -20,6 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class BadgeServiceTests {
+
   @Mock
   private BadgeRepository badgeRepository;
   @InjectMocks
@@ -28,15 +30,17 @@ public class BadgeServiceTests {
   private BadgeGetRequest badgeGetRequest;
   private BadgeAddRequest badgeAddRequest;
   private BadgeDeleteRequest badgeDeleteRequest;
+
   @BeforeEach
   public void setUp() {
-    badgeGetRequest = new BadgeGetRequest("challengeType","username");
-    badgeAddRequest = new BadgeAddRequest("challengeType","username","badgeName");
-    badgeDeleteRequest = new BadgeDeleteRequest("challengeType","username","badgeName");
+    badgeGetRequest = new BadgeGetRequest("challengeType", "username");
+    badgeAddRequest = new BadgeAddRequest("challengeType", "username", "badgeName");
+    badgeDeleteRequest = new BadgeDeleteRequest("challengeType", "username", "badgeName");
   }
+
   @Test
   public void testGetBadgeListWhenBadgeNotFound() {
-    when(badgeRepository.findAllByChallengeAndUsername(any(),any())).thenReturn(new ArrayList<>());
+    when(badgeRepository.findAllByChallengeAndUsername(any(), any())).thenReturn(new ArrayList<>());
 
     GenericMessage<List<BadgeDto>> result = badgeServiceImpl.getBadgeList(badgeGetRequest);
 
@@ -48,7 +52,7 @@ public class BadgeServiceTests {
   public void testGetBadgeListSuccess() {
     List<Badge> badges = new ArrayList<>();
     badges.add(new Badge(1L, "challenge", "username", "badgeName"));
-    when(badgeRepository.findAllByChallengeAndUsername(any(),any())).thenReturn(badges);
+    when(badgeRepository.findAllByChallengeAndUsername(any(), any())).thenReturn(badges);
 
     GenericMessage<List<BadgeDto>> result = badgeServiceImpl.getBadgeList(badgeGetRequest);
 
@@ -59,7 +63,8 @@ public class BadgeServiceTests {
   @Test
   public void testAddBadgeWhenBadgeExist() {
     Badge badge = new Badge(1L, "challenge", "username", "badgeName");
-    when(badgeRepository.findByChallengeAndUsernameAndBadgeName(any(),any(),any())).thenReturn(Optional.of(badge));
+    when(badgeRepository.findByChallengeAndUsernameAndBadgeName(any(), any(), any())).thenReturn(
+        Optional.of(badge));
 
     GenericMessage<BadgeDto> result = badgeServiceImpl.addBadge(badgeAddRequest);
 
@@ -69,7 +74,8 @@ public class BadgeServiceTests {
 
   @Test
   public void testAddBadgeSuccess() {
-    when(badgeRepository.findByChallengeAndUsernameAndBadgeName(any(),any(),any())).thenReturn(Optional.empty());
+    when(badgeRepository.findByChallengeAndUsernameAndBadgeName(any(), any(), any())).thenReturn(
+        Optional.empty());
 
     GenericMessage<BadgeDto> result = badgeServiceImpl.addBadge(badgeAddRequest);
 
@@ -79,7 +85,8 @@ public class BadgeServiceTests {
 
   @Test
   public void testDeleteBadgeWhenBadgeNotFound() {
-    when(badgeRepository.findByChallengeAndUsernameAndBadgeName(any(),any(),any())).thenReturn(Optional.empty());
+    when(badgeRepository.findByChallengeAndUsernameAndBadgeName(any(), any(), any())).thenReturn(
+        Optional.empty());
 
     GenericMessage<BadgeDto> result = badgeServiceImpl.deleteBadge(badgeDeleteRequest);
 
@@ -90,7 +97,8 @@ public class BadgeServiceTests {
   @Test
   public void testDeleteBadgeSuccess() {
     Badge badge = new Badge(1L, "challenge", "username", "badgeName");
-    when(badgeRepository.findByChallengeAndUsernameAndBadgeName(any(),any(),any())).thenReturn(Optional.of(badge));
+    when(badgeRepository.findByChallengeAndUsernameAndBadgeName(any(), any(), any())).thenReturn(
+        Optional.of(badge));
 
     GenericMessage<BadgeDto> result = badgeServiceImpl.deleteBadge(badgeDeleteRequest);
 

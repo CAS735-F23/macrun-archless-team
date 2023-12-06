@@ -10,7 +10,11 @@ import lombok.*;
 @EqualsAndHashCode
 @Builder(toBuilder = true)
 public class MessageDto {
-    @NonNull private BadgeAddRequest badgeAddRequest;
-    @NonNull private String action;
-    @Nullable private String message;
+
+  @NonNull
+  private BadgeAddRequest badgeAddRequest;
+  @NonNull
+  private String action;
+  @Nullable
+  private String message;
 }

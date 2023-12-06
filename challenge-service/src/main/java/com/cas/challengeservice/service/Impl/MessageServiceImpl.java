@@ -9,18 +9,19 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MessageServiceImpl implements MessageService {
-    @Value("${spring.rabbitmq.queue}")
-    private String queueName;
 
-    private final RabbitTemplate rabbitTemplate;
+  @Value("${spring.rabbitmq.queue}")
+  private String queueName;
 
-    @Autowired
-    public MessageServiceImpl(RabbitTemplate rabbitTemplate) {
-        this.rabbitTemplate = rabbitTemplate;
-    }
+  private final RabbitTemplate rabbitTemplate;
 
-    @Override
-    public void sendMessage(String exchangeName, String route, String message) {
-        rabbitTemplate.convertAndSend(exchangeName, route, message);
-    }
+  @Autowired
+  public MessageServiceImpl(RabbitTemplate rabbitTemplate) {
+    this.rabbitTemplate = rabbitTemplate;
+  }
+
+  @Override
+  public void sendMessage(String exchangeName, String route, String message) {
+    rabbitTemplate.convertAndSend(exchangeName, route, message);
+  }
 }
