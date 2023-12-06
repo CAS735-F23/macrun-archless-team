@@ -41,7 +41,7 @@ public class PlayerController {
         return playerService.isPlayerLoggedIn(username);
     }
 
-    @PostMapping("/set-location")
+    @PostMapping("/set-zone")
     public ResponseEntity<GenericMessage<Object>> setLocation(
             @RequestBody PlayerSetZoneRequest request) {
         GenericMessage<Object> response = playerService.setZone(request);
