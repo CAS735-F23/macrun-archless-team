@@ -15,9 +15,9 @@ services:
     environment:
       - PREFER_HOST_MODE=hostname
       - MODE=standalone
-    ports:
-      - "8848:8848"
-      - "9848:9848"
+#    ports:
+#      - "8848:8848"
+#      - "9848:9848"
     restart: unless-stopped
 
   rabbitmq:
@@ -28,9 +28,9 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=mq-cas-735
       - RABBITMQ_DEFAULT_PASS=mq-cas-735
-    ports:
-      - "5672:5672"
-      - "15672:15672"
+#    ports:
+#      - "5672:5672"
+#      - "15672:15672"
     restart: unless-stopped
 
   mariadb:
@@ -40,8 +40,8 @@ services:
       - srvnet
     environment:
       - MARIADB_ROOT_PASSWORD=rootpwd@cas-735
-    ports:
-      - "3306:3306"
+#    ports:
+#      - "3306:3306"
     restart: unless-stopped
 
   redis:
@@ -49,8 +49,8 @@ services:
     container_name: redis
     networks:
       - srvnet
-    ports:
-      - "6379:6379"
+#    ports:
+#      - "6379:6379"
     restart: unless-stopped
     command: [ "redis-server", "--requirepass", "redis@cas-735" ]
 
