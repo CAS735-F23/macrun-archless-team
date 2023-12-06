@@ -29,7 +29,7 @@
 - API Gateway ([Caddy](https://caddyserver.com/))
 - Health Check ([Docker](https://www.docker.com/))
 - Session Cache ([Redis](https://redis.io/))
-- Build Test CI/CD ([Actions](https://github.com/features/actions))
+- Build Test CI ([Actions](https://github.com/features/actions))
 - Service Discovery ([Nacos](https://nacos.io/en-us/))
 - Message Queue ([RabbitMQ](https://www.rabbitmq.com/))
 
@@ -142,7 +142,7 @@ python3 ./simulator.py 127.0.0.1:8080
 
 ### Auto Test
 
-We automate the testing of our services using GitHub Actions (CI/CD). You can view the test results at:
+We automate the testing of our services using GitHub Actions CI. You can view the test results at:
 
 - <https://github.com/CAS735-F23/macrun-archless-team/actions/workflows/test.yml>
 
