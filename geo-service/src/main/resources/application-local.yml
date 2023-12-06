@@ -28,7 +28,7 @@ spring:
     username: mq-cas-735
     password: mq-cas-735
     exchange: geo-service
-    queue: geo
+    queue: player->geo
   data:
     redis:
       host: redis
