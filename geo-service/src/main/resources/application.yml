@@ -39,6 +39,6 @@ server:
   port: 9002
 springdoc:
   api-docs:
-    path: /api-docs
+    path: /geo-swagger/api-docs
   swagger-ui:
     path: /geo-swagger/index.html

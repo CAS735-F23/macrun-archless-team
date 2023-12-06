@@ -42,6 +42,6 @@ server:
   port: 9500
 springdoc:
   api-docs:
-    path: /api-docs
+    path: /hrm-swagger/api-docs
   swagger-ui:
     path: /hrm-swagger/index.html

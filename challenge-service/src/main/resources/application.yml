@@ -39,6 +39,6 @@ server:
   port: 9001
 springdoc:
   api-docs:
-    path: /api-docs
+    path: /challenge-swagger/api-docs
   swagger-ui:
     path: /challenge-swagger/index.html
