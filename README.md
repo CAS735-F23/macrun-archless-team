@@ -2,11 +2,7 @@
 
 - [Project Assignment Description](.project-docs/Project_Assignment_Description.pdf)
 - [Case Study (Fall 23): ACME Run](.project-docs/Case_Study_Fall2023.pdf)
-
-## Architecture Report
-
-- [MVP Report](https://docs.google.com/document/d/1autqAB21GcHH2TUhu9ez9Kf1AKQdTmIThb3qxiyk7p8/edit?usp=sharing)
-- [Final Report](https://docs.google.com/document/d/10VK-EgGRhk5Q-xbG0QR4D0luVF6JTTd3wDxl1OF0oBA/edit?usp=sharing)
+- [MVP Report](https://docs.google.com/document/d/1autqAB21GcHH2TUhu9ez9Kf1AKQdTmIThb3qxiyk7p8/edit?usp=sharing) | [Final Report](https://docs.google.com/document/d/10VK-EgGRhk5Q-xbG0QR4D0luVF6JTTd3wDxl1OF0oBA/edit?usp=sharing)
 
 ## Contents
 
