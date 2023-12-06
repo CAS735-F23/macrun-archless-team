@@ -14,11 +14,7 @@ import (
 	"game-service/message"
 )
 
-func (app *App) StartGame(player *dto.PlayerDTO, zone string, location dto.PointDTO) error {
-
-	if _, ok := consts.AllowedZones[strings.ToUpper(zone)]; !ok {
-		return fmt.Errorf("zone is not allowed: %s", zone)
-	}
+func (app *App) StartGame(player *dto.PlayerDTO, location dto.PointDTO) error {
 
 	ctx := &context.Context{
 		Player: player,
@@ -49,7 +45,7 @@ func (app *App) StartGame(player *dto.PlayerDTO, zone string, location dto.Point
 				}
 			}
 		}{}
-		if err := app.GetService("geo-service", fmt.Sprintf("/geo/trail?zone=%s", strings.ToLower(zone)), &data); err != nil {
+		if err := app.GetService("geo-service", fmt.Sprintf("/geo/trail?username=%s", strings.ToLower(player.Username)), &data); err != nil {
 			return fmt.Errorf("get init trail failed: %v", err)
 		}
 

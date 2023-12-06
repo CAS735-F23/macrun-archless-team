@@ -30,11 +30,6 @@ const (
 	HRMSendAction = "SEND_HEART_RATE"
 )
 
-var AllowedZones = map[string]any{
-	"MAC":      nil,
-	"MCMASTER": nil,
-}
-
 const (
 	ReactSheltering = "SHELTERING"
 	ReactEscaping   = "ESCAPING"
