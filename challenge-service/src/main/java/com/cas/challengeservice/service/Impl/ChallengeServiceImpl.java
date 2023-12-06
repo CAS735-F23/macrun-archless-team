@@ -43,13 +43,13 @@ public class ChallengeServiceImpl implements ChallengeService {
             } else {
                 return GenericMessage.<ChallengeTypeDto>builder()
                         .status(HttpStatus.UNAUTHORIZED)
-                        .message("Heart rate is not in the range of this challenge type")
+                        .message("GetChallenge failed, user heart rate not in range for this challenge type")
                         .build();
             }
         } else {
             return GenericMessage.<ChallengeTypeDto>builder()
                     .status(HttpStatus.NOT_FOUND)
-                    .message("No challenge type associated with this type")
+                    .message("GetChallenge failed, no challenge type found with this type")
                     .build();
         }
     }
@@ -101,7 +101,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         if (!existingChallengeType.isPresent()) {
             return GenericMessage.<ChallengeTypeDto>builder()
                     .status(HttpStatus.NOT_FOUND)
-                    .message("Challenge type not found")
+                    .message("DeleteChallenge failed, no challenge type found with this type")
                     .build();
         }
 

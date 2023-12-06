@@ -6,8 +6,11 @@ import jdk.jshell.Snippet;
 import lombok.*;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
+@Builder(toBuilder = true)
+@Table
 @Entity
 public class ChallengeType {
     @Id
