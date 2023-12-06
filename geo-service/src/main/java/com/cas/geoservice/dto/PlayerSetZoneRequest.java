@@ -1,3 +1,4 @@
+/* (C)2023 */
 package com.cas.geoservice.dto;
 
 import lombok.*;
@@ -5,9 +6,9 @@ import lombok.*;
 @Data
 @Builder(toBuilder = true)
 @AllArgsConstructor
-@Getter
 @NoArgsConstructor
 @EqualsAndHashCode
-public class TrailGetRequest {
+public class PlayerSetZoneRequest {
     private String username;
+    private String zone;
 }

@@ -12,7 +12,7 @@ public interface PlayerService {
 
     GenericMessage<Object> logout(PlayerRequest request);
 
-    GenericMessage<Object> setLocation(PlayerSetLocationRequest request);
+    GenericMessage<Object> setZone(PlayerSetZoneRequest request);
 
     Boolean isPlayerLoggedIn(String username);
 }

@@ -182,27 +182,23 @@ public class PlayerServiceTests {
         when(httpSession.getAttribute(any())).thenReturn(playerObj);
 
         String location = "HAMILTON";
-        PlayerSetLocationRequest playerSetLocationRequest =
-                PlayerSetLocationRequest.builder().location(location).username("username").build();
+        PlayerSetZoneRequest playerSetZoneRequest =
+                PlayerSetZoneRequest.builder().zone(location).username("username").build();
 
-        GenericMessage<Object> result = playerServiceImpl.setLocation(playerSetLocationRequest);
+        GenericMessage<Object> result = playerServiceImpl.setZone(playerSetZoneRequest);
 
         assertEquals(HttpStatus.OK, result.getStatus());
         assertEquals(
-                "Successfully sent set location request as location: " + location,
-                result.getMessage());
+                "Successfully sent set zone request as location: " + location, result.getMessage());
     }
 
     @Test
     public void testSetLocationFailedWithPlayerNotLoggedIn() {
         when(httpSession.getAttribute(anyString())).thenReturn(null);
-        PlayerSetLocationRequest playerSetLocationRequest =
-                PlayerSetLocationRequest.builder()
-                        .location("HAMILTON")
-                        .username("username")
-                        .build();
+        PlayerSetZoneRequest playerSetZoneRequest =
+                PlayerSetZoneRequest.builder().zone("HAMILTON").username("username").build();
 
-        GenericMessage<Object> result = playerServiceImpl.setLocation(playerSetLocationRequest);
+        GenericMessage<Object> result = playerServiceImpl.setZone(playerSetZoneRequest);
 
         assertEquals(HttpStatus.BAD_REQUEST, result.getStatus());
         assertEquals("SetLocation failed, player is not logged in....", result.getMessage());

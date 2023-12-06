@@ -43,8 +43,8 @@ public class PlayerController {
 
     @PostMapping("/set-location")
     public ResponseEntity<GenericMessage<Object>> setLocation(
-            @RequestBody PlayerSetLocationRequest request) {
-        GenericMessage<Object> response = playerService.setLocation(request);
+            @RequestBody PlayerSetZoneRequest request) {
+        GenericMessage<Object> response = playerService.setZone(request);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 }

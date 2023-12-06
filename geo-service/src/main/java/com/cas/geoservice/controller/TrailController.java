@@ -23,8 +23,8 @@ public class TrailController {
 
     @GetMapping("/trail")
     public ResponseEntity<GenericMessage<TrailDto>> getTrail(
-            @RequestParam String zone) {
-        TrailGetRequest request = new TrailGetRequest(zone);
+            @RequestParam String username) {
+        TrailGetRequest request = new TrailGetRequest(username);
         GenericMessage<TrailDto> response = trailService.getTrail(request);
         return ResponseEntity.status(response.getStatus()).body(response);
     }

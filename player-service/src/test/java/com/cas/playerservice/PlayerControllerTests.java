@@ -94,15 +94,15 @@ public class PlayerControllerTests {
     public void testSetLocation() {
         GenericMessage<Object> logoutMsg =
                 GenericMessage.builder().status(HttpStatus.OK).message("logout").build();
-        when(playerService.setLocation(any())).thenReturn(logoutMsg);
+        when(playerService.setZone(any())).thenReturn(logoutMsg);
 
-        PlayerSetLocationRequest request =
-                PlayerSetLocationRequest.builder().username(username).location("TEST").build();
+        PlayerSetZoneRequest request =
+                PlayerSetZoneRequest.builder().username(username).zone("TEST").build();
 
         ResponseEntity<GenericMessage<Object>> responseEntity =
                 playerController.setLocation(request);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        verify(playerService, times(1)).setLocation(any());
+        verify(playerService, times(1)).setZone(any());
     }
 }

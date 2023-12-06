@@ -164,7 +164,7 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public GenericMessage<Object> setLocation(PlayerSetLocationRequest request) {
+    public GenericMessage<Object> setZone(PlayerSetZoneRequest request) {
         if (!isPlayerLoggedIn(request.getUsername())) {
             log.error("player is not logged in...");
             return GenericMessage.<Object>builder()
@@ -174,13 +174,13 @@ public class PlayerServiceImpl implements PlayerService {
         }
 
         try {
-            Location.valueOf(request.getLocation());
+            Zone.valueOf(request.getZone());
         } catch (IllegalArgumentException ex) {
             return GenericMessage.builder()
                     .status(HttpStatus.BAD_REQUEST)
                     .message(
                             "Location you set is not in the available zone : "
-                                    + Arrays.toString(Location.values()))
+                                    + Arrays.toString(Zone.values()))
                     .build();
         }
 
@@ -190,15 +190,20 @@ public class PlayerServiceImpl implements PlayerService {
         PlayerDto playerDto;
         try {
             playerDto = objectMapper.readValue(playerObj, PlayerDto.class);
+            PlayerSetZoneRequest playerSetZoneRequest =
+                    PlayerSetZoneRequest.builder()
+                            .username(playerDto.getUsername())
+                            .zone(request.getZone())
+                            .build();
             MessageDto messageDto =
                     MessageDto.builder()
-                            .action(PLAYER_ACTION_SET_LOCATION)
-                            .playerDto(playerDto)
-                            .message(request.getLocation())
+                            .action(PLAYER_ACTION_SET_ZONE)
+                            .playerSetZoneRequest(playerSetZoneRequest)
+                            .message(request.getZone())
                             .build();
 
             messageService.sendMessage(
-                    MQ_GAME_SERVICE_EXCHANGE,
+                    MQ_GEO_SERVICE_EXCHANGE,
                     queueName,
                     objectMapper.writeValueAsString(messageDto));
 
@@ -206,7 +211,7 @@ public class PlayerServiceImpl implements PlayerService {
                     .status(HttpStatus.OK)
                     .message(
                             "Successfully sent set location request as location: "
-                                    + request.getLocation())
+                                    + request.getZone())
                     .build();
 
         } catch (JsonProcessingException e) {
@@ -216,7 +221,7 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public Boolean isPlayerLoggedIn(String username) {
-        log.info("check if user is logged in" + CACHE_PLAYER_SESSION + username);
+        log.info("check if user is logged in - " + CACHE_PLAYER_SESSION + username);
         return Objects.nonNull(httpSession.getAttribute(CACHE_PLAYER_SESSION + username));
     }
 }
