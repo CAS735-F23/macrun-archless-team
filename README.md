@@ -33,7 +33,7 @@
 
 - Watch our demo video:
 
-https://github.com/CAS735-F23/macrun-archless-team/assets/28824352/15e0d137-3a91-4c6f-91fc-181152ebafc2
+https://github.com/CAS735-F23/macrun-archless-team/assets/28824352/02e628a9-55dc-41e3-99dd-4a4f804aadc8
 
 - Feel free to use our demo services <http://34.130.59.222:8080> on Cloud, so you don't have to build and deploy
   anything manually! e.g.:
@@ -50,9 +50,9 @@ python3 ./simulator-script/simulator.py 34.130.59.222:8080
 
 - **Player Service**: <http://34.130.59.222:8080/player-swagger/index.html>
 - **Game Service**: <http://34.130.59.222:8080/game-swagger/index.html>
-- **Challenge Service**: <http://34.130.59.222:8080/challenge-swagger/index.html>
 - **GEO Service**: <http://34.130.59.222:8080/geo-swagger/index.html>
 - **HRM Service**: <http://34.130.59.222:8080/hrm-swagger/index.html>
+- **Challenge Service**: <http://34.130.59.222:8080/challenge-swagger/index.html>
 
 ## How to Build
 
