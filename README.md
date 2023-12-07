@@ -12,7 +12,6 @@
 - [How to Build](#how-to-build)
     - [Build (Micro-)services](#build-micro-services)
 - [How to Deploy](#how-to-deploy)
-    - [Deploy (Micro-)services](#deploy-micro-services)
     - [Deploy Locally](#deploy-locally)
 - [How to Use](#how-to-use)
     - [With Simulator Script](#with-simulator-script)
@@ -71,14 +70,21 @@ docker-compose build
 > If you find that our service is a little slow (2~5 minutes) to start, this is normal. We have health check steps to
 > ensure that each service is created and started properly before the API Gateway is launched.
 
-### Deploy (Micro-)services
+[//]: # (### Deploy &#40;Micro-&#41;services)
 
-We have our dependent services (e.g. Redis, RabbitMQ, MariaDB) hosted on Google Cloud, so you **only** need to run the
-following command to start and deploy our main (micro-)services.
+[//]: # ()
 
-```shell
-docker-compose up -d
-```
+[//]: # (We have our dependent services &#40;e.g. Redis, RabbitMQ, MariaDB&#41; hosted on Google Cloud, so you **only** need to run the)
+
+[//]: # (following command to start and deploy our main &#40;micro-&#41;services.)
+
+[//]: # ()
+
+[//]: # (```shell)
+
+[//]: # (docker-compose up -d)
+
+[//]: # (```)
 
 [//]: # (### Deploy Dependent Services)
 
@@ -108,12 +114,12 @@ docker-compose up -d
 
 ### Deploy Locally
 
-However, if you are experiencing problems with our cloud services (the cloud can sometimes be a problem), or if you want
-to run our services completely on-premises, you can of course run the following command, but make sure you **undo** the
-last step.
+If you are experiencing problems with our cloud services (the cloud can sometimes be a problem), or if you want
+to run our services completely on-premises, you can of course run the following command.
 
 ```shell
-docker-compose -f docker-compose.local.yml up -d --pull always
+docker-compose pull
+docker-compose up -d
 ```
 
 ## How to Use
