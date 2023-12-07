@@ -118,8 +118,7 @@ If you are experiencing problems with our cloud services (the cloud can sometime
 to run our services completely on-premises, you can of course run the following command.
 
 ```shell
-docker-compose pull
-docker-compose up -d
+docker-compose pull && docker-compose up -d
 ```
 
 ## How to Use
